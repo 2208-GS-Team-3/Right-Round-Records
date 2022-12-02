@@ -1,5 +1,5 @@
 const db = require("./db");
-const { STRING, UUID, UUIDV4 } = db.Sequelize;
+const { STRING, UUID, UUIDV4, VIRTUAL, DATE } = db.Sequelize;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const JWT = process.env.JWT;
@@ -27,22 +27,21 @@ const User = db.define("user", {
   },
   //new code starts here
   firstName: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   lastName: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   fullName: {
-    type: Sequelize.VIRTUAL,
-    allowNull: false,
+    type: VIRTUAL,
     validate: {
       notEmpty: true,
     },
@@ -51,22 +50,22 @@ const User = db.define("user", {
     },
   },
   creditCardNum: {
-    type: Sequelize.STRING,
-    allowNull: false,
+    type: STRING,
+    allowNull: true,
     validate: {
       notEmpty: true,
       isCreditCard: true,
     },
   },
   phoneNum: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   email: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -74,21 +73,21 @@ const User = db.define("user", {
     },
   },
   shippingAddress: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   billingAddress: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   birthday: {
-    type: Sequelize.DATE,
+    type: DATE,
     allowNull: false,
     validate: {
       notEmpty: true,
