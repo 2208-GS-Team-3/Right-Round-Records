@@ -9,10 +9,6 @@ const Genre = db.define("genre", {
       notEmpty: true,
     },
   },
-  style: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
 });
 
 module.exports = Genre;

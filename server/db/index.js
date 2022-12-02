@@ -10,7 +10,7 @@ Review.belongsTo(User);
 Review.belongsTo(Record);
 
 Genre.belongsToMany(Record, {through: 'Record_Genres'})
-Record.belongsToMany(Genre, {through: 'Record_Genres'})
+Record.hasOne(Genre)
 
 User.hasMany(Review);
 Record.hasMany(Review);

@@ -19,7 +19,8 @@ const Order = db.define("order", {
     allowNull: true,
   },
   trackingNumber: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
+    unique: true,
   },
 });
 

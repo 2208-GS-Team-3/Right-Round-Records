@@ -37,9 +37,9 @@ const Record = db.define("record", {
       notEmpty: true,
     },
     //setter here
-    set(value) {
-      return value.toFixed(2);
-    },
+    // set(value) {
+    //   return value.toFixed(2);
+    // },
   },
   description: {
     type: Sequelize.TEXT,
