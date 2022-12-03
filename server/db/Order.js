@@ -10,9 +10,16 @@ const Order = db.define("order", {
     },
   },
   status: {
-    type: Sequelize.ENUM({
-      values: ["cart", "placed", "shipped", "delivered"],
-    }),
+    type: Sequelize.STRING,
+    defaultValue: "cart",
+    validate: {
+      statusValidator: (value) => {
+        const statusOptions = ["cart", "placed", "shipped", "delivered"];
+        if (!statusOptions.includes(value)) {
+          throw new Error("not a valid option");
+        }
+      },
+    },
   },
   shippingAddress: {
     type: Sequelize.STRING,
