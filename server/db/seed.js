@@ -86,7 +86,18 @@ const seed = async () => {
   //   ]);
 
   //--------------REVIEWS--------------
-  const [review1, review2, review3] = await Promise.all([
+  const [
+    review1,
+    review2,
+    review3,
+    review4,
+    review5,
+    review6,
+    review7,
+    review8,
+    review9,
+    review10,
+  ] = await Promise.all([
     Review.create({
       dateReviewed: "December 1, 2022",
       comment: "love it!!",
@@ -94,12 +105,47 @@ const seed = async () => {
     }),
     Review.create({
       dateReviewed: "January 25, 2022",
-      comment: "love the jazz",
+      comment: "groovy",
       reviewRating: "4",
     }),
     Review.create({
-      dateReviewed: "January 25, 2021",
+      dateReviewed: "January 22, 2021",
       comment: "great album",
+      reviewRating: "1",
+    }),
+    Review.create({
+      dateReviewed: "December 5, 2022",
+      comment: "loved it so much!!",
+      reviewRating: "5",
+    }),
+    Review.create({
+      dateReviewed: "February 25, 2022",
+      comment: "love the music but not an absolute fave",
+      reviewRating: "4",
+    }),
+    Review.create({
+      dateReviewed: "March 25, 2021",
+      comment: "not great coding music",
+      reviewRating: "1",
+    }),
+    Review.create({
+      dateReviewed: "April 1, 2022",
+      comment: "cleanest beatz!!",
+      reviewRating: "5",
+    }),
+    Review.create({
+      dateReviewed: "May 25, 2022",
+      comment: "love the rhythm, but not obsessed",
+      reviewRating: "4",
+    }),
+    Review.create({
+      dateReviewed: "June 25, 2021",
+      comment: "hated this album",
+      reviewRating: "1",
+    }),
+    Review.create({
+      dateReviewed: "June 25, 2021",
+      comment: "terrible album",
       reviewRating: "1",
     }),
   ]);
@@ -166,7 +212,10 @@ const seed = async () => {
   order5.setRecords([record6, record3, record4]);
 
   // lily.setReviews([review1]);
-  record1.addReview([review2, review3]);
+  record1.addReview([review2, review3, review10]);
+  record5.addReview([review4, review5]);
+  record4.addReview([review6, review7, review8, review1]);
+  record7.addReview([review9]);
 
   return {
     users: {
@@ -178,6 +227,13 @@ const seed = async () => {
     reviews: {
       review1,
       review2,
+      review3,
+      review4,
+      review5,
+      review6,
+      review7,
+      review8,
+      review9,
     },
     records: { ...recordData },
     // genres: {
