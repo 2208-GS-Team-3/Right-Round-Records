@@ -44,6 +44,8 @@ const App = () => {
       <RRRAppBar />
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* products route placeholder until we get a products page */}
+        <Route path="/Products" element={<Home />} />
       </Routes>
     </div>
   );
