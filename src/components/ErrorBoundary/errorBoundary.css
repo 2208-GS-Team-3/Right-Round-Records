@@ -1,0 +1,7 @@
+#error-page {
+  display: flex;
+  flex-direction: column-reverse;
+  background-color: rgba(177, 220, 229, 255);
+  height: 100vh;
+  width: 100vw;
+}

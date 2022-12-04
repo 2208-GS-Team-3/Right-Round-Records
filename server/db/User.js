@@ -94,6 +94,10 @@ const User = db.define("user", {
       isDate: true,
     },
   },
+  avatarUrl: {
+    type: STRING,
+    allowNull: true
+    },
   //new code ends
 });
 
