@@ -14,7 +14,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-const Login = () => {
+const LoginPage = () => {
   const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({
     username: "",
@@ -118,4 +118,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

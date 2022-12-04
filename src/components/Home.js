@@ -13,26 +13,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import RRRAppBar from './AppBar';
+import { Outlet } from 'react-router-dom';
 
 const Home = () => {
     const { user } = useSelector(state => state.user);
-    const dispatch = useDispatch();
-
-    const logout = () => {
-        window.localStorage.removeItem('token');
-        dispatch(resetUser());
-    };
 
     return (
-        <Container>
-        <div>
-            <h1>Home</h1>
             <div>
-                <p>Welcome {user.username}!!</p>
-                <button onClick={logout}>Logout</button>
+                <p>Welcome {user.username ?? "Guest"}!!</p>
             </div>
-        </div>
-        </Container>
     );
 };
 

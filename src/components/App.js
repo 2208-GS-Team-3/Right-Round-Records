@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import Home from "./Home";
-import Login from "./Login";
 import { setUser } from "../store/userSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, Routes, Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import axios from "axios";
 import RRRAppBar from "./AppBar";
+import { CssBaseline } from "@mui/material";
 
 const App = () => {
   const { user } = useSelector((state) => state.user);
@@ -28,13 +27,11 @@ const App = () => {
     loginWithToken();
   }, []);
 
-  if (!user.id) return <Login />;
   return (
     <div>
-      <RRRAppBar/>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
+      <CssBaseline />
+      <RRRAppBar />
+      <Outlet />
     </div>
   );
 };
