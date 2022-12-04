@@ -137,21 +137,29 @@ const seed = async () => {
   );
 
   //--------------ASSOCIATIONS--------------
-  // order1.setRecords([midnights.id, goodNews.id, theBigRevival.id]);
-  // order2.setRecords([confessions.id]);
-  // order3.setRecords([eyeInTheSky.id]);
-  // order4.setRecords([theBigRevival.id, eyeInTheSky.id]);
 
-  // pop.setRecords([midnights, goodNews]);
-  // rap.setRecords([goodNews]);
-  // country.setRecords([theBigRevival]);
-  // folk.setRecords([midnights]);
-  // rock.setRecords([eyeInTheSky]);
+  const record1 = await recordData[0][23];
+  const record2 = await recordData[0][55];
+  const record3 = await recordData[0][23];
+  const record4 = await recordData[0][73];
+  const record5 = await recordData[0][72];
+  const record6 = await recordData[0][20];
+  const record7 = await recordData[0][33];
+  const record8 = await recordData[0][67];
+  const record9 = await recordData[0][33];
+  const record10 = await recordData[0][467];
 
+  // console.log(record1.dataValues);
   lily.addOrder([order4]);
   olivia.addOrder([order1]);
-  kolby.addOrder([order3]);
+  kolby.addOrder(order3);
   jack.addOrder([order2]);
+
+  console.log("record1", record1);
+  order1.setRecords(record1);
+  order2.setRecords([record5, record9]);
+  order3.setRecords([record4, record6]);
+  order4.setRecords([record10, record2, record8]);
 
   // lily.addReviews([review1]);
   // goodNews.addReviews([review2, review3]);

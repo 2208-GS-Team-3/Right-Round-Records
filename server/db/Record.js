@@ -36,7 +36,7 @@ const Record = db.define("record", {
     },
     //setter here
     set(value) {
-      this.setDataValue('price', Math.floor(value*100) );
+      this.setDataValue("price", Math.floor(value * 100));
     },
   },
   description: {
