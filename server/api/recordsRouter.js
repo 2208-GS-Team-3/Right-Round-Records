@@ -1,5 +1,5 @@
 const express = require("express");
-const { Record } = require("../db");
+const { Record, Review, Order } = require("../db");
 const router = express.Router();
 
 // //localhost:3000/api/records/
@@ -7,7 +7,8 @@ const router = express.Router();
 router.get("/", async (req, res, next) => {
   try {
     const records = await Record.findAll({
-      // include: [Review],
+      order: [["id", "ASC"]],
+      include: [Review, Order],
     });
     res.send(records);
   } catch (err) {
