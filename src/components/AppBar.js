@@ -16,13 +16,14 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUser } from "../store/userSlice";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
 const pages = ["Vinyl", "Reviews", "Community"];
 const userSettings = ["Profile", "Account", "Dashboard", "Orders", "Logout"];
 const guestSettings = ["Profile", "Account", "Dashboard", "Login"];
 
 function RRRAppBar() {
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -32,7 +33,7 @@ function RRRAppBar() {
   };
 
   const login = () => {
-    useNavigate("login");
+    navigate("/login");
   };
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -51,8 +52,9 @@ function RRRAppBar() {
 
   const handleCloseUserMenu = (e) => {
     e.preventDefault();
-    if (e.target.innerHTML === "Logout") logout();
-    if (e.target.innerHTML === "Login") login();
+    console.log(e)
+    if (e.target.innerHTML === "Logout" || e.target.id === "Logout") logout();
+    if (e.target.innerHTML === "Login" || e.target.id === "Login" ) login();
     setAnchorElUser(null);
   };
 
@@ -168,9 +170,10 @@ function RRRAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user?.userName
+              {user.id
                 ? userSettings.map((setting) => (
                     <MenuItem
+                    id={setting}
                       value={setting}
                       key={setting}
                       onClick={handleCloseUserMenu}
@@ -180,6 +183,7 @@ function RRRAppBar() {
                   ))
                 : guestSettings.map((setting) => (
                     <MenuItem
+                    id={setting}
                       value={setting}
                       key={setting}
                       onClick={handleCloseUserMenu}

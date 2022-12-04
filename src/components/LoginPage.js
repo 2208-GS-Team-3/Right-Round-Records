@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { redirect, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ const LoginPage = () => {
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate()
 
   const onChange = (ev) => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
@@ -35,6 +38,7 @@ const LoginPage = () => {
       });
 
       dispatch(setUser(response.data));
+      navigate("/")
     }
   };
 

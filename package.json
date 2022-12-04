@@ -4,10 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build-watch & npm run start-server",
-    "seed": "node server/db/seed.js",
-    "build-watch": "webpack -w",
-    "start-server": "nodemon --watch server -e js,html server/index.js",
     "build": "webpack",
     "build:dev": "npm run build -- --watch --mode=development",
     "test": "JWT=shhhhh mocha",
