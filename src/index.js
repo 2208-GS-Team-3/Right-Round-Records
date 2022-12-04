@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import App from "./components/App";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 import LoginPage from "./components/LoginPage";
 
 const router = createBrowserRouter([

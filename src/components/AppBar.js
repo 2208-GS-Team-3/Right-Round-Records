@@ -36,6 +36,7 @@ function RRRAppBar() {
     navigate("/login");
   };
 
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -52,7 +53,6 @@ function RRRAppBar() {
 
   const handleCloseUserMenu = (e) => {
     e.preventDefault();
-    console.log(e)
     if (e.target.innerHTML === "Logout" || e.target.id === "Logout") logout();
     if (e.target.innerHTML === "Login" || e.target.id === "Login" ) login();
     setAnchorElUser(null);
@@ -151,7 +151,7 @@ function RRRAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user.firstName ?? "Guest"} src={user.imageUrl} />
+                <Avatar alt={user.firstName ?? "Guest"} src={user.avatarUrl} />
               </IconButton>
             </Tooltip>
             <Menu
