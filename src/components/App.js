@@ -5,6 +5,7 @@ import { setUser } from "../store/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Routes, Route } from "react-router-dom";
 import axios from "axios";
+import RRRAppBar from "./AppBar";
 
 const App = () => {
   const { user } = useSelector((state) => state.user);
@@ -30,15 +31,10 @@ const App = () => {
   if (!user.id) return <Login />;
   return (
     <div>
-      <h1>Acme Shopping</h1>
-      <div>
-        <nav>
-          <Link to="/">Home</Link>
-        </nav>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </div>
+      <RRRAppBar/>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </div>
   );
 };
