@@ -197,13 +197,6 @@ const seed = async () => {
   const record9 = await recordData[0][33];
   const record10 = await recordData[0][467];
 
-  //ids in the database dont match up with whats being displayed in browser
-  console.log(record1.albumName);
-  const filteredRecord = recordData.filter(
-    (record) => record.albumName === record1.albumName
-  );
-  // console.log({ recordArray });
-
   //orders associated with users
   lily.addOrder([order4]);
   olivia.addOrder([order1, order5]);
