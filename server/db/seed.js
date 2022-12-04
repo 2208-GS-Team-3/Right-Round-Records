@@ -211,11 +211,17 @@ const seed = async () => {
   order4.setRecords([record10, record2, record8]);
   order5.setRecords([record6, record3, record4]);
 
-  // lily.setReviews([review1]);
+  //reviews added to records
   record1.addReview([review2, review3, review10]);
   record5.addReview([review4, review5]);
   record4.addReview([review6, review7, review8, review1]);
   record7.addReview([review9]);
+
+  //users associated with reviews
+  lily.addReviews([review1, review10]);
+  olivia.addReviews([review2]);
+  jack.addReviews([review5, review4, review6, review7]);
+  kolby.addReviews([review8, review9, review3]);
 
   return {
     users: {

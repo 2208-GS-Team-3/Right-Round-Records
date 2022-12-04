@@ -14,7 +14,7 @@ Order.belongsTo(User);
 Order.belongsToMany(Record, { through: "record_order" });
 Record.belongsToMany(Order, { through: "record_order" });
 
-// Review.belongsTo(User);
+Review.belongsTo(User);
 Review.belongsTo(Record);
 
 // Genre.hasMany(Record);
@@ -23,7 +23,7 @@ Review.belongsTo(Record);
 // Genre.hasMany(Style);
 // Style.hasMany(Genre);
 
-// User.hasMany(Review);
+User.hasMany(Review);
 Record.hasMany(Review);
 
 //may want to use this later to track records already owned, not purchased through us
