@@ -105,36 +105,38 @@ const seed = async () => {
   ]);
 
   //---------------ORDERS-----------------
-  const orders = [
-    {
-      datePlaced: Date.now(),
-      status: "placed",
-      shippingAddress: "1234 album lane, NY, NY 10005",
-      trackingNumber: "12345543",
-    },
-    {
+  const [order1, order2, order3, order4, order5] = await Promise.all([
+    Order.create({
       datePlaced: Date.now(),
       status: "cart",
       shippingAddress: "1234 album lane, NY, NY 10005",
-      trackingNumber: "126543",
-    },
-    {
+      trackingNumber: "12345",
+    }),
+    Order.create({
+      datePlaced: Date.now(),
+      status: "placed",
+      shippingAddress: "2222 album lane, NY, NY 10005",
+      trackingNumber: "54321",
+    }),
+    Order.create({
       datePlaced: Date.now(),
       status: "shipped",
-      shippingAddress: "1234 album lane, NY, NY 10005",
-      trackingNumber: "12345643",
-    },
-    {
+      shippingAddress: "3333 album lane, NY, NY 10005",
+      trackingNumber: "74625",
+    }),
+    Order.create({
       datePlaced: Date.now(),
       status: "delivered",
-      shippingAddress: "1234 album lane, NY, NY 10005",
-      trackingNumber: "12345676543",
-    },
-  ];
-
-  const [order1, order2, order3, order4] = await Promise.all(
-    orders.map((orderData) => Order.create(orderData))
-  );
+      shippingAddress: "4444 album lane, NY, NY 10005",
+      trackingNumber: "444443",
+    }),
+    Order.create({
+      datePlaced: Date.now(),
+      status: "cart",
+      shippingAddress: "7777 album lane, NY, NY 10005",
+      trackingNumber: "4324789",
+    }),
+  ]);
 
   //--------------ASSOCIATIONS--------------
 
@@ -144,25 +146,27 @@ const seed = async () => {
   const record4 = await recordData[0][73];
   const record5 = await recordData[0][72];
   const record6 = await recordData[0][20];
-  const record7 = await recordData[0][33];
+  const record7 = await recordData[0][34];
   const record8 = await recordData[0][67];
   const record9 = await recordData[0][33];
   const record10 = await recordData[0][467];
 
-  // console.log(record1.dataValues);
+  //orders associated with users
   lily.addOrder([order4]);
-  olivia.addOrder([order1]);
-  kolby.addOrder(order3);
+  olivia.addOrder([order1, order5]);
+  kolby.addOrder([order3]);
   jack.addOrder([order2]);
 
-  console.log("record1", record1);
-  order1.setRecords(record1);
-  order2.setRecords([record5, record9]);
+  //current problem - cannot have same record more than once.
+  //we need to allow for multiple of the same records to be added to cart!
+  order1.setRecords([record1]);
+  order2.setRecords([record5, record9, record3, record7]);
   order3.setRecords([record4, record6]);
   order4.setRecords([record10, record2, record8]);
+  order5.setRecords([record6, record3, record4]);
 
-  // lily.addReviews([review1]);
-  // goodNews.addReviews([review2, review3]);
+  // lily.setReviews([review1]);
+  record1.addReview([review2, review3]);
 
   return {
     users: {
