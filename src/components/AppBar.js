@@ -151,7 +151,7 @@ function RRRAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user.firstName ?? "Guest"} src={user.avatarUrl} />
+                <Avatar alt={user.fullName ?? "Guest"} src={user.avatarUrl} />
               </IconButton>
             </Tooltip>
             <Menu

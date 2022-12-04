@@ -20,7 +20,7 @@ const seed = async () => {
       shippingAddress: "902 Brisbane ST. NE, Palm Bay, FL, 32907",
       billingAddress: "902 Brisbane ST. NE, Palm Bay, FL, 32907",
       birthday: "January 4, 1991",
-      avatarUrl: "https://lh3.googleusercontent.com/drive-viewer/AJc5JmRiaZmB7ANQ6d1ZkK5XcwwgoV69W-KaMfSJbxy0HzpyUsmJofIM_44flgTu0d9_ygaBFGjaKM2fAebh7b7lZphUhnyFuw=w3024-h1412",
+      avatarUrl: "static/KolbyIMG.jpeg",
     }),
     User.create({
       username: "Olivia",
