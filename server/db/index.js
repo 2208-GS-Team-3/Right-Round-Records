@@ -5,12 +5,16 @@ const Review = require("./Review");
 const Record = require("./Record");
 const Order = require("./Order");
 const Genre = require("./Genre");
+const Style = require("./Style");
 
 Review.belongsTo(User);
 Review.belongsTo(Record);
 
-Genre.belongsToMany(Record, {through: 'Record_Genres'})
-Record.belongsToMany(Genre, {through: 'Record_Genres'})
+Genre.hasMany(Record)
+Record.hasMany(Genre)
+
+Genre.hasMany(Style)
+Style.hasMany(Genre)
 
 User.hasMany(Review);
 Record.hasMany(Review);
@@ -33,4 +37,5 @@ module.exports = {
   Genre,
   Order,
   db,
+  Style,
 };

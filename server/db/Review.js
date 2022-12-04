@@ -13,9 +13,13 @@ const Review = db.define("review", {
     type: Sequelize.TEXT,
     allowNull: false,
   },
-  rating: {
-    type: Sequelize.ENUM("1", "2", "3", "4", "5"),
-    allowNull: false,
+  reviewRating: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    validate: {
+      max: 5,
+      min: 1
+    }
   },
 });
 

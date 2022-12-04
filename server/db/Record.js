@@ -10,22 +10,20 @@ const Record = db.define("record", {
     },
   },
   artist: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   tracks: {
-    type: Sequelize.TEXT,
+    type: Sequelize.ARRAY(Sequelize.TEXT),
   },
-  imageUrl: {
-    type: Sequelize.TEXT,
-    validate: {
-      notEmpty: true,
-    },
-    defaultValue:
+  imageUrls: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+    defaultValue: [
       "https://cdn1.vectorstock.com/i/1000x1000/30/75/vinyl-record-vector-1773075.jpg",
+    ],
   },
   condition: {
     type: Sequelize.STRING,
@@ -38,33 +36,37 @@ const Record = db.define("record", {
     },
     //setter here
     set(value) {
-      return value.toFixed(2);
+      this.setDataValue('price', Math.floor(value*100) );
     },
   },
   description: {
     type: Sequelize.TEXT,
   },
-  releaseDate: {
-    type: Sequelize.DATE,
-    validate: {
-      isDate: true,
-    },
+  year: {
+    type: Sequelize.INTEGER,
   },
   //this would be calculated by orders?
   //   numberSold: {
   //     type: Sequelize.INTEGER,
   //   },
-  rating: {
-    type: Sequelize.ENUM({
-      values: ["Everyone", "Mature"],
-    }),
-  },
-  recordLabel: {
-    type: Sequelize.STRING,
-  },
-  country: {
-    type: Sequelize.STRING,
-  },
+  // maturityRating: {
+  //   type: Sequelize.ENUM("Everyone", "Mature"),
+  // },
+  // recordLabel: {
+  //   type: Sequelize.STRING,
+  // },
+  // country: {
+  //   type: Sequelize.STRING,
+  // },
+  // mainRelease: {
+  //   type: Sequelize.STRING,
+  //   set(data) {
+  //     return JSON.stringify(data);
+  //   },
+  //   get(data) {
+  //     return JSON.parse(data);
+  //   },
+  // },
 });
 
 module.exports = Record;

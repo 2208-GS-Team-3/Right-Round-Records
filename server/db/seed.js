@@ -1,9 +1,14 @@
 const db = require("./db");
+const Record = require("./Record");
 const User = require("./User");
+const Review = require("./Review");
+const Genre = require("./Genre");
+const Order = require("./Order");
+const recordArray = require("./DataStorage");
 
 const seed = async () => {
   await db.sync({ force: true });
-
+  //--------------USERS--------------
   const [kolby, olivia, lily, jack] = await Promise.all([
     User.create({
       username: "Kolby",
@@ -51,6 +56,106 @@ const seed = async () => {
     }),
   ]);
 
+  //--------------RECORDS--------------
+
+  const recordData = await Promise.all([
+    recordArray.map((element) => {
+      return Record.create({
+        albumName: element.title,
+        artist: element.artists[0].name,
+        tracks: element.tracklist,
+        imageUrl: element.images,
+        price: element.lowest_price,
+        description: "",
+        year: element.year,
+        genres: element.genres,
+        styles: element.styles,
+      });
+    }),
+  ]);
+
+  //--------------GENRES--------------
+  //   const [pop, rock, hiphop, rap, country, rAndB, folk] = await Promise.all([
+  //     Genre.create({ genreName: "Pop" }),
+  //     Genre.create({ genreName: "Rock" }),
+  //     Genre.create({ genreName: "Hip-Hop" }),
+  //     Genre.create({ genreName: "Rap" }),
+  //     Genre.create({ genreName: "Country" }),
+  //     Genre.create({ genreName: "R&B" }),
+  //     Genre.create({ genreName: "Folk" }),
+  //   ]);
+
+  //--------------REVIEWS--------------
+  const [review1, review2, review3] = await Promise.all([
+    Review.create({
+      dateReviewed: "December 1, 2022",
+      comment: "love it!!",
+      reviewRating: "5",
+    }),
+    Review.create({
+      dateReviewed: "January 25, 2022",
+      comment: "love the jazz",
+      reviewRating: "4",
+    }),
+    Review.create({
+      dateReviewed: "January 25, 2021",
+      comment: "great album",
+      reviewRating: "1",
+    }),
+  ]);
+
+  //---------------ORDERS-----------------
+  const orders = [
+    {
+      datePlaced: Date.now(),
+      status: "placed",
+      shippingAddress: "1234 album lane, NY, NY 10005",
+      trackingNumber: "12345543",
+    },
+    {
+      datePlaced: Date.now(),
+      status: "cart",
+      shippingAddress: "1234 album lane, NY, NY 10005",
+      trackingNumber: "126543",
+    },
+    {
+      datePlaced: Date.now(),
+      status: "shipped",
+      shippingAddress: "1234 album lane, NY, NY 10005",
+      trackingNumber: "12345643",
+    },
+    {
+      datePlaced: Date.now(),
+      status: "delivered",
+      shippingAddress: "1234 album lane, NY, NY 10005",
+      trackingNumber: "12345676543",
+    },
+  ];
+
+  const [order1, order2, order3, order4] = await Promise.all(
+    orders.map((orderData) => Order.create(orderData))
+  );
+
+  //--------------ASSOCIATIONS--------------
+  // order1.setRecords([midnights.id, goodNews.id, theBigRevival.id]);
+  // order2.setRecords([confessions.id]);
+  // order3.setRecords([eyeInTheSky.id]);
+  // order4.setRecords([theBigRevival.id, eyeInTheSky.id]);
+
+  // pop.setRecords([midnights, goodNews]);
+  // rap.setRecords([goodNews]);
+  // country.setRecords([theBigRevival]);
+  // folk.setRecords([midnights]);
+  // rock.setRecords([eyeInTheSky]);
+
+  lily.addOrder([order4]);
+  olivia.addOrder([order1]);
+  kolby.addOrder([order3]);
+  jack.addOrder([order2]);
+
+  // lily.addReviews([review1]);
+  // goodNews.addReviews([review2, review3]);
+
   return {
     users: {
       kolby,
@@ -58,12 +163,26 @@ const seed = async () => {
       lily,
       jack,
     },
+    reviews: {
+      review1,
+      review2,
+    },
+    records: { ...recordData },
+    // genres: {
+    //   pop,
+    //   rock,
+    //   hiphop,
+    //   rap,
+    //   country,
+    //   rAndB,
+    // },
+    orders: {
+      order1,
+      order2,
+      order3,
+      order4,
+    },
   };
-
-
-
 };
-
-//Test of Merging
 
 module.exports = seed;
