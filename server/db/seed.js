@@ -68,8 +68,8 @@ const seed = async () => {
         price: element.lowest_price,
         description: "",
         year: element.year,
-        genres: element.genres,
-        styles: element.styles,
+        genreName: element.genres,
+        styleName: element.styles,
       });
     }),
   ]);

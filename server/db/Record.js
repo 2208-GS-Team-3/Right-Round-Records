@@ -45,6 +45,12 @@ const Record = db.define("record", {
   year: {
     type: Sequelize.INTEGER,
   },
+  genreName: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+  },
+  styleName: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+  },
   //this would be calculated by orders?
   //   numberSold: {
   //     type: Sequelize.INTEGER,
