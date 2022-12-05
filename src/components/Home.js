@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { resetUser } from "../store/userSlice";
+import { setOrders } from "../store/ordersSlice";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -13,24 +14,34 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import RRRAppBar from "./AppBar";
-import RecordCard from "./RecordCard";
-
-const recordCardStyle = {
-  width: "400px",
-  height: "400px",
-};
+import axios from "axios";
 
 const Home = () => {
+  const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.user);
+  // making records accessible when deciding which we want to display on home page
   const records = useSelector((state) => state.records.records);
+  // making orders accessible when deciding what we want to display when user is logged in
+  const orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
+
+  //all orders currently available.
+  //need to determine how to only show orders for this user. a filter perhaps?
+  const getOrders = async () => {
+    const orders = await axios.get("/api/orders");
+    dispatch(setOrders(orders.data));
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getOrders();
+    setLoading(false);
+  }, []);
 
   const logout = () => {
     window.localStorage.removeItem("token");
     dispatch(resetUser());
   };
-
-  console.log("records on home page", records);
 
   return (
     <Container>
@@ -39,15 +50,6 @@ const Home = () => {
         <div>
           <p>Welcome {user.username}!!</p>
           <button onClick={logout}>Logout</button>
-        </div>
-        <div id="record_cards_container">
-          {records.map((record) => {
-            return (
-              <div id="record_card" key={record.id} style={recordCardStyle}>
-                <RecordCard record={record} />
-              </div>
-            );
-          })}
         </div>
       </div>
     </Container>

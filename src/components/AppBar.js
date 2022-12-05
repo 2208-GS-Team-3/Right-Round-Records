@@ -15,7 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["records", "pricing", "blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function RRRAppBar() {
@@ -116,7 +116,7 @@ function RRRAppBar() {
           {/* how can i add a link to products page when this is clicked */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Link to={`/${page}`}>
+              <Link to={`/${page}`} key={page}>
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}

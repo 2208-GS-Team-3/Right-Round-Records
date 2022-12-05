@@ -7,6 +7,9 @@ import { Link, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import RRRAppBar from "./AppBar";
 import { setRecords } from "../store/recordsSlice";
+import { setOrders } from "../store/ordersSlice";
+import { Orders } from "./OrdersCard";
+import AllRecords from "./AllRecords";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -15,7 +18,6 @@ const App = () => {
 
   const getRecords = async () => {
     const records = await axios.get("/api/records");
-    console.log("records in app.js", records.data);
     dispatch(setRecords(records.data));
   };
 
@@ -44,8 +46,8 @@ const App = () => {
       <RRRAppBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* products route placeholder until we get a products page */}
-        <Route path="/Products" element={<Home />} />
+        <Route path="/records" element={<AllRecords />} />
+        <Route path="/orders" element={<Orders />} />
       </Routes>
     </div>
   );

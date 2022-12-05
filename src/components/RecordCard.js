@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@mui/material";
 
 const recordCardImage = {
   width: "200px",

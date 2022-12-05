@@ -223,6 +223,7 @@ const seed = async () => {
   jack.addReviews([review5, review4, review6, review7]);
   kolby.addReviews([review8, review9, review3]);
 
+  // not sure how to
   return {
     users: {
       kolby,

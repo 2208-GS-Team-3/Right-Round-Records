@@ -1,6 +1,6 @@
 const express = require("express");
-const { Record, Review, Order } = require("../db");
 const router = express.Router();
+const { Record, Review, Order } = require("../db");
 
 // //localhost:3000/api/records/
 // //list of all records
@@ -10,6 +10,7 @@ router.get("/", async (req, res, next) => {
       order: [["id", "ASC"]],
       include: [Review, Order],
     });
+    console.log(records);
     res.send(records);
   } catch (err) {
     res.sendStatus(404);
