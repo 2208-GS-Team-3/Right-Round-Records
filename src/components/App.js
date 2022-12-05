@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 import Home from "./Home";
 import Login from "./Login";
-import { setUser } from "../store/userSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, Routes, Route } from "react-router-dom";
-import axios from "axios";
 import RRRAppBar from "./AppBar";
 import { setRecords } from "../store/recordsSlice";
-import { setOrders } from "../store/ordersSlice";
-import { Orders } from "./OrdersCard";
+import { setUser } from "../store/userSlice";
 import AllRecords from "./AllRecords";
+import AllOrders from "./AllOrders";
+import { setOrders } from "../store/ordersSlice";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -19,6 +19,13 @@ const App = () => {
   const getRecords = async () => {
     const records = await axios.get("/api/records");
     dispatch(setRecords(records.data));
+  };
+
+  //all orders currently available.
+  //need to determine how to only show orders for this user. a filter perhaps?
+  const getOrders = async () => {
+    const orders = await axios.get("/api/orders");
+    dispatch(setOrders(orders.data));
   };
 
   const loginWithToken = async () => {
@@ -37,6 +44,7 @@ const App = () => {
     loginWithToken();
     setLoading(true);
     getRecords();
+    getOrders();
     setLoading(false);
   }, []);
 
@@ -47,7 +55,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/records" element={<AllRecords />} />
-        <Route path="/orders" element={<Orders />} />
+        <Route path="/orders" element={<AllOrders />} />
       </Routes>
     </div>
   );

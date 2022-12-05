@@ -15,7 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 
-const pages = ["records", "pricing", "blog"];
+const pages = ["records", "pricing", "blog", "orders"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function RRRAppBar() {
