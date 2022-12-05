@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const recordCardImage = {
   width: "200px",
@@ -21,9 +22,12 @@ const RecordCard = ({ record }) => {
 
   const recordAlbumPhoto = getImageUrl(recordImageObjectString);
 
+  //link to single record
+  const singleRecordPageUrl = `/records/${record.id}`
+  
   return (
     <div>
-      <h3>{record.albumName}</h3>
+      <Link to={singleRecordPageUrl}><h3>{record.albumName}</h3></Link>
       <img style={recordCardImage} src={`${recordAlbumPhoto}`} />
       <p>Artist: {record.artist}</p>
       {/* <p>{record.description}</p>

@@ -9,6 +9,7 @@ import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
 import AllRecords from "./AllRecords";
 import AllOrders from "./AllOrders";
+import SingleRecord from "./SingleRecord";
 import { setOrders } from "../store/ordersSlice";
 
 const App = () => {
@@ -56,6 +57,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/records" element={<AllRecords />} />
         <Route path="/orders" element={<AllOrders />} />
+        <Route path= '/records/:recordId' element={<SingleRecord />} />
       </Routes>
     </div>
   );
