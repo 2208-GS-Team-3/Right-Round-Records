@@ -7,7 +7,7 @@ const recordCardImage = {
 
 const RecordCard = ({ record }) => {
   // add item function to update state
-
+  console.log(record);
   return (
     <div>
       <h3>{record.albumName}</h3>
