@@ -15,13 +15,16 @@ const flexContainer = {
 };
 
 const AllOrders = () => {
+  const { user } = useSelector((state) => state.user);
   const orders = useSelector((state) => state.orders.orders);
-  console.log(orders);
+
+  const usersOrders = orders.filter((order) => order.userId === user.id);
+
   return (
     <>
       <h1>Orders</h1>
       <div id="order_cards_container" style={flexContainer}>
-        {orders.map((order) => {
+        {usersOrders.map((order) => {
           return (
             <div id="order_card" key={order.id}>
               <OrderCard order={order} />

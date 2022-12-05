@@ -10,7 +10,6 @@ router.get("/", async (req, res, next) => {
       order: [["id", "ASC"]],
       include: [Review, Order],
     });
-    console.log(records);
     res.send(records);
   } catch (err) {
     res.sendStatus(404);
