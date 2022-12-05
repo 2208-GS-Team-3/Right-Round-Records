@@ -64,7 +64,7 @@ const seed = async () => {
         albumName: element.title,
         artist: element.artists[0].name,
         tracks: element.tracklist,
-        imageUrl: element.images,
+        imageUrls: element.images,
         price: element.lowest_price,
         description: "",
         year: element.year,
@@ -73,6 +73,8 @@ const seed = async () => {
       });
     }),
   ]);
+
+  // console.log(recordArray[0].images[0].uri);
 
   //--------------GENRES--------------
   //   const [pop, rock, hiphop, rap, country, rAndB, folk] = await Promise.all([

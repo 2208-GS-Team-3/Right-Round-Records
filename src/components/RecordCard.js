@@ -6,12 +6,25 @@ const recordCardImage = {
 };
 
 const RecordCard = ({ record }) => {
-  // add item function to update state
-  console.log(record);
+  const recordImageObjectString = record.imageUrls[0];
+
+  function getImageUrl(imageObjectString) {
+    let imageUrl = "";
+    for (let i = 25; i < imageObjectString.length; i++) {
+      if (imageObjectString[i] === '"') {
+        break;
+      }
+      imageUrl += imageObjectString[i];
+    }
+    return imageUrl;
+  }
+
+  const recordAlbumPhoto = getImageUrl(recordImageObjectString);
+
   return (
     <div>
       <h3>{record.albumName}</h3>
-      <img style={recordCardImage} src={record.imageUrls[0]} />
+      <img style={recordCardImage} src={`${recordAlbumPhoto}`} />
       <p>Artist: {record.artist}</p>
       {/* <p>{record.description}</p>
       <p>{record.tracks}</p> */}
