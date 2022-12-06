@@ -48,10 +48,10 @@ const RecordCard = ({ record }) => {
           <p>
             <b>Year:</b> {record.year}
           </p>
-          <h4>
+          <p>
             <b>Price:</b> ${record.price}
-          </h4>
-          <h4>Genre: {record.genreName}</h4>
+          </p>
+          <p>Genre: {record.genreName}</p>
         </Typography>
       </CardContent>
       <CardActions>
@@ -59,39 +59,6 @@ const RecordCard = ({ record }) => {
         <Button size="small">Add to cart</Button>
       </CardActions>
     </Card>
-
-    // <Card sx={{ minWidth: 275 }}>
-    //   <CardContent>
-    //     <Typography variant="h5" component="div">
-    //       {/* filter for genre / style here */}
-    //       {/* sort component for artist name */}
-    //       <h3>{record.albumName}</h3>
-    //     </Typography>
-    //     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-    //       <img style={recordCardImage} src={`${recordAlbumPhoto}`} />
-    //     </Typography>
-    //     <Typography variant="body2">
-    //       <p>
-    //         <b>Artist:</b> {record.artist}
-    //       </p>
-    //       <p>
-    //         <b>Year:</b> {record.year}
-    //       </p>
-    //       <h4>
-    //         <b>Price:</b> ${record.price}
-    //       </h4>
-    //       <h4>Genre: {record.genreName}</h4>
-    //       {/* maybe we should put style on the single record page only to declutter */}
-    //       {/* <h4>Style: </h4>
-    //       {record.styleName && record.styleName.map((style) => <p>{style}</p>)} */}
-    //       {/* {record.rating ? <p>{record.rating}</p> : null}
-    //   {/* <Button onClick={addProduct}>Add to cart</Button> */}
-    //     </Typography>
-    //   </CardContent>
-    //   <CardActions>
-    //     <Button size="small">Learn More</Button>
-    //   </CardActions>
-    // </Card>
   );
 };
 

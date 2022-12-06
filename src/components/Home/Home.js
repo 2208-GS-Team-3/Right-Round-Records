@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import RRRAppBar from "../AppBar";
 import { Outlet } from "react-router-dom";
+import TopRecords from "../TopRecords";
 import "./homepage.css";
 
 const Home = () => {
@@ -33,6 +34,7 @@ const Home = () => {
         <img id="front-page-logo" src="static/RRR Logo.png" />
       </Container>
       <Typography>Welcome {user.username ?? "Guest"}!</Typography>
+      <TopRecords />
     </div>
   );
 };
