@@ -7,27 +7,28 @@ const Order = require("./Order");
 const Genre = require("./Genre");
 const Style = require("./Style");
 
+//working on these first
+User.hasMany(Order);
+Order.belongsTo(User);
+
+Order.belongsToMany(Record, { through: "record_order" });
+Record.belongsToMany(Order, { through: "record_order" });
+
 Review.belongsTo(User);
 Review.belongsTo(Record);
 
-Genre.hasMany(Record)
-Record.hasMany(Genre)
+// Genre.hasMany(Record);
+// Record.hasMany(Genre);
 
-Genre.hasMany(Style)
-Style.hasMany(Genre)
+// Genre.hasMany(Style);
+// Style.hasMany(Genre);
 
 User.hasMany(Review);
 Record.hasMany(Review);
 
-User.hasMany(Order);
-Order.belongsTo(User);
-
-Order.belongsToMany(Record, { through: "Record_Order" });
-Record.belongsToMany(Order, { through: "Record_Order" });
-
 //may want to use this later to track records already owned, not purchased through us
-User.belongsToMany(Record, { through: "Owned_Records" });
-Record.belongsToMany(User, { through: "Owned_Records" });
+// User.belongsToMany(Record, { through: "owned_records" });
+// Record.belongsToMany(User, { through: "owned_records" });
 
 module.exports = {
   seed,

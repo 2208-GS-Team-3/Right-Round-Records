@@ -20,7 +20,7 @@ const Record = db.define("record", {
     type: Sequelize.ARRAY(Sequelize.TEXT),
   },
   imageUrls: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
+    type: Sequelize.ARRAY(Sequelize.TEXT),
     defaultValue: [
       "https://cdn1.vectorstock.com/i/1000x1000/30/75/vinyl-record-vector-1773075.jpg",
     ],
@@ -36,7 +36,7 @@ const Record = db.define("record", {
     },
     //setter here
     set(value) {
-      this.setDataValue('price', Math.floor(value*100) );
+      this.setDataValue("price", Math.floor(value * 100));
     },
   },
   description: {
@@ -44,6 +44,12 @@ const Record = db.define("record", {
   },
   year: {
     type: Sequelize.INTEGER,
+  },
+  genreName: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+  },
+  styleName: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
   },
   //this would be calculated by orders?
   //   numberSold: {
