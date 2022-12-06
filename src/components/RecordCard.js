@@ -18,14 +18,25 @@ const RecordCard = ({ record }) => {
   //need to find out how to get the proper url string out of the stringobject of imageUrls
   function getImageUrl(imageObjectString) {
     let imageUrl = "";
-    for (let i = 25; i < imageObjectString.length; i++) {
-      if (imageObjectString[i] === '"') {
-        break;
+    if (imageObjectString[9] === "p") {
+      for (let i = 25; i < imageObjectString.length; i++) {
+        if (imageObjectString[i] === '"') {
+          break;
+        }
+        imageUrl += imageObjectString[i];
       }
-      imageUrl += imageObjectString[i];
+    } else {
+      for (let i = 27; i < imageObjectString.length; i++) {
+        if (imageObjectString[i] === '"') {
+          break;
+        }
+        imageUrl += imageObjectString[i];
+      }
     }
     return imageUrl;
   }
+
+  console.log(recordImageObjectString);
 
   const recordAlbumPhoto = getImageUrl(recordImageObjectString);
 
