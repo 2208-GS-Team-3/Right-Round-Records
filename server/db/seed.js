@@ -61,6 +61,18 @@ const seed = async () => {
       birthday: "September 22, 1996",
       isAdmin: true,
     }),
+    User.create({
+      username: "Joe",
+      password: "123",
+      firstName: "Joe",
+      lastName: "Schmo",
+      phoneNum: "123-456-7899",
+      email: "joschmo@gmail.com",
+      shippingAddress: "71 Broadway, Apt 5C, New York, New York, 10005",
+      billingAddress: "71 Broadway, Apt 5C, New York, New York, 10005",
+      birthday: "May 3, 1990",
+      isAdmin: false,
+    }),
   ]);
 
   //--------------RECORDS--------------
