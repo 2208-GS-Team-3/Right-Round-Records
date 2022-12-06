@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 // };
 
 const RecordCard = ({ record }) => {
-  console.log({ record });
   const recordImageObjectString = record.imageUrls[0];
 
   // this is working for like 90% of images, but it wont work for all of them that dont have 'primary' types
@@ -25,7 +24,6 @@ const RecordCard = ({ record }) => {
       }
       imageUrl += imageObjectString[i];
     }
-    console.log(imageUrl);
     return imageUrl;
   }
 
