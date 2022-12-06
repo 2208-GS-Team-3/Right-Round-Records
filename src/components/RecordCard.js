@@ -38,6 +38,8 @@ const RecordCard = ({ record }) => {
 
   const recordAlbumPhoto = getImageUrl(recordImageObjectString);
 
+  const price = "$" + (record.price / 100).toFixed(2);
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -54,13 +56,18 @@ const RecordCard = ({ record }) => {
           <span>
             <b>Artist:</b> {record.artist}
           </span>
+          <br></br>
           <span>
             <b>Year:</b> {record.year}
           </span>
+          <br></br>
           <span>
-            <b>Price:</b> ${record.price}
+            <b>Price:</b> {price}
           </span>
-          <span>Genre: {record.genreName}</span>
+          <br></br>
+          <span>
+            <b>Genre:</b> {record.genreName}
+          </span>
         </Typography>
       </CardContent>
       <CardActions>

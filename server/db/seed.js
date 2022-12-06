@@ -2,12 +2,13 @@ const db = require("./db");
 const Record = require("./Record");
 const User = require("./User");
 const Review = require("./Review");
-const Genre = require("./Genre");
+const { Genre } = require("./index.js");
 const Order = require("./Order");
 const recordArray = require("./DataStorage");
 
 const seed = async () => {
   await db.sync({ force: true });
+
   //--------------USERS--------------
   const [kolby, olivia, lily, jack] = await Promise.all([
     User.create({
@@ -21,6 +22,7 @@ const seed = async () => {
       billingAddress: "902 Brisbane ST. NE, Palm Bay, FL, 32907",
       birthday: "January 4, 1991",
       avatarUrl: "static/KolbyIMG.jpeg",
+      isAdmin: true,
     }),
     User.create({
       username: "Olivia",
@@ -32,6 +34,8 @@ const seed = async () => {
       shippingAddress: "151 SE 3rd Ave, Delray Beach, FL 33483",
       billingAddress: "151 SE 3rd Ave, Delray Beach, FL 33483",
       birthday: "February 16, 1992",
+      avatarUrl: "static/OliviaIMG.jpeg",
+      isAdmin: true,
     }),
     User.create({
       username: "Lily",
@@ -43,6 +47,7 @@ const seed = async () => {
       shippingAddress: "42-12 28th St., APT 32I, Long Island City, NY 11101",
       billingAddress: "42-12 28th St., APT 32I, Long Island City, NY 11101",
       birthday: "September 20, 1996",
+      isAdmin: true,
     }),
     User.create({
       username: "Jack",
@@ -54,6 +59,7 @@ const seed = async () => {
       shippingAddress: "42-12 28th St., APT 32I, Long Island City, NY 11101",
       billingAddress: "42-12 28th St., APT 32I, Long Island City, NY 11101",
       birthday: "September 22, 1996",
+      isAdmin: true,
     }),
   ]);
 
@@ -75,18 +81,7 @@ const seed = async () => {
     }),
   ]);
 
-  // console.log(recordArray[0].images[0].uri);
-
-  //--------------GENRES--------------
-  //   const [pop, rock, hiphop, rap, country, rAndB, folk] = await Promise.all([
-  //     Genre.create({ genreName: "Pop" }),
-  //     Genre.create({ genreName: "Rock" }),
-  //     Genre.create({ genreName: "Hip-Hop" }),
-  //     Genre.create({ genreName: "Rap" }),
-  //     Genre.create({ genreName: "Country" }),
-  //     Genre.create({ genreName: "R&B" }),
-  //     Genre.create({ genreName: "Folk" }),
-  //   ]);
+  console.log(recordArray[0]);
 
   //--------------REVIEWS--------------
   const [

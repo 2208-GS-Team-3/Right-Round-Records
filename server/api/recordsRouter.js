@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Record, Review, Order } = require("../db");
+const { Record, Review, Order, Genre } = require("../db");
 
 // //localhost:3000/api/records/
 // //list of all records

@@ -22,14 +22,21 @@ const TopRecords = () => {
   const randomRecords = giveFiveRecords(records);
 
   return (
-    <div id="random-records">
-      <h1>Featured</h1>
+    <Container
+      maxWidth="xl"
+      sx={{
+        bgcolor: "white",
+        maxHeight: "500vh",
+        placeContent: "center",
+        gap: "30px",
+      }}
+    >
+      <h1 style={{ color: "black", textAlign: "center" }}>Featured</h1>
       <Container
         maxWidth="xl"
         sx={{
-          bgcolor: "lightgrey",
           display: "flex",
-          maxHeight: "35vh",
+          maxHeight: "500vh",
           placeContent: "center",
           gap: "30px",
         }}
@@ -42,7 +49,7 @@ const TopRecords = () => {
           );
         })}
       </Container>
-    </div>
+    </Container>
   );
 };
 

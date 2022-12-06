@@ -17,11 +17,11 @@ Record.belongsToMany(Order, { through: "record_order" });
 Review.belongsTo(User);
 Review.belongsTo(Record);
 
-// Genre.hasMany(Record);
-// Record.hasMany(Genre);
+Genre.belongsToMany(Record, { through: "record_genre" });
+Record.belongsToMany(Genre, { through: "record_genre" });
 
-// Genre.hasMany(Style);
-// Style.hasMany(Genre);
+Genre.hasMany(Style);
+Style.hasMany(Genre);
 
 User.hasMany(Review);
 Record.hasMany(Review);

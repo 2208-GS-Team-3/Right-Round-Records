@@ -2,6 +2,7 @@ const db = require("./db");
 const { STRING, UUID, UUIDV4, VIRTUAL, DATE } = db.Sequelize;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { BOOLEAN } = require("sequelize");
 const JWT = process.env.JWT;
 
 const User = db.define("user", {
@@ -96,8 +97,12 @@ const User = db.define("user", {
   },
   avatarUrl: {
     type: STRING,
-    allowNull: true
-    },
+    allowNull: true,
+  },
+  isAdmin: {
+    type: BOOLEAN,
+    defaultValue: false,
+  },
   //new code ends
 });
 
