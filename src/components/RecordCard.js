@@ -36,8 +36,6 @@ const RecordCard = ({ record }) => {
     return imageUrl;
   }
 
-  console.log(recordImageObjectString);
-
   const recordAlbumPhoto = getImageUrl(recordImageObjectString);
 
   return (
@@ -53,16 +51,16 @@ const RecordCard = ({ record }) => {
           <h3>{record.albumName}</h3>
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          <p>
+          <span>
             <b>Artist:</b> {record.artist}
-          </p>
-          <p>
+          </span>
+          <span>
             <b>Year:</b> {record.year}
-          </p>
-          <p>
+          </span>
+          <span>
             <b>Price:</b> ${record.price}
-          </p>
-          <p>Genre: {record.genreName}</p>
+          </span>
+          <span>Genre: {record.genreName}</span>
         </Typography>
       </CardContent>
       <CardActions>
