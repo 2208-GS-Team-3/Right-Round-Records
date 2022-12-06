@@ -6,6 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
+import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
@@ -13,12 +14,29 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { resetUser } from "../store/userSlice";
+import { redirect, useNavigate } from "react-router-dom";
 
-const pages = ["records", "pricing", "blog", "orders"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ["Vinyl", "Reviews", "Community"];
+const userSettings = ["Profile", "Account", "Dashboard", "Orders", "Logout"];
+const guestSettings = ["Profile", "Account", "Dashboard", "Login"];
 
 function RRRAppBar() {
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    window.localStorage.removeItem("token");
+    dispatch(resetUser());
+  };
+
+  const login = () => {
+    navigate("/login");
+  };
+
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -33,7 +51,10 @@ function RRRAppBar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (e) => {
+    e.preventDefault();
+    if (e.target.innerHTML === "Logout" || e.target.id === "Logout") logout();
+    if (e.target.innerHTML === "Login" || e.target.id === "Login" ) login();
     setAnchorElUser(null);
   };
 
@@ -41,14 +62,16 @@ function RRRAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Avatar
-            src="static/RRR Record.png"
-            sx={{
-              mr: 2,
-              height: "auto",
-              width: 60,
-            }}
-          />
+          <Link href="/">
+            <Avatar
+              src="static/RRR Record.png"
+              sx={{
+                mr: 2,
+                height: "auto",
+                width: 60,
+              }}
+            />
+          </Link>
           <Avatar
             src="static/RRR Name.png"
             variant="square"
@@ -113,25 +136,22 @@ function RRRAppBar() {
           >
             LOGO
           </Typography>
-          {/* how can i add a link to products page when this is clicked */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Link to={`/${page}`} key={page}>
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
-                </Button>
-              </Link>
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                {page}
+              </Button>
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={user.fullName ?? "Guest"} src={user.avatarUrl} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -150,11 +170,27 @@ function RRRAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              {user.id
+                ? userSettings.map((setting) => (
+                    <MenuItem
+                    id={setting}
+                      value={setting}
+                      key={setting}
+                      onClick={handleCloseUserMenu}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))
+                : guestSettings.map((setting) => (
+                    <MenuItem
+                    id={setting}
+                      value={setting}
+                      key={setting}
+                      onClick={handleCloseUserMenu}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
             </Menu>
           </Box>
         </Toolbar>
