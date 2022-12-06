@@ -15,6 +15,7 @@ import Container from "@mui/material/Container";
 import RRRAppBar from "../AppBar";
 import { Outlet } from "react-router-dom";
 import "./homepage.css";
+import TopRecords from "../TopRecords";
 
 const Home = () => {
   const { user } = useSelector((state) => state.user);
@@ -33,6 +34,7 @@ const Home = () => {
         <img id="front-page-logo" src="static/RRR Logo.png" />
       </Container>
       <Typography>Welcome {user.username ?? "Guest"}!</Typography>
+      <TopRecords />
     </div>
   );
 };
