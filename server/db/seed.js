@@ -2,8 +2,9 @@ const db = require("./db");
 const Record = require("./Record");
 const User = require("./User");
 const Review = require("./Review");
-const { Genre } = require("./index.js");
+// const { Genre } = require("./index.js");
 const Order = require("./Order");
+const Genre = require("./Genre");
 const recordArray = require("./DataStorage");
 
 const seed = async () => {
@@ -93,7 +94,31 @@ const seed = async () => {
     }),
   ]);
 
-  console.log(recordArray[0]);
+  // console.log(recordArray[0]);
+
+  //--------------GENRES--------------
+  //find all genres
+  function findGenres(obj) {
+    let genreArray = [];
+    for (let key in obj) {
+      for (let i = 0; i < obj[key].genres.length; i++) {
+        if (!genreArray.includes(obj[key].genres[i])) {
+          genreArray.push(obj[key].genres[i]);
+        }
+      }
+    }
+    return genreArray;
+  }
+  const genreArray = findGenres(recordArray);
+
+  //create genres for model of all existing genres
+  const genreData = await Promise.all([
+    genreArray.map((genreName) => {
+      return Genre.create({
+        genreName: genreName,
+      });
+    }),
+  ]);
 
   //--------------REVIEWS--------------
   const [
@@ -253,14 +278,7 @@ const seed = async () => {
       review9,
     },
     records: { ...recordData },
-    // genres: {
-    //   pop,
-    //   rock,
-    //   hiphop,
-    //   rap,
-    //   country,
-    //   rAndB,
-    // },
+    genres: { ...genreData },
     orders: {
       order1,
       order2,
