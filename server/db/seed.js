@@ -79,25 +79,26 @@ const seed = async () => {
   //--------------RECORDS--------------
 
   const recordData = await Promise.all([
-    recordArray.map((element) => {
+    recordArray.map(async (record) => {
       return Record.create({
-        albumName: element.title,
-        artist: element.artists[0].name,
-        tracks: element.tracklist,
-        imageUrls: element.images,
-        price: element.lowest_price,
+        albumName: record.title,
+        artist: record.artists[0].name,
+        tracks: record.tracklist,
+        imageUrls: record.images,
+        price: record.lowest_price,
         description: "",
-        year: element.year,
-        genreName: element.genres,
-        styleName: element.styles,
+        year: record.year,
+        genre: record.genres,
+        styles: record.styles,
       });
     }),
   ]);
+  //
 
   // console.log(recordArray[0]);
 
   //--------------GENRES--------------
-  //find all genres
+  //find genres
   function findGenres(obj) {
     let genreArray = [];
     for (let key in obj) {
@@ -240,11 +241,25 @@ const seed = async () => {
 
   //current problem - cannot have same record more than once.
   //we need to allow for multiple of the same records to be added to cart!
+  //maybe we add a quantity to the record model that starts as null but
+  //increases by 1 whenever quantity is updated on the front end
   order1.setRecords([record1]);
   order2.setRecords([record5, record9, record3, record7]);
   order3.setRecords([record4, record6]);
   order4.setRecords([record10, record2, record8]);
   order5.setRecords([record6, record3, record4]);
+
+  //------ this was my attempt at setting the genres of each record.-------
+  //loop thru recordData
+  // const setGenres = (obj) => {
+  //   for (let key in obj) {
+  //     let recordObject = obj[key];
+  //     loop through the genres array and set that genre for that record
+  //     for (let i = 0; i < recordObject.genres.length; i++) {
+  //       obj[key].setGenre([recordObject.genres[i]]);
+  //     }
+  //   }
+  // };
 
   //reviews added to records
   record1.addReview([review2, review3, review10]);

@@ -20,8 +20,8 @@ Review.belongsTo(Record);
 Genre.belongsToMany(Record, { through: "record_genre" });
 Record.belongsToMany(Genre, { through: "record_genre" });
 
-Genre.hasMany(Style);
-Style.hasMany(Genre);
+// Genre.hasMany(Style);
+// Style.hasMany(Genre);
 
 User.hasMany(Review);
 Record.hasMany(Review);
