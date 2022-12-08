@@ -2,12 +2,14 @@ const db = require("./db");
 const Record = require("./Record");
 const User = require("./User");
 const Review = require("./Review");
-const Genre = require("./Genre");
+// const { Genre } = require("./index.js");
 const Order = require("./Order");
+const Genre = require("./Genre");
 const recordArray = require("./DataStorage");
 
 const seed = async () => {
   await db.sync({ force: true });
+
   //--------------USERS--------------
   const [kolby, olivia, lily, jack] = await Promise.all([
     User.create({
@@ -21,6 +23,7 @@ const seed = async () => {
       billingAddress: "902 Brisbane ST. NE, Palm Bay, FL, 32907",
       birthday: "January 4, 1991",
       avatarUrl: "static/KolbyIMG.jpeg",
+      isAdmin: true,
     }),
     User.create({
       username: "Olivia",
@@ -32,6 +35,8 @@ const seed = async () => {
       shippingAddress: "151 SE 3rd Ave, Delray Beach, FL 33483",
       billingAddress: "151 SE 3rd Ave, Delray Beach, FL 33483",
       birthday: "February 16, 1992",
+      avatarUrl: "static/OliviaIMG.jpeg",
+      isAdmin: true,
     }),
     User.create({
       username: "Lily",
@@ -43,6 +48,7 @@ const seed = async () => {
       shippingAddress: "42-12 28th St., APT 32I, Long Island City, NY 11101",
       billingAddress: "42-12 28th St., APT 32I, Long Island City, NY 11101",
       birthday: "September 20, 1996",
+      isAdmin: true,
     }),
     User.create({
       username: "Jack",
@@ -54,39 +60,66 @@ const seed = async () => {
       shippingAddress: "42-12 28th St., APT 32I, Long Island City, NY 11101",
       billingAddress: "42-12 28th St., APT 32I, Long Island City, NY 11101",
       birthday: "September 22, 1996",
+      isAdmin: true,
+    }),
+    User.create({
+      username: "Joe",
+      password: "123",
+      firstName: "Joe",
+      lastName: "Schmo",
+      phoneNum: "123-456-7899",
+      email: "joschmo@gmail.com",
+      shippingAddress: "71 Broadway, Apt 5C, New York, New York, 10005",
+      billingAddress: "71 Broadway, Apt 5C, New York, New York, 10005",
+      birthday: "May 3, 1990",
+      isAdmin: false,
     }),
   ]);
 
   //--------------RECORDS--------------
 
   const recordData = await Promise.all([
-    recordArray.map((element) => {
+    recordArray.map(async (record) => {
       return Record.create({
-        albumName: element.title,
-        artist: element.artists[0].name,
-        tracks: element.tracklist,
-        imageUrls: element.images,
-        price: element.lowest_price,
+        albumName: record.title,
+        artist: record.artists[0].name,
+        tracks: record.tracklist,
+        imageUrls: record.images,
+        price: record.lowest_price,
         description: "",
-        year: element.year,
-        genreName: element.genres,
-        styleName: element.styles,
+        year: record.year,
+        genre: record.genres,
+        styles: record.styles,
       });
     }),
   ]);
+  //
 
-  // console.log(recordArray[0].images[0].uri);
+  // console.log(recordArray[0]);
 
   //--------------GENRES--------------
-  //   const [pop, rock, hiphop, rap, country, rAndB, folk] = await Promise.all([
-  //     Genre.create({ genreName: "Pop" }),
-  //     Genre.create({ genreName: "Rock" }),
-  //     Genre.create({ genreName: "Hip-Hop" }),
-  //     Genre.create({ genreName: "Rap" }),
-  //     Genre.create({ genreName: "Country" }),
-  //     Genre.create({ genreName: "R&B" }),
-  //     Genre.create({ genreName: "Folk" }),
-  //   ]);
+  //find genres
+  function findGenres(obj) {
+    let genreArray = [];
+    for (let key in obj) {
+      for (let i = 0; i < obj[key].genres.length; i++) {
+        if (!genreArray.includes(obj[key].genres[i])) {
+          genreArray.push(obj[key].genres[i]);
+        }
+      }
+    }
+    return genreArray;
+  }
+  const genreArray = findGenres(recordArray);
+
+  //create genres for model of all existing genres
+  const genreData = await Promise.all([
+    genreArray.map((genreName) => {
+      return Genre.create({
+        genreName: genreName,
+      });
+    }),
+  ]);
 
   //--------------REVIEWS--------------
   const [
@@ -208,11 +241,25 @@ const seed = async () => {
 
   //current problem - cannot have same record more than once.
   //we need to allow for multiple of the same records to be added to cart!
+  //maybe we add a quantity to the record model that starts as null but
+  //increases by 1 whenever quantity is updated on the front end
   order1.setRecords([record1]);
   order2.setRecords([record5, record9, record3, record7]);
   order3.setRecords([record4, record6]);
   order4.setRecords([record10, record2, record8]);
   order5.setRecords([record6, record3, record4]);
+
+  //------ this was my attempt at setting the genres of each record.-------
+  //loop thru recordData
+  // const setGenres = (obj) => {
+  //   for (let key in obj) {
+  //     let recordObject = obj[key];
+  //     loop through the genres array and set that genre for that record
+  //     for (let i = 0; i < recordObject.genres.length; i++) {
+  //       obj[key].setGenre([recordObject.genres[i]]);
+  //     }
+  //   }
+  // };
 
   //reviews added to records
   record1.addReview([review2, review3, review10]);
@@ -246,14 +293,7 @@ const seed = async () => {
       review9,
     },
     records: { ...recordData },
-    // genres: {
-    //   pop,
-    //   rock,
-    //   hiphop,
-    //   rap,
-    //   country,
-    //   rAndB,
-    // },
+    genres: { ...genreData },
     orders: {
       order1,
       order2,

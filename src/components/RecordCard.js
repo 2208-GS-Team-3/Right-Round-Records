@@ -7,16 +7,12 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-// const recordCardImage = {
-//   width: "200px",
-//   height: "200px",
-// };
-
 const RecordCard = ({ record }) => {
   const recordImageObjectString = record.imageUrls[0];
 
-  // this is working for like 90% of images, but it wont work for all of them that dont have 'primary' types
-  //need to find out how to get the proper url string out of the stringobject of imageUrls
+  //needed to find out how to get the proper url string out of the stringobject of imageUrls
+  //we loop through the string, if the type is 'primary' then we slice from index of 25 to the next quotation
+  //otherwise we slice from the 'secondary' index of 27 until the end of quotation to pull out the image url
   function getImageUrl(imageObjectString) {
     let imageUrl = "";
     if (imageObjectString[9] === "p") {
@@ -39,6 +35,8 @@ const RecordCard = ({ record }) => {
 
   const recordAlbumPhoto = getImageUrl(recordImageObjectString);
 
+  const price = "$" + (record.price / 100).toFixed(2);
+  
   //link to single record
   const singleRecordPageUrl = `/records/${record.id}`
   
@@ -58,13 +56,18 @@ const RecordCard = ({ record }) => {
           <span>
             <b>Artist:</b> {record.artist}
           </span>
+          <br></br>
           <span>
             <b>Year:</b> {record.year}
           </span>
+          <br></br>
           <span>
-            <b>Price:</b> ${record.price}
+            <b>Price:</b> {price}
           </span>
-          <span>Genre: {record.genreName}</span>
+          <br></br>
+          <span>
+            <b>Genre:</b> {record.genreName}
+          </span>
         </Typography>
       </CardContent>
       <CardActions>

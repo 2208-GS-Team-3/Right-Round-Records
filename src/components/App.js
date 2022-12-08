@@ -10,6 +10,7 @@ import AllRecords from "./AllRecords";
 import AllOrders from "./AllOrders";
 import SingleRecord from "./SingleRecord";
 import { setOrders } from "../store/ordersSlice";
+import { setGenres } from "../store/genresSlice";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -19,9 +20,12 @@ const App = () => {
     const records = await axios.get("/api/records");
     dispatch(setRecords(records.data));
   };
+  const getGenres = async () => {
+    const genres = await axios.get("/api/genres");
+    dispatch(setGenres(genres.data));
+  };
 
   //all orders currently available.
-  //need to determine how to only show orders for this user. a filter perhaps?
   const getOrders = async () => {
     const orders = await axios.get("/api/orders");
     dispatch(setOrders(orders.data));
@@ -44,6 +48,7 @@ const App = () => {
     setLoading(true);
     getRecords();
     getOrders();
+    getGenres();
     setLoading(false);
   }, []);
 

@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
 import recordsReducer from "./recordsSlice";
-import ordersReducer from "./ordersSlice";
+import genresReducer from "./genresSlice";
 import singleRecordReducer from "./singleRecordSlice"
 
 const store = configureStore({
@@ -9,7 +9,8 @@ const store = configureStore({
     user: userReducer,
     records: recordsReducer,
     orders: ordersReducer,
-    seletedRecord: singleRecordReducer
+    genres: genresReducer,
+    selectedRecord: singleRecordReducer
   },
 });
 
