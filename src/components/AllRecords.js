@@ -15,7 +15,6 @@ const flexContainer = {
 
 const AllRecords = () => {
   const records = useSelector((state) => state.records.records);
-
   return (
     <div id="all-records-page">
       <h1>Records</h1>

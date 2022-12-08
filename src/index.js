@@ -1,20 +1,53 @@
-import React from "react";
-import App from "./components/App";
-import store from "./store";
-import { createRoot } from "react-dom/client";
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import CssBaseline from "@mui/material/CssBaseline";
+import store from "./store";
+import App from "./components/App";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import Home from "./components/Home/Home";
+import LoginPage from "./components/LoginPage";
+import AllRecords from "./components/Allrecords";
+import AllOrders from "./components/AllOrders";
+import Dashboard from "./components/AdminDashboard/Dashboard";
 
-const container = document.querySelector("#root");
-const root = createRoot(container);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <ErrorBoundary />,
+    children: [
+      {
+        path: "",
+        element: <Home />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "records",
+        element: <AllRecords />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "orders",
+        element: <AllOrders />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+        errorElement: <ErrorBoundary />,
+      },
+    ],
+  },
+]);
 
-root.render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <BrowserRouter>
-      <CssBaseline>
-        <App />
-      </CssBaseline>
-    </BrowserRouter>
+    <RouterProvider router={router} />
   </Provider>
 );

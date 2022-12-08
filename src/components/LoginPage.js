@@ -13,13 +13,16 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { redirect, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const LoginPage = () => {
   const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate()
 
   const onChange = (ev) => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
@@ -35,6 +38,7 @@ const Login = () => {
       });
 
       dispatch(setUser(response.data));
+      navigate("/")
     }
   };
 
@@ -118,4 +122,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

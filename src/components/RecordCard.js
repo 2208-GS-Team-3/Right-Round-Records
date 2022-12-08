@@ -1,21 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
-const recordCardImage = {
-  width: "200px",
-  height: "200px",
-};
+// const recordCardImage = {
+//   width: "200px",
+//   height: "200px",
+// };
 
 const RecordCard = ({ record }) => {
   const recordImageObjectString = record.imageUrls[0];
 
+  // this is working for like 90% of images, but it wont work for all of them that dont have 'primary' types
+  //need to find out how to get the proper url string out of the stringobject of imageUrls
   function getImageUrl(imageObjectString) {
     let imageUrl = "";
-    for (let i = 25; i < imageObjectString.length; i++) {
-      if (imageObjectString[i] === '"') {
-        break;
+    if (imageObjectString[9] === "p") {
+      for (let i = 25; i < imageObjectString.length; i++) {
+        if (imageObjectString[i] === '"') {
+          break;
+        }
+        imageUrl += imageObjectString[i];
       }
-      imageUrl += imageObjectString[i];
+    } else {
+      for (let i = 27; i < imageObjectString.length; i++) {
+        if (imageObjectString[i] === '"') {
+          break;
+        }
+        imageUrl += imageObjectString[i];
+      }
     }
     return imageUrl;
   }
@@ -26,18 +43,35 @@ const RecordCard = ({ record }) => {
   const singleRecordPageUrl = `/records/${record.id}`
   
   return (
-    <div>
-      <Link to={singleRecordPageUrl}><h3>{record.albumName}</h3></Link>
-      <img style={recordCardImage} src={`${recordAlbumPhoto}`} />
-      <p>Artist: {record.artist}</p>
-      {/* <p>{record.description}</p>
-      <p>{record.tracks}</p> */}
-      <p>{record.year}</p>
-      <h4>Price: ${record.price}</h4>
-      {/* {record.rating ? <p>{record.rating}</p> : null}
-      {record.review ? <p>{record.review}</p> : null} */}
-      {/* <Button onClick={addProduct}>Add to cart</Button> */}
-    </div>
+    <Card sx={{ maxWidth: 345 }}>
+      <CardMedia
+        component="img"
+        height="300"
+        image={`${recordAlbumPhoto}`}
+        alt="record album"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          <h3>{record.albumName}</h3>
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          <span>
+            <b>Artist:</b> {record.artist}
+          </span>
+          <span>
+            <b>Year:</b> {record.year}
+          </span>
+          <span>
+            <b>Price:</b> ${record.price}
+          </span>
+          <span>Genre: {record.genreName}</span>
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" href={singleRecordPageUrl}>More Details</Button>
+        <Button size="small">Add to cart</Button>
+      </CardActions>
+    </Card>
   );
 };
 

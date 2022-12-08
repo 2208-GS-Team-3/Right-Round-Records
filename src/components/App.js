@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { Outlet } from "react-router-dom";
 import axios from "axios";
-import Home from "./Home";
-import Login from "./Login";
 import RRRAppBar from "./AppBar";
+import { CssBaseline } from "@mui/material";
 import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
 import AllRecords from "./AllRecords";
@@ -14,7 +13,6 @@ import { setOrders } from "../store/ordersSlice";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const getRecords = async () => {
@@ -49,16 +47,11 @@ const App = () => {
     setLoading(false);
   }, []);
 
-  if (!user.id) return <Login />;
   return (
     <div>
+      <CssBaseline />
       <RRRAppBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/records" element={<AllRecords />} />
-        <Route path="/orders" element={<AllOrders />} />
-        <Route path= '/records/:recordId' element={<SingleRecord />} />
-      </Routes>
+      <Outlet />
     </div>
   );
 };
