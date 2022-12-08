@@ -79,11 +79,11 @@ const seed = async () => {
 
   //--------------RECORDS--------------
 
-  const recordData = [];
+  //were not pushing into recordData
+  let recordData = [];
 
   await Promise.all([
     recordArray.forEach(async (record) => {
-      //create array of records specific genres
       let tempRec = await Record.create({
         albumName: record.title,
         artist: record.artists[0].name,
@@ -92,16 +92,17 @@ const seed = async () => {
         price: record.lowest_price,
         description: "",
         year: record.year,
-        genreName: record.genres,
-        styleName: record.styles,
+        // below broke everything! now it works!
+        // genres: record.genres,
+        // styles: record.styles,
       });
 
-      record.genres.forEach((genre) => {
+      record.genres?.forEach((genre) => {
         Genre.findOrCreate({
           where: { name: genre },
         });
         // console.log(tempRec);
-        tempRec.addGenres(genre);
+        tempRec.addGenres(genre ?? "Undefined");
       });
 
       record.styles?.forEach((style) => {
@@ -112,32 +113,9 @@ const seed = async () => {
 
         recordData.push(tempRec)
       });
+      recordData.push(tempRec);
     }),
   ]);
-
-  //--------------GENRES--------------
-  //find genres
-  // function findGenres(obj) {
-  //   let genreArray = [];
-  //   for (let key in obj) {
-  //     for (let i = 0; i < obj[key].genres.length; i++) {
-  //       if (!genreArray.includes(obj[key].genres[i])) {
-  //         genreArray.push(obj[key].genres[i]);
-  //       }
-  //     }
-  //   }
-  //   return genreArray;
-  // }
-  // const genreArray = findGenres(recordArray);
-
-  //create genres for model of all existing genres
-  // const genreData = await Promise.all([
-  //   genreArray.map((genreName) => {
-  //     return Genre.create({
-  //       genreName: genreName,
-  //     });
-  //   }),
-  // ]);
 
   //--------------REVIEWS--------------
   const [
@@ -257,51 +235,31 @@ const seed = async () => {
   const record9 = await recordData[33];
   const record10 = await recordData[467];
 
-  console.log(record1);
-
-  //orders associated with users
+  //orders associated with users -- WORKING
   lily.addOrder([order4]);
   olivia.addOrder([order1, order5]);
   kolby.addOrder([order3, order6]);
   jack.addOrder([order2]);
 
+  //records associated with orders -- WORKING
+  order1.addRecord([record1]);
+  order2.setRecords([record5, record9, record3, record7]);
+  order3.setRecords([record4, record6]);
+  order4.setRecords([record10, record2, record8]);
+  order5.setRecords([record6, record3, record4]);
+    order6.setRecords([record6, record3, record4]);
 
-  //current problem - cannot have same record more than once.
-  //we need to allow for multiple of the same records to be added to cart!
-  //maybe we add a quantity to the record model that starts as null but
-  //increases by 1 whenever quantity is updated on the front end
-  // order1.setRecords([record1]);
-  // order2.setRecords([record5, record9, record3, record7]);
-  // order3.setRecords([record4, record6]);
-  // order4.setRecords([record10, record2, record8]);
-  // order5.setRecords([record6, record3, record4]);
-  order6.setRecords([record6, record3, record4]);
+  // //reviews added to records -- WORKING
+  record1.addReviews([review2]);
+  record5.addReviews([review4, review5]);
+  record4.addReviews([review6, review7, review8, review1]);
+  record7.addReviews([review9]);
 
-  // console.log(record1)
-
-  //------ this was my attempt at setting the genres of each record.-------
-  //loop thru recordData
-  // const setGenres = (obj) => {
-  //   for (let key in obj) {
-  //     let recordObject = obj[key];
-  //     loop through the genres array and set that genre for that record
-  //     for (let i = 0; i < recordObject.genres.length; i++) {
-  //       obj[key].setGenre([recordObject.genres[i]]);
-  //     }
-  //   }
-  // };
-
-  // //reviews added to records
-  // record1.addReview([review2, review3, review10]);
-  // record5.addReview([review4, review5]);
-  // record4.addReview([review6, review7, review8, review1]);
-  // record7.addReview([review9]);
-
-  // //users associated with reviews
-  // lily.addReviews([review1, review10]);
-  // olivia.addReviews([review2]);
-  // jack.addReviews([review5, review4, review6, review7]);
-  // kolby.addReviews([review8, review9, review3]);
+  // //users associated with reviews - WORKING
+  lily.addReviews([review1, review10]);
+  olivia.addReviews([review2]);
+  jack.addReviews([review5, review4, review6, review7]);
+  kolby.addReviews([review8, review9, review3]);
 
   // not sure how to
   return {
@@ -321,8 +279,20 @@ const seed = async () => {
       review7,
       review8,
       review9,
+      review10,
     },
-    records: { ...recordData },
+    records: {
+      record1,
+      record2,
+      record3,
+      record4,
+      record5,
+      record6,
+      record7,
+      record8,
+      record9,
+      record10,
+    },
     // genres: { ...genreData },
     orders: {
       order1,

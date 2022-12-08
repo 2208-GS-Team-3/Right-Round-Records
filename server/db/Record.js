@@ -45,6 +45,10 @@ const Record = db.define("record", {
   year: {
     type: Sequelize.INTEGER,
   },
+  // quantityInOrder: {
+  //   type: Sequelize.INTEGER,
+  //   defaultValue: null,
+  // },
   // genreName: {
   //   type: Sequelize.ARRAY(Sequelize.STRING),
   // },

@@ -6,6 +6,8 @@ import { Container } from "@mui/system";
 const TopRecords = () => {
   const records = useSelector((state) => state.records.records);
 
+  console.log(records);
+
   function giveFiveRecords(arr) {
     let randomRecords = [];
     let randomIndex = Math.floor(Math.random() * 500);
