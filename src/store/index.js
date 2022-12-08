@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
 import recordsReducer from "./recordsSlice";
-import ordersReducer from "./ordersSlice";
 import genresReducer from "./genresSlice";
+import singleRecordReducer from "./singleRecordSlice"
 
 const store = configureStore({
   reducer: {
@@ -10,6 +10,7 @@ const store = configureStore({
     records: recordsReducer,
     orders: ordersReducer,
     genres: genresReducer,
+    selectedRecord: singleRecordReducer
   },
 });
 

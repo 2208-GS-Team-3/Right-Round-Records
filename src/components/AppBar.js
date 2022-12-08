@@ -1,6 +1,6 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
-import Icon from "@mui/material/Icon";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -16,7 +16,8 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUser } from "../store/userSlice";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Badge } from "@mui/material";
 
 const pages = ["Vinyl", "Reviews", "Community"];
 const userSettings = ["Profile", "Account", "Dashboard", "Orders", "Logout"];
@@ -34,6 +35,10 @@ function RRRAppBar() {
 
   const login = () => {
     navigate("/login");
+  };
+
+  const navDashboard = () => {
+    navigate("/dashboard");
   };
 
 
@@ -55,6 +60,7 @@ function RRRAppBar() {
     e.preventDefault();
     if (e.target.innerHTML === "Logout" || e.target.id === "Logout") logout();
     if (e.target.innerHTML === "Login" || e.target.id === "Login" ) login();
+    if (e.target.innerHTML === "Dashboard" || e.target.id === "Dashboard" ) navDashboard();
     setAnchorElUser(null);
   };
 
@@ -148,7 +154,7 @@ function RRRAppBar() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ mr: 5, display: "flex", placeItems: "center", flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt={user.fullName ?? "Guest"} src={user.avatarUrl} />
@@ -192,7 +198,13 @@ function RRRAppBar() {
                     </MenuItem>
                   ))}
             </Menu>
+            <Typography sx={{ml: 1}}>Welcome, {user.username}!</Typography>
           </Box>
+          <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
         </Toolbar>
       </Container>
     </AppBar>

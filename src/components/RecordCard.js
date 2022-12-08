@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -35,6 +36,10 @@ const RecordCard = ({ record }) => {
   const recordAlbumPhoto = getImageUrl(recordImageObjectString);
 
   const price = "$" + (record.price / 100).toFixed(2);
+  
+  //link to single record
+  const singleRecordPageUrl = `/records/${record.id}`
+  
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -66,7 +71,7 @@ const RecordCard = ({ record }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">More Details</Button>
+        <Button size="small" href={singleRecordPageUrl}>More Details</Button>
         <Button size="small">Add to cart</Button>
       </CardActions>
     </Card>
