@@ -13,6 +13,7 @@ const Order = db.define("order", {
     type: Sequelize.STRING,
     defaultValue: "cart",
     validate: {
+      //add 'cancelled' option?
       statusValidator: (value) => {
         const statusOptions = ["cart", "placed", "shipped", "delivered"];
         if (!statusOptions.includes(value)) {
