@@ -9,10 +9,6 @@ import Typography from "@mui/material/Typography";
 const RecordCard = ({ record }) => {
   const recordImageObjectString = record.imageUrls[0];
 
-  console.log(record);
-  //needed to find out how to get the proper url string out of the stringobject of imageUrls
-  //we loop through the string, if the type is 'primary' then we slice from index of 25 to the next quotation
-  //otherwise we slice from the 'secondary' index of 27 until the end of quotation to pull out the image url
   function getImageUrl(imageObjectString) {
     let imageUrl = "";
     if (imageObjectString[9] === "p") {
@@ -67,15 +63,15 @@ const RecordCard = ({ record }) => {
           <br></br>
           <span>
             <b>Genre(s):</b>{" "}
-            {record.genres.map((genre) => (
-              <span>{genre.name} </span>
+            {record.genres.map((genre, index) => (
+              <li key={index}>{genre.name} </li>
             ))}
           </span>
           <br></br>
           <span>
             <b>Style(s):</b>{" "}
-            {record.styles.map((style) => (
-              <span>{style.name} </span>
+            {record.styles.map((style, index) => (
+              <li key={index}>{style.name} </li>
             ))}
           </span>
         </Typography>

@@ -31,4 +31,88 @@ router.get("/:id", async (req, res, next) => {
     next(err);
   }
 });
+
+// router.post("/", async (req, res, next) => {
+//   try {
+// const { albumName,
+//   artists,
+//   tracks,
+//   imageUrls,
+//   condition,
+//   price,
+//   description,
+//   year } = req.body;
+
+// await Record.create({
+// albumName,
+// artists,
+// tracks,
+// imageUrls,
+// condition,
+// price,
+// description,
+// year,
+// quantity
+// });
+
+//     res.sendStatus(201)
+//   } catch (err) {
+//     console.error(err);
+//     next(err);
+//   }
+// });
+
+// // PUT /api/record/:id
+// router.put("/:id", async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+
+//     const { // albumName,
+// artists,
+// tracks,
+// imageUrls,
+// condition,
+// price,
+// description,
+// year,
+// quantity } = req.body;
+//     const record = await Record.findByPk(id);
+
+//     const updatedRecord = await record.update({
+//       // albumName,
+// artists,
+// tracks,
+// imageUrls,
+// condition,
+// price,
+// description,
+// year,
+// quantity
+//     });
+
+//     const recordWithGenres = await Record.findByPk(id, {
+//       include: [Genre],
+//     });
+//     //send updated record along with updated genre info
+//     res.send(recordWithGenres);
+//   } catch (err) {
+//     console.error(err);
+//     next(err);
+//   }
+// });
+
+// // DELETE /api/records/:id
+// router.delete("/:id", async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     const record = await Record.findByPk(id);
+//     // if (!record) return res.sendStatus(404)
+//     await record.destroy();
+//     res.sendStatus(204);
+//   } catch (err) {
+//     console.error(err);
+//     next(err);
+//   }
+// });
+
 module.exports = router;

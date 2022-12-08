@@ -105,16 +105,16 @@ const SingleRecord = () => {
             </span>
             <br></br>
             <span>
-              <b>Genre(s):</b>{" "}
-              {selectedRecord.genres.map((genre) => (
-                <span>{genre.name} </span>
+              <b>Genre(s):</b>
+              {selectedRecord.genres.map((genre, index) => (
+                <li key={index}>{genre.name} </li>
               ))}
             </span>
             <br></br>
             <span>
-              <b>Style(s):</b>{" "}
-              {selectedRecord.styles.map((style) => (
-                <span>{style.name} </span>
+              <b>Style(s):</b>
+              {selectedRecord.styles.map((style, index) => (
+                <li key={index}>{style.name} </li>
               ))}
             </span>
           </Typography>
