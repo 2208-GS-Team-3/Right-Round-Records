@@ -6,6 +6,9 @@ import RRRAppBar from "./AppBar";
 import { CssBaseline } from "@mui/material";
 import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
+import AllRecords from "./AllRecords";
+import AllOrders from "./AllOrders";
+import SingleRecord from "./SingleRecord";
 import { setOrders } from "../store/ordersSlice";
 
 const App = () => {
