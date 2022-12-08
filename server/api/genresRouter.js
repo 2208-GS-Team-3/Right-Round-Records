@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", async (req, res, next) => {
   try {
     const genres = await Genre.findAll({
-      order: [["genreName"]],
+      order: ["name"],
       include: [Record],
     });
     res.send(genres);

@@ -7,30 +7,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const RecordCard = ({ record }) => {
-  const recordImageObjectString = record.imageUrls[0];
-
-  function getImageUrl(imageObjectString) {
-    let imageUrl = "";
-    if (imageObjectString[9] === "p") {
-      for (let i = 25; i < imageObjectString.length; i++) {
-        if (imageObjectString[i] === '"') {
-          break;
-        }
-        imageUrl += imageObjectString[i];
-      }
-    } else {
-      for (let i = 27; i < imageObjectString.length; i++) {
-        if (imageObjectString[i] === '"') {
-          break;
-        }
-        imageUrl += imageObjectString[i];
-      }
-    }
-    return imageUrl;
-  }
-
-  const recordAlbumPhoto = getImageUrl(recordImageObjectString);
-
   const price = "$" + (record.price / 100).toFixed(2);
 
   //link to single record
@@ -41,7 +17,7 @@ const RecordCard = ({ record }) => {
       <CardMedia
         component="img"
         height="300"
-        image={`${recordAlbumPhoto}`}
+        image={record?.imageUrls[0]?.uri}
         alt="record album"
       />
       <CardContent>

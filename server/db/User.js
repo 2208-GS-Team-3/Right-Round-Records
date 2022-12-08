@@ -47,7 +47,7 @@ const User = db.define("user", {
       notEmpty: true,
     },
     get() {
-      return this.firstName + " " + this.lastName;
+      return `${this.firstName} ${this.lastName}`;
     },
   },
   creditCardNum: {
