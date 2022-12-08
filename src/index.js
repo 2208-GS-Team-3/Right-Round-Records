@@ -9,6 +9,7 @@ import Home from "./components/Home/Home";
 import LoginPage from "./components/LoginPage";
 import AllRecords from "./components/Allrecords";
 import AllOrders from "./components/AllOrders";
+import Dashboard from "./components/AdminDashboard/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,11 @@ const router = createBrowserRouter([
       {
         path: "orders",
         element: <AllOrders />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
         errorElement: <ErrorBoundary />,
       },
     ],
