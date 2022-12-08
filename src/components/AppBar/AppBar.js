@@ -1,6 +1,5 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -15,11 +14,11 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useDispatch, useSelector } from "react-redux";
-import { resetUser } from "../store/userSlice";
+import { resetUser } from "../../store/userSlice";
 import { useNavigate } from "react-router-dom";
-import { Badge } from "@mui/material";
+import BarCart from "./BarCart";
 
-const pages = ["Vinyl", "Reviews", "Community"];
+const pages = ["Records", "Reviews", "Community"];
 const userSettings = ["Profile", "Account", "Dashboard", "Orders", "Logout"];
 const guestSettings = ["Profile", "Account", "Dashboard", "Login"];
 
@@ -41,7 +40,6 @@ function RRRAppBar() {
     navigate("/dashboard");
   };
 
-
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -59,8 +57,9 @@ function RRRAppBar() {
   const handleCloseUserMenu = (e) => {
     e.preventDefault();
     if (e.target.innerHTML === "Logout" || e.target.id === "Logout") logout();
-    if (e.target.innerHTML === "Login" || e.target.id === "Login" ) login();
-    if (e.target.innerHTML === "Dashboard" || e.target.id === "Dashboard" ) navDashboard();
+    if (e.target.innerHTML === "Login" || e.target.id === "Login") login();
+    if (e.target.innerHTML === "Dashboard" || e.target.id === "Dashboard")
+      navDashboard();
     setAnchorElUser(null);
   };
 
@@ -117,7 +116,7 @@ function RRRAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem href={`/${page}`} key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -154,7 +153,9 @@ function RRRAppBar() {
             ))}
           </Box>
 
-          <Box sx={{ mr: 5, display: "flex", placeItems: "center", flexGrow: 0 }}>
+          <Box
+            sx={{ mr: 5, display: "flex", placeItems: "center", flexGrow: 0 }}
+          >
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt={user.fullName ?? "Guest"} src={user.avatarUrl} />
@@ -179,7 +180,7 @@ function RRRAppBar() {
               {user.id
                 ? userSettings.map((setting) => (
                     <MenuItem
-                    id={setting}
+                      id={setting}
                       value={setting}
                       key={setting}
                       onClick={handleCloseUserMenu}
@@ -189,7 +190,7 @@ function RRRAppBar() {
                   ))
                 : guestSettings.map((setting) => (
                     <MenuItem
-                    id={setting}
+                      id={setting}
                       value={setting}
                       key={setting}
                       onClick={handleCloseUserMenu}
@@ -198,13 +199,17 @@ function RRRAppBar() {
                     </MenuItem>
                   ))}
             </Menu>
-            <Typography sx={{ml: 1}}>Welcome, {user.username}!</Typography>
+            <Typography sx={{ ml: 1 }}>
+              {user.username ? (
+                `Welcome, ${user.username}!`
+              ) : (
+                <Link href="/login">
+                  <Typography color={"white"}>Sign-in</Typography>
+                </Link>
+              )}
+            </Typography>
           </Box>
-          <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+          <BarCart />
         </Toolbar>
       </Container>
     </AppBar>

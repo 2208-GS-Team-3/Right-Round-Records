@@ -17,10 +17,10 @@ const Record = db.define("record", {
     },
   },
   tracks: {
-    type: Sequelize.ARRAY(Sequelize.TEXT),
+    type: Sequelize.ARRAY(Sequelize.JSON),
   },
   imageUrls: {
-    type: Sequelize.ARRAY(Sequelize.TEXT),
+    type: Sequelize.ARRAY(Sequelize.JSON),
     defaultValue: [
       "https://cdn1.vectorstock.com/i/1000x1000/30/75/vinyl-record-vector-1773075.jpg",
     ],

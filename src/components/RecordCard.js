@@ -8,32 +8,32 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const RecordCard = ({ record }) => {
-  const recordImageObjectString = record.imageUrls[0];
+  // const recordImageObjectString = record.imageUrls[0];
 
   //needed to find out how to get the proper url string out of the stringobject of imageUrls
   //we loop through the string, if the type is 'primary' then we slice from index of 25 to the next quotation
   //otherwise we slice from the 'secondary' index of 27 until the end of quotation to pull out the image url
-  function getImageUrl(imageObjectString) {
-    let imageUrl = "";
-    if (imageObjectString[9] === "p") {
-      for (let i = 25; i < imageObjectString.length; i++) {
-        if (imageObjectString[i] === '"') {
-          break;
-        }
-        imageUrl += imageObjectString[i];
-      }
-    } else {
-      for (let i = 27; i < imageObjectString.length; i++) {
-        if (imageObjectString[i] === '"') {
-          break;
-        }
-        imageUrl += imageObjectString[i];
-      }
-    }
-    return imageUrl;
-  }
+  // function getImageUrl(imageObjectString) {
+  //   let imageUrl = "";
+  //   if (imageObjectString[9] === "p") {
+  //     for (let i = 25; i < imageObjectString.length; i++) {
+  //       if (imageObjectString[i] === '"') {
+  //         break;
+  //       }
+  //       imageUrl += imageObjectString[i];
+  //     }
+  //   } else {
+  //     for (let i = 27; i < imageObjectString.length; i++) {
+  //       if (imageObjectString[i] === '"') {
+  //         break;
+  //       }
+  //       imageUrl += imageObjectString[i];
+  //     }
+  //   }
+  //   return imageUrl;
+  // }
 
-  const recordAlbumPhoto = getImageUrl(recordImageObjectString);
+  // const recordAlbumPhoto = getImageUrl(recordImageObjectString);
 
   const price = "$" + (record.price / 100).toFixed(2);
   
@@ -45,7 +45,7 @@ const RecordCard = ({ record }) => {
       <CardMedia
         component="img"
         height="300"
-        image={`${recordAlbumPhoto}`}
+        image={record?.imageUrls[0]?.uri}
         alt="record album"
       />
       <CardContent>
@@ -65,9 +65,6 @@ const RecordCard = ({ record }) => {
             <b>Price:</b> {price}
           </span>
           <br></br>
-          <span>
-            <b>Genre:</b> {record.genreName}
-          </span>
         </Typography>
       </CardContent>
       <CardActions>

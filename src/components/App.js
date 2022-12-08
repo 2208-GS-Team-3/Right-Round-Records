@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
-import RRRAppBar from "./AppBar";
+import RRRAppBar from "./AppBar/AppBar";
 import { CssBaseline } from "@mui/material";
 import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";

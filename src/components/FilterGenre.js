@@ -28,11 +28,11 @@ const FilterGenre = () => {
       <form>
         <label>
           Filter Records by Genre:
-          <select onChange={changeFilterValue} defaultValue={"all"}>
-            <option value="all">All Genres</option>
+          <select key={"selector"} onChange={changeFilterValue} defaultValue={"all"}>
+            <option key={"all"} value="all">All Genres</option>
             {genres.map((genre) => (
-              <option value={genre.genreName} key={genre.id}>
-                {genre.genreName}
+              <option value={genre.name} key={`${genre?.name}`}>
+                {genre?.name}
               </option>
             ))}
           </select>

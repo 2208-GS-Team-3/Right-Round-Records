@@ -109,6 +109,8 @@ const seed = async () => {
           where: { name: style },
         });
         tempRec.addStyles(style ?? "Undefined");
+
+        recordData.push(tempRec)
       });
     }),
   ]);
@@ -203,7 +205,7 @@ const seed = async () => {
   ]);
 
   //---------------ORDERS-----------------
-  const [order1, order2, order3, order4, order5] = await Promise.all([
+  const [order1, order2, order3, order4, order5, order6] = await Promise.all([
     Order.create({
       datePlaced: Date.now(),
       status: "cart",
@@ -234,6 +236,12 @@ const seed = async () => {
       shippingAddress: "7777 album lane, NY, NY 10005",
       trackingNumber: "4324789",
     }),
+    Order.create({
+      datePlaced: Date.now(),
+      status: "cart",
+      shippingAddress: "7777 album lane, NY, NY 10005",
+      trackingNumber: "4324788",
+    }),
   ]);
 
   //--------------ASSOCIATIONS--------------
@@ -254,8 +262,9 @@ const seed = async () => {
   //orders associated with users
   lily.addOrder([order4]);
   olivia.addOrder([order1, order5]);
-  kolby.addOrder([order3]);
+  kolby.addOrder([order3, order6]);
   jack.addOrder([order2]);
+
 
   //current problem - cannot have same record more than once.
   //we need to allow for multiple of the same records to be added to cart!
@@ -266,6 +275,9 @@ const seed = async () => {
   // order3.setRecords([record4, record6]);
   // order4.setRecords([record10, record2, record8]);
   // order5.setRecords([record6, record3, record4]);
+  order6.setRecords([record6, record3, record4]);
+
+  // console.log(record1)
 
   //------ this was my attempt at setting the genres of each record.-------
   //loop thru recordData
