@@ -1,10 +1,11 @@
 const db = require("./db");
-const Record = require("./Record");
-const User = require("./User");
-const Review = require("./Review");
-// const { Genre } = require("./index.js");
-const Order = require("./Order");
-const Genre = require("./Genre");
+// const Record = require("./Record");
+// const User = require("./User");
+// const Review = require("./Review");
+// // const { Genre } = require("./index.js");
+// const Order = require("./Order");
+// const Genre = require("./Genre");
+const { Record, User, Review, Genre, Order, Style } = require("./index");
 const recordArray = require("./DataStorage");
 
 const seed = async () => {
@@ -78,9 +79,12 @@ const seed = async () => {
 
   //--------------RECORDS--------------
 
-  const recordData = await Promise.all([
-    recordArray.map(async (record) => {
-      return Record.create({
+  const recordData = [];
+
+  await Promise.all([
+    recordArray.forEach(async (record) => {
+      //create array of records specific genres
+      let tempRec = await Record.create({
         albumName: record.title,
         artist: record.artists[0].name,
         tracks: record.tracklist,
@@ -88,38 +92,50 @@ const seed = async () => {
         price: record.lowest_price,
         description: "",
         year: record.year,
-        genre: record.genres,
-        styles: record.styles,
+        genreName: record.genres,
+        styleName: record.styles,
+      });
+
+      record.genres.forEach((genre) => {
+        Genre.findOrCreate({
+          where: { name: genre },
+        });
+        // console.log(tempRec);
+        tempRec.addGenres(genre);
+      });
+
+      record.styles?.forEach((style) => {
+        Style.findOrCreate({
+          where: { name: style },
+        });
+        tempRec.addStyles(style ?? "Undefined");
       });
     }),
   ]);
-  //
-
-  // console.log(recordArray[0]);
 
   //--------------GENRES--------------
   //find genres
-  function findGenres(obj) {
-    let genreArray = [];
-    for (let key in obj) {
-      for (let i = 0; i < obj[key].genres.length; i++) {
-        if (!genreArray.includes(obj[key].genres[i])) {
-          genreArray.push(obj[key].genres[i]);
-        }
-      }
-    }
-    return genreArray;
-  }
-  const genreArray = findGenres(recordArray);
+  // function findGenres(obj) {
+  //   let genreArray = [];
+  //   for (let key in obj) {
+  //     for (let i = 0; i < obj[key].genres.length; i++) {
+  //       if (!genreArray.includes(obj[key].genres[i])) {
+  //         genreArray.push(obj[key].genres[i]);
+  //       }
+  //     }
+  //   }
+  //   return genreArray;
+  // }
+  // const genreArray = findGenres(recordArray);
 
   //create genres for model of all existing genres
-  const genreData = await Promise.all([
-    genreArray.map((genreName) => {
-      return Genre.create({
-        genreName: genreName,
-      });
-    }),
-  ]);
+  // const genreData = await Promise.all([
+  //   genreArray.map((genreName) => {
+  //     return Genre.create({
+  //       genreName: genreName,
+  //     });
+  //   }),
+  // ]);
 
   //--------------REVIEWS--------------
   const [
@@ -222,16 +238,18 @@ const seed = async () => {
 
   //--------------ASSOCIATIONS--------------
 
-  const record1 = await recordData[0][0];
-  const record2 = await recordData[0][55];
-  const record3 = await recordData[0][23];
-  const record4 = await recordData[0][73];
-  const record5 = await recordData[0][72];
-  const record6 = await recordData[0][20];
-  const record7 = await recordData[0][34];
-  const record8 = await recordData[0][67];
-  const record9 = await recordData[0][33];
-  const record10 = await recordData[0][467];
+  const record1 = await recordData[0];
+  const record2 = await recordData[55];
+  const record3 = await recordData[23];
+  const record4 = await recordData[73];
+  const record5 = await recordData[72];
+  const record6 = await recordData[20];
+  const record7 = await recordData[34];
+  const record8 = await recordData[67];
+  const record9 = await recordData[33];
+  const record10 = await recordData[467];
+
+  console.log(record1);
 
   //orders associated with users
   lily.addOrder([order4]);
@@ -243,11 +261,11 @@ const seed = async () => {
   //we need to allow for multiple of the same records to be added to cart!
   //maybe we add a quantity to the record model that starts as null but
   //increases by 1 whenever quantity is updated on the front end
-  order1.setRecords([record1]);
-  order2.setRecords([record5, record9, record3, record7]);
-  order3.setRecords([record4, record6]);
-  order4.setRecords([record10, record2, record8]);
-  order5.setRecords([record6, record3, record4]);
+  // order1.setRecords([record1]);
+  // order2.setRecords([record5, record9, record3, record7]);
+  // order3.setRecords([record4, record6]);
+  // order4.setRecords([record10, record2, record8]);
+  // order5.setRecords([record6, record3, record4]);
 
   //------ this was my attempt at setting the genres of each record.-------
   //loop thru recordData
@@ -261,17 +279,17 @@ const seed = async () => {
   //   }
   // };
 
-  //reviews added to records
-  record1.addReview([review2, review3, review10]);
-  record5.addReview([review4, review5]);
-  record4.addReview([review6, review7, review8, review1]);
-  record7.addReview([review9]);
+  // //reviews added to records
+  // record1.addReview([review2, review3, review10]);
+  // record5.addReview([review4, review5]);
+  // record4.addReview([review6, review7, review8, review1]);
+  // record7.addReview([review9]);
 
-  //users associated with reviews
-  lily.addReviews([review1, review10]);
-  olivia.addReviews([review2]);
-  jack.addReviews([review5, review4, review6, review7]);
-  kolby.addReviews([review8, review9, review3]);
+  // //users associated with reviews
+  // lily.addReviews([review1, review10]);
+  // olivia.addReviews([review2]);
+  // jack.addReviews([review5, review4, review6, review7]);
+  // kolby.addReviews([review8, review9, review3]);
 
   // not sure how to
   return {
@@ -293,7 +311,7 @@ const seed = async () => {
       review9,
     },
     records: { ...recordData },
-    genres: { ...genreData },
+    // genres: { ...genreData },
     orders: {
       order1,
       order2,
@@ -303,4 +321,4 @@ const seed = async () => {
   };
 };
 
-module.exports = seed;
+seed();

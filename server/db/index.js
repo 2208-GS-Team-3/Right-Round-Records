@@ -1,6 +1,5 @@
 const db = require("./db");
 const User = require("./User");
-const seed = require("./seed");
 const Review = require("./Review");
 const Record = require("./Record");
 const Order = require("./Order");
@@ -20,8 +19,14 @@ Review.belongsTo(Record);
 Genre.belongsToMany(Record, { through: "record_genre" });
 Record.belongsToMany(Genre, { through: "record_genre" });
 
-// Genre.hasMany(Style);
-// Style.hasMany(Genre);
+Style.belongsToMany(Record, { through: "record_style" });
+Record.belongsToMany(Style, { through: "record_style" });
+
+// Genre.hasMany(Record);
+// Record.hasMany(Genre);
+
+// Record.hasMany(Style);
+// Style.hasMany(Record);
 
 User.hasMany(Review);
 Record.hasMany(Review);
@@ -31,7 +36,6 @@ Record.hasMany(Review);
 // Record.belongsToMany(User, { through: "owned_records" });
 
 module.exports = {
-  seed,
   User,
   Review,
   Record,
