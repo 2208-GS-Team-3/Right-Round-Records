@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -10,6 +9,7 @@ import Typography from "@mui/material/Typography";
 const RecordCard = ({ record }) => {
   const recordImageObjectString = record.imageUrls[0];
 
+  console.log(record);
   //needed to find out how to get the proper url string out of the stringobject of imageUrls
   //we loop through the string, if the type is 'primary' then we slice from index of 25 to the next quotation
   //otherwise we slice from the 'secondary' index of 27 until the end of quotation to pull out the image url
@@ -36,10 +36,10 @@ const RecordCard = ({ record }) => {
   const recordAlbumPhoto = getImageUrl(recordImageObjectString);
 
   const price = "$" + (record.price / 100).toFixed(2);
-  
+
   //link to single record
-  const singleRecordPageUrl = `/records/${record.id}`
-  
+  const singleRecordPageUrl = `/records/${record.id}`;
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -66,12 +66,24 @@ const RecordCard = ({ record }) => {
           </span>
           <br></br>
           <span>
-            <b>Genre:</b> {record.genreName}
+            <b>Genre(s):</b>{" "}
+            {record.genres.map((genre) => (
+              <span>{genre.name} </span>
+            ))}
+          </span>
+          <br></br>
+          <span>
+            <b>Style(s):</b>{" "}
+            {record.styles.map((style) => (
+              <span>{style.name} </span>
+            ))}
           </span>
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" href={singleRecordPageUrl}>More Details</Button>
+        <Button size="small" href={singleRecordPageUrl}>
+          More Details
+        </Button>
         <Button size="small">Add to cart</Button>
       </CardActions>
     </Card>

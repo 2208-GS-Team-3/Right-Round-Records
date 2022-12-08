@@ -83,7 +83,7 @@ const seed = async () => {
 
   await Promise.all([
     recordArray.forEach(async (record) => {
-      //create array of records specific genres
+      console.log(record);
       let tempRec = await Record.create({
         albumName: record.title,
         artist: record.artists[0].name,
@@ -92,16 +92,17 @@ const seed = async () => {
         price: record.lowest_price,
         description: "",
         year: record.year,
-        genreName: record.genres,
-        styleName: record.styles,
+        // below broke everything! now it works!
+        // genres: record.genres,
+        // styles: record.styles,
       });
 
-      record.genres.forEach((genre) => {
+      record.genres?.forEach((genre) => {
         Genre.findOrCreate({
           where: { name: genre },
         });
         // console.log(tempRec);
-        tempRec.addGenres(genre);
+        tempRec.addGenres(genre ?? "Undefined");
       });
 
       record.styles?.forEach((style) => {
