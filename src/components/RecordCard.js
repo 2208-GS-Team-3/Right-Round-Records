@@ -17,7 +17,7 @@ const RecordCard = ({ record }) => {
       <CardMedia
         component="img"
         height="300"
-        image={record?.imageUrls[0]?.uri}
+        image={record?.imageUrls[0]?.uri ?? `static/RRR Record.png`}
         alt="record album"
       />
       <CardContent>
