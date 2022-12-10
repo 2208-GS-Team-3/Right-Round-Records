@@ -41,16 +41,19 @@ router.post("/", async (req, res, next) => {
     //find record info
     const recordToAdd = await Record.findByPk(id);
 
-    //make association btw cart and new record
+    //otherwise, make association btw cart and new record
     await cart.addRecord(recordToAdd);
+    // }
+    //----------------------------------------------
 
     //find updated cart
     const updatedCart = await Cart.findOne({
       where: { userId: user.id },
       include: [User, { model: Record, include: [Genre, Style] }],
     });
+
+    // console.log(updatedCart);
     //send it back to front end
-    console.log(updatedCart);
     res.send(updatedCart);
   } catch (err) {
     console.error(err);
@@ -58,28 +61,33 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// // PUT /api/order/:id
-// router.put("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     // const { status, shippingAddress } = req.body;
-//     const cartWithRecords = await Cart.findByPk(id, {
-//       include: [Record],
-//     });
+// DELETE /api/campuses/:id
+router.put("/", async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
 
-//     // should only be able to update the status (i.e. to cancel or place order), not change 'date placed' or the tracking number
-//     const updatedOrder = await CartRecords.update({
-//       quantity,
-//     });
-//     const recordWithQuantity = await CartRecords.findByPk(id, {
-//       include: [Record],
-//     });
-//     //send updated order along with updated info
-//     res.send(recordWithQuantity);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+    //coming from 'recordData' object in 'handleRemoveFromCart'
+    const { id } = req.body;
+
+    //find the cartRecord we want to completely remove
+    const cartRecordToDelete = await CartRecords.findOne({
+      where: { recordId: req.body.recordId },
+    });
+    //destroy the record from the cart!
+    await cartRecordToDelete.destroy();
+
+    //find updated cart
+    const updatedCart = await Cart.findOne({
+      where: { userId: user.id },
+      include: [User, { model: Record, include: [Genre, Style] }],
+    });
+    // send back the updated cart!
+    res.send(updatedCart);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 module.exports = router;

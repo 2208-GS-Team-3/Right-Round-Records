@@ -21,9 +21,11 @@ export const cartSlice = createSlice({
       );
       // if record already in cart, add another, otherwise, add the record and give it a quantity of 1
       if (recordInCart) {
+        console.log(recordInCart.cartRecord.quantity++);
         recordInCart.cartRecord.quantity++;
       } else {
-        state.cartRecords.push({ ...action.payload, quantity: 1 });
+        console.log(action.payload);
+        state.cartRecords.push({ ...action.payload });
       }
     },
     // incrementQuantity: (state, action) => {
@@ -40,13 +42,13 @@ export const cartSlice = createSlice({
     //     record.quantity--;
     //   }
     // },
-    // removeFromCart: (state, action) => {
-    //   const removeRecord = state.cart.filter(
-    //     (record) => record.id !== action.payload
-    //   );
-    //   //new cart is filtered for the removed record
-    //   state.cart = removeRecord;
-    // },
+    removeFromCart: (state, action) => {
+      const removeRecord = state.cartRecords.filter(
+        (record) => record.id !== action.payload
+      );
+      //new cart is filtered for the removed record
+      state.cartRecords = removeRecord;
+    },
   },
 });
 
@@ -54,7 +56,7 @@ export const {
   addToCart,
   // incrementQuantity,
   // decrementQuantity,
-  // removeFromCart,
+  removeFromCart,
   setCartRecords,
   setCartInfo,
 } = cartSlice.actions;

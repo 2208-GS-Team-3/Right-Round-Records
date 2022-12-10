@@ -31,19 +31,21 @@ const BarCart = () => {
     variant: "popper",
     popupId: "cartPopper",
   });
+
   const user = useSelector((state) => state.user.user);
   const orders = useSelector((state) => state.orders.orders);
-  const cartInfo = useSelector((state) => state.cart.cartInfo);
+  const cartRecords = useSelector((state) => state.cart.cartRecords);
 
   const setPrice = (num) => {
     return `$${num / 100}`;
   };
+  const itemsInCart = cartRecords.length;
 
   return (
     <React.Fragment>
       <Link to={`/cart`}>
         <IconButton color="inherit" {...bindToggle(popupState)}>
-          <Badge badgeContent={4} color="secondary">
+          <Badge badgeContent={itemsInCart} color="secondary">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
@@ -53,7 +55,7 @@ const BarCart = () => {
           <ClickAwayListener onClickAway={popupState.close}>
             <Fade {...TransitionProps} timeout={350}>
               <Paper>
-                {cartInfo.records.map((record) => {
+                {cartRecords.map((record) => {
                   return (
                     <Container
                       key={`container${record.id}`}
