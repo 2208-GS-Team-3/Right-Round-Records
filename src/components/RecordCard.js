@@ -7,9 +7,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Select, MenuItem } from "@mui/material";
-
+import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import FormControl from "@mui/material/FormControl";
+
 import {
   addToCart,
   setCartInfo,
@@ -19,6 +21,7 @@ import {
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import handleUpdateCart from "../helpers/handleUpdateCart";
 
 const RecordCard = ({ record }) => {
   const price = "$" + (record.price / 100).toFixed(2);
@@ -26,73 +29,89 @@ const RecordCard = ({ record }) => {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const singleRecordPageUrl = `/records/${record.id}`;
   const dispatch = useDispatch("");
-  const handleAddToCart = async (event) => {
-    event.preventDefault();
-    //get token of logged in user
-    const token = window.localStorage.getItem("token");
-    //data to send to backend
-    const tokenData = {
-      headers: {
-        authorization: token,
-      },
-    };
-    const recordData = {
-      id: record.id,
-      albumName: record.albumName,
-      artist: record.artist,
-      tracks: record.tracks,
-      imageUrls: record.imageUrls,
-      condition: record.condition,
-      price: record.price,
-      description: record.description,
-      year: record.year,
-    };
 
-    //add record to cart in api
-    //send url, data, and then headers
-    await axios.post(`/api/cart`, recordData, tokenData);
+  // const [recordQuantity, setRecordQuantity] = useState(
+  //   record.cartRecord?.quantity
+  // );
 
-    //add data to cart in redux store
-    dispatch(addToCart(recordData));
+  // console.log(recordQuantity);
+  // const handleQuantityChange = (event) => {
+  //   // setRecordQuantity(event.target.value);
+  //   // handleUpdateCart(record, recordQuantity);
+  // };
 
-    const updatedCart = await axios.get(`/api/cart`, tokenData);
-    dispatch(setCartRecords(updatedCart.data.records));
-    dispatch(setCartInfo(updatedCart.data));
-  };
+  // const handleAddToCart = async (event) => {
+  //   event.preventDefault();
+  //   //get token of logged in user
+  //   const token = window.localStorage.getItem("token");
+  //   //data to send to backend
+  //   const tokenData = {
+  //     headers: {
+  //       authorization: token,
+  //     },
+  //   };
+  //   const recordData = {
+  //     id: record.id,
+  //     albumName: record.albumName,
+  //     artist: record.artist,
+  //     tracks: record.tracks,
+  //     imageUrls: record.imageUrls,
+  //     condition: record.condition,
+  //     price: record.price,
+  //     description: record.description,
+  //     year: record.year,
+  //   };
 
-  const handleUpdateCart = async (event) => {
-    event.preventDefault();
-    //get token of logged in user
-    const token = window.localStorage.getItem("token");
-    //data to send to backend
-    const tokenData = {
-      headers: {
-        authorization: token,
-      },
-    };
-    const newQuantity = Number(event.target.value);
+  //   //add record to cart in api
+  //   //send url, data, and then headers
+  //   await axios.post(`/api/cart`, recordData, tokenData);
 
-    //updated info coming in
-    const recordToUpdate = {
-      recordId: record.id,
-      quantity: newQuantity,
-      // send quantity to be updated as well
-    };
-    //update backend
-    await axios.put(`/api/cart`, recordToUpdate, tokenData);
+  //   //add data to cart in redux store
+  //   dispatch(addToCart(recordData));
 
-    //need an 'update cart' button to update UI if user wants to remove item
-    // this removes data from cart in redux store
-    if (recordToUpdate.quantity === 0) {
-      dispatch(removeFromCart(recordToUpdate));
-    } else if (recordToUpdate.quantity === 1) {
-      dispatch(addToCart(recordToUpdate));
-    }
+  //   const updatedCart = await axios.get(`/api/cart`, tokenData);
+  //   dispatch(setCartRecords(updatedCart.data.records));
+  //   dispatch(setCartInfo(updatedCart.data));
+  // };
 
-    const updatedCart = await axios.get(`/api/cart`, tokenData);
-    dispatch(setCartRecords(updatedCart.data.records));
-    dispatch(setCartInfo(updatedCart.data));
-  };
+  // const handleUpdateCart = async (event) => {
+  //   event.preventDefault();
+  //   console.log(event);
+  //   //get token of logged in user
+  //   const token = window.localStorage.getItem("token");
+  //   //data to send to backend
+  //   const tokenData = {
+  //     headers: {
+  //       authorization: token,
+  //     },
+  //   };
+  //   const newQuantity = Number(event.target.value);
+
+  //   //updated info coming in
+  //   const recordToUpdate = {
+  //     recordId: record.id,
+  //     quantity: newQuantity,
+  //     // send quantity to be updated as well
+  //   };
+  //   //update backend
+  //   await axios.put(`/api/cart`, recordToUpdate, tokenData);
+
+  //   //need an 'update cart' button to update UI if user wants to remove item
+  //   // this removes data from cart in redux store
+  //   if (recordToUpdate.quantity === 0) {
+  //     dispatch(removeFromCart(recordToUpdate));
+  //   } else if (recordToUpdate.quantity === 1) {
+  //     dispatch(addToCart(recordToUpdate));
+  //   }
+
+  //   const updatedCart = await axios.get(`/api/cart`, tokenData);
+  //   dispatch(setCartRecords(updatedCart.data.records));
+  //   dispatch(setCartInfo(updatedCart.data));
+  // };
+  // console.log(record);
+  // console.log(recordsInCart.includes(record[0]));
+  // console.log(recordsInCart);
+  console.log(record);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -135,50 +154,36 @@ const RecordCard = ({ record }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" href={singleRecordPageUrl}>
+        <Button sx={{ mr: 5 }} size="small" href={singleRecordPageUrl}>
           More Details
         </Button>
-        {/* <Button size="small" onClick={handleAddToCart}>
-          Add to cart
-        </Button> */}
-
-        {recordsInCart.includes(record) && (
-          <Select
-            defaultValue={record.cartRecord.quantity}
-            label="Quantity"
-            size="small"
-            onChange={handleUpdateCart}
-          >
-            <MenuItem value={0}>0</MenuItem>
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={6}>6</MenuItem>
-            <MenuItem value={7}>7</MenuItem>
-            <MenuItem value={8}>8</MenuItem>
-            <MenuItem value={9}>9</MenuItem>
-          </Select>
-        )}
-        {!recordsInCart.includes(record) && (
-          <Select
-            defaultValue={0}
-            label="Quantity"
-            size="small"
-            onChange={handleUpdateCart}
-          >
-            <MenuItem value={0}>0</MenuItem>
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={6}>6</MenuItem>
-            <MenuItem value={7}>7</MenuItem>
-            <MenuItem value={8}>8</MenuItem>
-            <MenuItem value={9}>9</MenuItem>
-          </Select>
+        {recordsInCart.map((cartItem) => cartItem.id).includes(record.id) ? (
+          <FormControl>
+            <Select
+              defaultValue={
+                recordsInCart.filter((cartItem) => cartItem.id === record.id)[0]
+                  .cartRecord.quantity
+              }
+              label="Quantity"
+              size="small"
+              // value={recordQuantity}
+              // onClick={handleQuantityChange}
+              // onChange={handleUpdateCart}
+            >
+              <MenuItem value={0}>0</MenuItem>
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={4}>4</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={6}>6</MenuItem>
+              <MenuItem value={7}>7</MenuItem>
+              <MenuItem value={8}>8</MenuItem>
+              <MenuItem value={9}>9</MenuItem>
+            </Select>
+          </FormControl>
+        ) : (
+          <Button variant="contained">Add to Cart</Button>
         )}
       </CardActions>
     </Card>
