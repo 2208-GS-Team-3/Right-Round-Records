@@ -11,7 +11,7 @@ import AllRecords from "./components/AllRecords";
 import AllOrders from "./components/AllOrders";
 import SingleRecord from "./components/SingleRecord";
 import Dashboard from "./components/AdminDashboard/Dashboard";
-
+import Cart from "./components/Cart";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,6 +37,11 @@ const router = createBrowserRouter([
       {
         path: "records/:id",
         element: <SingleRecord />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "cart/",
+        element: <Cart />,
         errorElement: <ErrorBoundary />,
       },
       {

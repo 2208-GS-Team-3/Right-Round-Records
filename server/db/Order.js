@@ -15,7 +15,13 @@ const Order = db.define("order", {
     validate: {
       //add 'cancelled' option?
       statusValidator: (value) => {
-        const statusOptions = ["cart", "placed", "shipped", "delivered"];
+        const statusOptions = [
+          "cart",
+          "placed",
+          "shipped",
+          "delivered",
+          "cancelled",
+        ];
         if (!statusOptions.includes(value)) {
           throw new Error("not a valid option");
         }

@@ -17,49 +17,45 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// router.post("/", async (req, res, next) => {
-//   try {
-// const { datePlaced,
-//   status,
-//   shippingAddress,
-//   trackingNumber,
-//    } = req.body;
+router.post("/", async (req, res, next) => {
+  try {
+    const { datePlaced, status, shippingAddress, trackingNumber } = req.body;
 
-// await Order.create({
-//datePlaced,
-//   status,
-//   shippingAddress,
-//   trackingNumber
-// });
+    await Order.create({
+      datePlaced,
+      status,
+      shippingAddress,
+      trackingNumber,
+    });
 
-//will records array go in above?
-// const orderWithRecords= await Order.findByPk(id, {
-//   // include: [Record],
-//   // });
-//     res.sendStatus(201)
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+    // will records array go in above?
+    const orderWithRecords = await Order.findByPk(id, {
+      include: [Record],
+    });
+    res.send(200).status(201);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 // // PUT /api/order/:id
 // router.put("/:id", async (req, res, next) => {
 //   try {
 //     const { id } = req.params;
-
-//     const {  } = req.body;
+//     const { status, shippingAddress } = req.body;
 //     const order = await Order.findByPk(id);
 
-// should only be able to update the status (i.e. to cancel or place order), not change 'date placed' or the tracking number
+//     // should only be able to update the status (i.e. to cancel or place order), not change 'date placed' or the tracking number
 //     const updatedOrder = await order.update({
 //       status,
-//   shippingAddress,
+//       shippingAddress,
 //     });
 
 //     const orderWithRecords = await Order.findByPk(id, {
 //       include: [Record],
 //     });
+
 //     //send updated order along with updated info
 //     res.send(orderWithRecords);
 //   } catch (err) {

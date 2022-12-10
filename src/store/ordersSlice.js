@@ -5,7 +5,6 @@ const initialState = {
   orders: [],
 };
 
-
 export const ordersSlice = createSlice({
   name: "orders",
   initialState,
@@ -13,6 +12,9 @@ export const ordersSlice = createSlice({
     setOrders: (state, action) => {
       state.orders = action.payload;
     },
+    // addCartToOrder: (state, action) => {
+    // state.orders.records.push(action.payload);,
+    // }
   },
 });
 

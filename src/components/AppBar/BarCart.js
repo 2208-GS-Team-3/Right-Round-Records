@@ -1,5 +1,5 @@
 import {
-    Avatar,
+  Avatar,
   Badge,
   Box,
   ClickAwayListener,
@@ -22,10 +22,11 @@ import {
 } from "material-ui-popup-state/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const BarCart = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const popupState = usePopupState({
     variant: "popper",
     popupId: "cartPopper",
@@ -37,19 +38,20 @@ const BarCart = () => {
     (order) => order?.status === "cart" && order?.userId === user.id
   )[0];
 
-  console.log(user);
-  console.log(cart);
-  console.log(orders);
-  console.log((cart?.records[0]?.imageUrls[0].uri150));
-
+  // console.log(user);
+  // console.log(cart);
+  // console.log(orders);
+  // console.log((cart?.records[0]?.imageUrls[0].uri150));
 
   return (
     <React.Fragment>
-      <IconButton color="inherit" {...bindToggle(popupState)}>
-        <Badge badgeContent={4} color="secondary">
-          <ShoppingCartIcon />
-        </Badge>
-      </IconButton>
+      <Link to={`/cart`}>
+        <IconButton color="inherit" {...bindToggle(popupState)}>
+          <Badge badgeContent={4} color="secondary">
+            <ShoppingCartIcon />
+          </Badge>
+        </IconButton>
+      </Link>
       <Popper {...bindPopper(popupState)} transition>
         {({ TransitionProps }) => (
           <ClickAwayListener onClickAway={popupState.close}>
@@ -57,11 +59,25 @@ const BarCart = () => {
               <Paper>
                 {cart.records.map((record) => {
                   return (
-                    <Container key={`container${record.id}`} variant="contained" sx={{display: "flex", placeItems: "center"}}>
-                        <Avatar src={record?.imageUrls[0]?.uri150 ?? "static/RRR Record.png"} />
-                      <List >
-                        <ListItem href={`/records/${record.id}`} key={record.id}>{record.albumName}</ListItem>
-                      
+                    <Container
+                      key={`container${record.id}`}
+                      variant="contained"
+                      sx={{ display: "flex", placeItems: "center" }}
+                    >
+                      <Avatar
+                        src={
+                          record?.imageUrls[0]?.uri150 ??
+                          "static/RRR Record.png"
+                        }
+                      />
+                      <List>
+                        <ListItem
+                          href={`/records/${record.id}`}
+                          key={record.id}
+                        >
+                          {record.albumName}
+                        </ListItem>
+
                         <ListItem key={record.price}>{record.price}</ListItem>
                       </List>
                     </Container>

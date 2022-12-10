@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import RRRAppBar from "./AppBar/AppBar";
 import { CssBaseline } from "@mui/material";
@@ -8,10 +8,15 @@ import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
 import { setOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
+import { setCart } from "../store/cartSlice";
+import { useParams } from "react-router-dom";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const params = useParams("");
+  const navigate = useNavigate();
+  const cartId = params.id;
 
   const getRecords = async () => {
     const records = await axios.get("/api/records");
@@ -26,6 +31,22 @@ const App = () => {
   const getOrders = async () => {
     const orders = await axios.get("/api/orders");
     dispatch(setOrders(orders.data));
+  };
+
+  const getCart = async () => {
+    try {
+      const cart = await axios.get(`/api/cart`);
+      // filter out the set users cart
+      // const usersCart = cart
+      console.log(cart.data);
+      // if (!cart.data.id) {
+      //   navigate("/records");
+      // }
+      // dispatch(setCart(cart.data.records));
+    } catch (err) {
+      console.log("ERROR");
+      console.log(err);
+    }
   };
 
   const loginWithToken = async () => {
@@ -46,6 +67,7 @@ const App = () => {
     getRecords();
     getOrders();
     getGenres();
+    getCart();
     setLoading(false);
   }, []);
 

@@ -5,7 +5,7 @@ const db = require("./db");
 // // const { Genre } = require("./index.js");
 // const Order = require("./Order");
 // const Genre = require("./Genre");
-const { Record, User, Review, Genre, Order, Style } = require("./index");
+const { Record, User, Review, Genre, Order, Style, Cart } = require("./index");
 const recordArray = require("./DataStorage");
 
 const seed = async () => {
@@ -111,7 +111,7 @@ const seed = async () => {
         });
         tempRec.addStyles(style ?? "Undefined");
 
-        recordData.push(tempRec)
+        recordData.push(tempRec);
       });
       recordData.push(tempRec);
     }),
@@ -221,6 +221,11 @@ const seed = async () => {
       trackingNumber: "4324788",
     }),
   ]);
+  //----------  CART--------
+  const [cart1, cart2] = await Promise.all([Cart.create(), Cart.create()]);
+
+  cart1.setUser(olivia);
+  cart2.setUser(kolby);
 
   //--------------ASSOCIATIONS--------------
 
@@ -242,12 +247,15 @@ const seed = async () => {
   jack.addOrder([order2]);
 
   //records associated with orders -- WORKING
-  order1.addRecord([record1]);
-  order2.setRecords([record5, record9, record3, record7]);
-  order3.setRecords([record4, record6]);
-  order4.setRecords([record10, record2, record8]);
-  order5.setRecords([record6, record3, record4]);
-    order6.setRecords([record6, record3, record4]);
+  // order1.addRecords([record1]);
+  // order2.addRecords([record5, record9, record3, record7]);
+  // order3.addRecords([record4, record6]);
+  // order4.addRecords([record10, record2, record8]);
+  // order5.addRecords([record6, record3, record4]);
+  // order6.addRecords([record6, record3, record4]);
+
+  cart1.addRecords([record1]);
+  cart2.addRecords([record5, record9, record3, record7]);
 
   // //reviews added to records -- WORKING
   record1.addReviews([review2]);
@@ -261,7 +269,6 @@ const seed = async () => {
   jack.addReviews([review5, review4, review6, review7]);
   kolby.addReviews([review8, review9, review3]);
 
-  // not sure how to
   return {
     users: {
       kolby,
@@ -300,6 +307,7 @@ const seed = async () => {
       order3,
       order4,
     },
+    carts: { cart1, cart2 },
   };
 };
 

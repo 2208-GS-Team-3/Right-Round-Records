@@ -116,7 +116,11 @@ function RRRAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem href={`/${page}`} key={page} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  href={`/${page}`}
+                  key={page}
+                  onClick={handleCloseNavMenu}
+                >
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -199,13 +203,12 @@ function RRRAppBar() {
                     </MenuItem>
                   ))}
             </Menu>
+            {/* BELOW ERROR-- typographys cant be wrapped in typographys. theyre the equivalent of <p> and we cant nest them */}
             <Typography sx={{ ml: 1 }}>
               {user.username ? (
                 `Welcome, ${user.username}!`
               ) : (
-                <Link href="/login">
-                  <Typography color={"white"}>Sign-in</Typography>
-                </Link>
+                <Link href="/login">Sign-in</Link>
               )}
             </Typography>
           </Box>

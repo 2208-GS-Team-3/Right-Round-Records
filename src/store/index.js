@@ -4,6 +4,7 @@ import recordsReducer from "./recordsSlice";
 import genresReducer from "./genresSlice";
 import singleRecordReducer from "./singleRecordSlice";
 import ordersReducer from "./ordersSlice";
+import cartReducer from "./cartSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     orders: ordersReducer,
     genres: genresReducer,
     selectedRecord: singleRecordReducer,
+    cart: cartReducer,
   },
 });
 
