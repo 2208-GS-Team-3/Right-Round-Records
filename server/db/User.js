@@ -114,6 +114,7 @@ User.addHook("beforeSave", async (user) => {
 });
 
 User.findByToken = async function (token) {
+  // console.log(token);
   try {
     const { id } = jwt.verify(token, process.env.JWT);
     const user = await this.findByPk(id);
@@ -122,6 +123,7 @@ User.findByToken = async function (token) {
     }
     throw "user not found";
   } catch (ex) {
+    console.log(ex);
     const error = new Error("bad credentials");
     error.status = 401;
     throw error;

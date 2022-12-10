@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import RRRAppBar from "./AppBar/AppBar";
 import { CssBaseline } from "@mui/material";
@@ -8,10 +8,15 @@ import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
 import { setOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
+import { setCartInfo, setCartRecords } from "../store/cartSlice";
+import { useParams } from "react-router-dom";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const params = useParams("");
+  const navigate = useNavigate();
+  const cartId = params.id;
 
   const getRecords = async () => {
     const records = await axios.get("/api/records");
@@ -26,6 +31,26 @@ const App = () => {
   const getOrders = async () => {
     const orders = await axios.get("/api/orders");
     dispatch(setOrders(orders.data));
+  };
+
+  const getCart = async () => {
+    try {
+      //get token of logged in user
+      const token = window.localStorage.getItem("token");
+      //data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+      //check cart api, send tokenData to only get current users cart
+      const cart = await axios.get(`/api/cart`, tokenData);
+      dispatch(setCartInfo(cart.data));
+      dispatch(setCartRecords(cart.data.records));
+    } catch (err) {
+      console.log("ERROR");
+      console.log(err);
+    }
   };
 
   const loginWithToken = async () => {
@@ -46,6 +71,7 @@ const App = () => {
     getRecords();
     getOrders();
     getGenres();
+    getCart();
     setLoading(false);
   }, []);
 

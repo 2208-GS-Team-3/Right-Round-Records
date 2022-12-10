@@ -1,6 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { Record, Review, Order, Genre, Style } = require("../db");
+const {
+  Record,
+  Review,
+  Order,
+  Genre,
+  Style,
+  Cart,
+  CartRecords,
+} = require("../db");
 
 // //localhost:3000/api/records/
 // //list of all records
@@ -8,7 +16,7 @@ router.get("/", async (req, res, next) => {
   try {
     const records = await Record.findAll({
       order: [["id", "ASC"]],
-      include: [Review, Order, Style, Genre],
+      include: [Review, Order, Style, Genre, Cart],
     });
     res.send(records);
   } catch (err) {
@@ -23,7 +31,7 @@ router.get("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     const record = await Record.findByPk(id, {
-      include: [Review, Order, Style, Genre],
+      include: [Review, Order, Style, Genre, Cart],
     });
     res.send(record);
   } catch (err) {

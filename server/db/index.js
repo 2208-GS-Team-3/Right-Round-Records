@@ -5,10 +5,19 @@ const Record = require("./Record");
 const Order = require("./Order");
 const Genre = require("./Genre");
 const Style = require("./Style");
+const Cart = require("./Cart");
+const CartRecords = require("./CartRecords");
 
 //working on these first
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasOne(Cart);
+Cart.belongsTo(User);
+
+// expand table to have quantity
+Cart.belongsToMany(Record, { through: CartRecords });
+Record.belongsToMany(Cart, { through: CartRecords });
 
 Order.belongsToMany(Record, { through: "record_order" });
 Record.belongsToMany(Order, { through: "record_order" });
@@ -43,4 +52,6 @@ module.exports = {
   Order,
   db,
   Style,
+  Cart,
+  CartRecords,
 };

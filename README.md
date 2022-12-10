@@ -1,8 +1,8 @@
 # Basic Features
 
-- [ ] A user should be able to see products
-- [ ] A logged in user should be able to
-  - [ ] see the items in their cart
+- [x] A user should be able to see products
+- [x] A logged in user should be able to
+  - [x] see the items in their cart
   - [ ] add a new product to their cart
   - [ ] remove an item from their cart
   - [ ] create an order
@@ -26,14 +26,12 @@
 
 # grace-shopper-team-three
 
-
-
 TIER 1: MVP SHOPPING EXPERIENCE
 []AS A CUSTOMER/VISITOR, I WANT TO BE ABLE TO:
 []access a deployed version of the website so I can browse and purchase products.
-[]view all available products so I can pick from a variety.
-[]view the details for an individual product (including product descriptions, photos and optionally, reviews), so that I can determine whether that particular item fits my needs
-[]add a product to my cart so I can collect my desired products in one place.
+[x]view all available products so I can pick from a variety.
+[x]view the details for an individual product (including product descriptions, photos and optionally, reviews), so that I can determine whether that particular item fits my needs
+[x]add a product to my cart so I can collect my desired products in one place.
 []edit my cart if I change my mind:
 []change the quantity of a product in my cart.
 []remove a product in my cart.
@@ -59,8 +57,6 @@ TIER 1: MVP SHOPPING EXPERIENCE
 []For example, seed hundreds of products with dummy data so that when you get to the “pagination” user story, you won’t have to worry about adding more products.
 []Likewise, add a bunch of users with products in their carts so editing the cart can be worked on without already having the “add to cart” functionality built out.
 []user data to be secure so that no one can unrightfully manipulate information.
-
- 
 
 TIER 2: E-COMMERCE ESSENTIALS
 AS A CUSTOMER, I WANT TO BE ABLE TO:
@@ -89,9 +85,6 @@ promote other user accounts to have admin status, so that new administrators can
 delete a user, so users who should not be able to log in anymore cannot
 AS AN ENGINEER, I WANT:
 continuous integration and delivery (deployment) Links to an external site. of the codebase so that there are lower rates of release failure.
- 
-
- 
 
 TIER 3: EXTRA FEATURES & FLAIR
 AS AN ADMINISTRATOR, I WANT TO BE ABLE TO:
@@ -123,7 +116,6 @@ A11y ChecklistLinks to an external site.
 view a display to know when content is loading or there is an error so that I can manage my expectations.
 For example, loading spinners while the frontend is waiting for a backend response.
 As a customer, if I visit a product page that doesn't exist, notify me that it doesn't and bring me to all products. Likewise, if I visit a page that outright doesn't exist, navigate me to the landing page.
- 
 
 TIER 4: EVEN MORE
 AS A CUSTOMER, I WANT TO BE ABLE TO:

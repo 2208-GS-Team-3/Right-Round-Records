@@ -22,7 +22,7 @@ const LoginPage = () => {
     password: "",
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onChange = (ev) => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
@@ -38,7 +38,7 @@ const LoginPage = () => {
       });
 
       dispatch(setUser(response.data));
-      navigate("/")
+      navigate("/");
     }
   };
 
@@ -46,6 +46,7 @@ const LoginPage = () => {
     event.preventDefault();
     const response = await axios.post("/api/auth", credentials);
     const token = response.data;
+    // console.log(token);
     window.localStorage.setItem("token", token);
 
     loginWithToken(token);
