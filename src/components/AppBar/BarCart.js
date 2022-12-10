@@ -1,7 +1,7 @@
 import {
   Avatar,
   Badge,
-  Box,
+  Button,
   ClickAwayListener,
   Container,
   Divider,
@@ -11,7 +11,6 @@ import {
   ListItem,
   Paper,
   Popper,
-  Typography,
 } from "@mui/material";
 import React, { useRef } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -35,10 +34,6 @@ const BarCart = () => {
   const user = useSelector((state) => state.user.user);
   const orders = useSelector((state) => state.orders.orders);
   const cartRecords = useSelector((state) => state.cart.cartRecords);
-
-  const setPrice = (num) => {
-    return `$${num / 100}`;
-  };
 
   const amountOfRecords = (arrOfRecords) => {
     let numOfRecords = 0;
@@ -66,32 +61,38 @@ const BarCart = () => {
               <Paper>
                 {cartRecords.map((record) => {
                   return (
-                    <Container
-                      key={`container${record.id}`}
-                      variant="contained"
+                    <Button
+                      variant="text"
+                      href={`/records/${record.id}`}
                       sx={{ display: "flex", placeItems: "center" }}
                     >
-                      <Avatar
-                        src={
-                          record?.imageUrls[0]?.uri150 ??
-                          "static/RRR Record.png"
-                        }
-                      />
-                      <List>
-                        <ListItem
-                          href={`/records/${record.id}`}
-                          key={record.id}
-                        >
-                          {record.albumName}
-                        </ListItem>
-
-                        <ListItem key={record.price}>
-                          {setPrice(record.price)}
-                        </ListItem>
-                      </List>
-                    </Container>
+                      <Container
+                        key={`container${record.id}`}
+                        variant="contained"
+                        sx={{ display: "flex", placeItems: "center" }}
+                      >
+                        <Avatar
+                          src={
+                            record?.imageUrls[0]?.uri150 ??
+                            "static/RRR Record.png"
+                          }
+                        />
+                        <List>
+                          <ListItem
+                            href={`/records/${record.id}`}
+                            key={record.id}
+                          >
+                            {record.albumName}
+                          </ListItem>
+                          <ListItem key={record.price}>{(record.price/100).toFixed(2)}</ListItem>
+                        </List>
+                      </Container>
+                    </Button>
                   );
                 })}
+                <Button variant="contained" href="/cart" fullWidth="true">
+                  Go to Cart
+                </Button>
               </Paper>
             </Fade>
           </ClickAwayListener>
