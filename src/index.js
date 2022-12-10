@@ -46,11 +46,11 @@ const router = createBrowserRouter([
         element: <SingleRecord />,
         errorElement: <ErrorBoundary />,
       },
-      {
-        path: "cart/",
-        element: <Cart />,
-        errorElement: <ErrorBoundary />,
-      },
+      // {
+      //   path: "cart/",
+      //   element: <Cart />,
+      //   errorElement: <ErrorBoundary />,
+      // },
       {
         path: "orders",
         element: <AllOrders />,
