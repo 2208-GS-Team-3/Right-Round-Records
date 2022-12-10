@@ -5,6 +5,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -19,6 +21,7 @@ import axios from "axios";
 
 const RecordCard = ({ record }) => {
   const price = "$" + (record.price / 100).toFixed(2);
+  const allRecords = useSelector((state) => state.records.records);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const singleRecordPageUrl = `/records/${record.id}`;
   const dispatch = useDispatch("");
@@ -56,7 +59,7 @@ const RecordCard = ({ record }) => {
     dispatch(setCartInfo(updatedCart.data));
   };
 
-  const handleRemoveFromCart = async (event) => {
+  const handleUpdateCart = async (event) => {
     event.preventDefault();
     //get token of logged in user
     const token = window.localStorage.getItem("token");
@@ -66,15 +69,24 @@ const RecordCard = ({ record }) => {
         authorization: token,
       },
     };
+    const newQuantity = Number(event.target.value);
 
     //updated info coming in
-    const recordToDelete = {
+    const recordToUpdate = {
       recordId: record.id,
+      quantity: newQuantity,
+      // send quantity to be updated as well
     };
     //update backend
-    await axios.put(`/api/cart`, recordToDelete, tokenData);
-    //remove data from cart in redux store
-    dispatch(removeFromCart(recordToDelete));
+    await axios.put(`/api/cart`, recordToUpdate, tokenData);
+
+    //need an 'update cart' button to update UI if user wants to remove item
+    // this removes data from cart in redux store
+    if (recordToUpdate.quantity === 0) {
+      dispatch(removeFromCart(recordToUpdate));
+    } else if (recordToUpdate.quantity === 1) {
+      dispatch(addToCart(recordToUpdate));
+    }
 
     const updatedCart = await axios.get(`/api/cart`, tokenData);
     dispatch(setCartRecords(updatedCart.data.records));
@@ -125,14 +137,38 @@ const RecordCard = ({ record }) => {
         <Button size="small" href={singleRecordPageUrl}>
           More Details
         </Button>
-        <Button size="small" onClick={handleAddToCart}>
+        {/* <Button size="small" onClick={handleAddToCart}>
           Add to cart
-        </Button>
-        {/* this works for in the cart but not on all records page */}
+        </Button> */}
         {recordsInCart.includes(record) && (
-          <Button size="small" onClick={handleRemoveFromCart}>
-            Remove From Cart
-          </Button>
+          <TextField
+            onChange={handleUpdateCart}
+            type="number"
+            // need a condition where its 0 if not in cart
+            defaultValue={record.cartRecord.quantity}
+            InputProps={{
+              inputProps: {
+                max: 100,
+                min: 0,
+              },
+            }}
+            label="quantity"
+          />
+        )}
+        {!recordsInCart.includes(record) && (
+          <TextField
+            onChange={handleUpdateCart}
+            type="number"
+            // need a condition where its 0 if not in cart
+            defaultValue={0}
+            InputProps={{
+              inputProps: {
+                max: 100,
+                min: 0,
+              },
+            }}
+            label="quantity"
+          />
         )}
       </CardActions>
     </Card>

@@ -39,7 +39,16 @@ const BarCart = () => {
   const setPrice = (num) => {
     return `$${num / 100}`;
   };
-  const itemsInCart = cartRecords.length;
+
+  const amountOfRecords = (arrOfRecords) => {
+    let numOfRecords = 0;
+    for (let i = 0; i < arrOfRecords.length; i++) {
+      numOfRecords += arrOfRecords[i].cartRecord.quantity;
+    }
+    return numOfRecords;
+  };
+
+  const itemsInCart = amountOfRecords(cartRecords);
 
   return (
     <React.Fragment>

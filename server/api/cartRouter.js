@@ -68,14 +68,37 @@ router.put("/", async (req, res, next) => {
     const user = await User.findByToken(token);
 
     //coming from 'recordData' object in 'handleRemoveFromCart'
-    const { id } = req.body;
+    const { recordId, quantity } = req.body;
 
-    //find the cartRecord we want to completely remove
-    const cartRecordToDelete = await CartRecords.findOne({
+    const cart = await Cart.findOne({
+      where: { userId: user.id },
+      include: [User, { model: Record, include: [Genre, Style] }],
+    });
+    console.log(req.body);
+
+    if (req.body.quantity === 1) {
+      // if quantity is 1, associate it with the cart
+      await cart.addRecord(req.body.recordId);
+    }
+
+    //find the cartRecord we want to edit
+    const cartRecordToUpdate = await CartRecords.findOne({
       where: { recordId: req.body.recordId },
     });
-    //destroy the record from the cart!
-    await cartRecordToDelete.destroy();
+
+    console.log(cart);
+    console.log(cartRecordToUpdate);
+
+    // if (req.body.quantity === 0) {
+    //   //destroy the record from the cart!
+    //   await cartRecordToUpdate.destroy();
+    // } else if (req.body.quantity === 1) {
+    //   // if quantity is 1, associate it with the cart
+    //   await cart.addRecord(req.body);
+    // } else {
+    //   //otherwise, update with new quantity
+    //   await cartRecordToUpdate.update({ quantity });
+    // }
 
     //find updated cart
     const updatedCart = await Cart.findOne({
