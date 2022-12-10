@@ -6,13 +6,11 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import Link from "@mui/material/Link";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUser } from "../../store/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -40,18 +38,10 @@ function RRRAppBar() {
     navigate("/dashboard");
   };
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = (e) => {
@@ -102,7 +92,7 @@ function RRRAppBar() {
           >
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user.fullName ?? "Guest"} src={user.avatarUrl} />
+                <Avatar alt={user?.fullName ?? "Guest"} src={user.avatarUrl} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -143,10 +133,9 @@ function RRRAppBar() {
                     </MenuItem>
                   ))}
             </Menu>
-            {/* BELOW ERROR-- typographys cant be wrapped in typographys. theyre the equivalent of <p> and we cant nest them */}
             <Typography sx={{ ml: 1 }}>
-              {user.username ? (
-                `Welcome, ${user.username}!`
+              {user?.username ? (
+                `Welcome, ${user?.username}!`
               ) : (
                 <Link href="/login">Sign-in</Link>
               )}
