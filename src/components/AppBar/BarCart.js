@@ -21,7 +21,6 @@ import {
 } from "material-ui-popup-state/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 const BarCart = () => {
   const dispatch = useDispatch();
@@ -47,13 +46,11 @@ const BarCart = () => {
 
   return (
     <React.Fragment>
-      <Link to={`/cart`}>
         <IconButton color="inherit" {...bindToggle(popupState)}>
           <Badge badgeContent={itemsInCart} color="secondary">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
-      </Link>
       <Popper {...bindPopper(popupState)} transition>
         {({ TransitionProps }) => (
           <ClickAwayListener onClickAway={popupState.close}>
@@ -62,6 +59,7 @@ const BarCart = () => {
                 {cartRecords.map((record) => {
                   return (
                     <Button
+                    key={`CartButtonFor${record.albumName}`}
                       variant="text"
                       href={`/records/${record.id}`}
                       sx={{ display: "flex", placeItems: "center" }}
@@ -72,6 +70,7 @@ const BarCart = () => {
                         sx={{ display: "flex", placeItems: "center" }}
                       >
                         <Avatar
+                        key={`ImageFor${record.albumName}`}
                           src={
                             record?.imageUrls[0]?.uri150 ??
                             "static/RRR Record.png"
@@ -84,13 +83,13 @@ const BarCart = () => {
                           >
                             {record.albumName}
                           </ListItem>
-                          <ListItem key={record.price}>{(record.price/100).toFixed(2)}</ListItem>
+                          <ListItem key={`${record.albumName + record.price}`}>{(record.price/100).toFixed(2)}</ListItem>
                         </List>
                       </Container>
                     </Button>
                   );
                 })}
-                <Button variant="contained" href="/cart" fullWidth="true">
+                <Button variant="contained" href="/cart" fullWidth={true}>
                   Go to Cart
                 </Button>
               </Paper>

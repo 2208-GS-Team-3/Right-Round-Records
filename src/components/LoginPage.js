@@ -36,7 +36,6 @@ const LoginPage = () => {
           authorization: token,
         },
       });
-
       dispatch(setUser(response.data));
       navigate("/");
     }
