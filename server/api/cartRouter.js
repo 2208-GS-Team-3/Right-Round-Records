@@ -76,18 +76,21 @@ router.put("/", async (req, res, next) => {
     });
     console.log(req.body);
 
-    if (req.body.quantity === 1) {
-      // if quantity is 1, associate it with the cart
+    if (req.body.quantity >= 1) {
+      // if quantity is >=1, associate it with the cart
       await cart.addRecord(req.body.recordId);
+      //if quantity is > 1, update the quantity appropriately
+      if (req.body.quantity > 1) {
+        //find the cartRecord we want to edit
+        const cartRecordToUpdate = await CartRecords.findOne({
+          where: { recordId: req.body.recordId },
+        });
+        await cartRecordToUpdate.update({ quantity });
+      }
     }
 
-    //find the cartRecord we want to edit
-    const cartRecordToUpdate = await CartRecords.findOne({
-      where: { recordId: req.body.recordId },
-    });
-
     console.log(cart);
-    console.log(cartRecordToUpdate);
+    // console.log(cartRecordToUpdate);
 
     // if (req.body.quantity === 0) {
     //   //destroy the record from the cart!

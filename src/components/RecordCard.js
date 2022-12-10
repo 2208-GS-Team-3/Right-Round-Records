@@ -6,6 +6,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import { Select, MenuItem } from "@mui/material";
 
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -140,35 +141,44 @@ const RecordCard = ({ record }) => {
         {/* <Button size="small" onClick={handleAddToCart}>
           Add to cart
         </Button> */}
+
         {recordsInCart.includes(record) && (
-          <TextField
-            onChange={handleUpdateCart}
-            type="number"
-            // need a condition where its 0 if not in cart
+          <Select
             defaultValue={record.cartRecord.quantity}
-            InputProps={{
-              inputProps: {
-                max: 100,
-                min: 0,
-              },
-            }}
-            label="quantity"
-          />
+            label="Quantity"
+            size="small"
+            onChange={handleUpdateCart}
+          >
+            <MenuItem value={0}>0</MenuItem>
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={4}>4</MenuItem>
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={6}>6</MenuItem>
+            <MenuItem value={7}>7</MenuItem>
+            <MenuItem value={8}>8</MenuItem>
+            <MenuItem value={9}>9</MenuItem>
+          </Select>
         )}
         {!recordsInCart.includes(record) && (
-          <TextField
-            onChange={handleUpdateCart}
-            type="number"
-            // need a condition where its 0 if not in cart
+          <Select
             defaultValue={0}
-            InputProps={{
-              inputProps: {
-                max: 100,
-                min: 0,
-              },
-            }}
-            label="quantity"
-          />
+            label="Quantity"
+            size="small"
+            onChange={handleUpdateCart}
+          >
+            <MenuItem value={0}>0</MenuItem>
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={4}>4</MenuItem>
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={6}>6</MenuItem>
+            <MenuItem value={7}>7</MenuItem>
+            <MenuItem value={8}>8</MenuItem>
+            <MenuItem value={9}>9</MenuItem>
+          </Select>
         )}
       </CardActions>
     </Card>

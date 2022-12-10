@@ -17,13 +17,8 @@ import { useSelector } from "react-redux";
 const Cart = () => {
   const user = useSelector((state) => state.user.user);
   const orders = useSelector((state) => state.orders.orders);
-
-  // take the orders, filter out those without an order status of cart, and do not have the correct order.userId
-  const cart = orders?.filter(
-    (order) => order?.status === "cart" && order?.userId === user.id
-  )[0];
-
-  const [selectedCart, setSelectedCart] = React.useState(cart);
+  const recordsInCart = useSelector((state) => state.cart.cartRecords);
+  const cartInfo = useSelector((state) => state.cart.cartInfo);
 
   return (
     <Box key={`wholeCart`} sx={{ display: "grid", gridAutoFlow: "row" }}>
@@ -35,12 +30,12 @@ const Cart = () => {
           maxHeight: "35vh",
           placeContent: "center",
         }}
-        >
+      >
         <img id="front-page-logo" src="static/RRR Logo.png" />
       </Container>
-        <Typography variant="h4">Cart</Typography>
-        <Divider/>
-      <Box sx={{ display: "flex", padding: "0"}}>
+      <Typography variant="h4">Cart</Typography>
+      <Divider />
+      <Box sx={{ display: "flex", padding: "0" }}>
         <Container
           key={`itemsDisplay`}
           maxWidth="xl"
@@ -50,7 +45,7 @@ const Cart = () => {
             flexDirection: "column",
           }}
         >
-          {cart?.records.map((record) => {
+          {recordsInCart?.map((record) => {
             return (
               <Container
                 key={`singleItemContainer${record.id}`}
@@ -66,7 +61,7 @@ const Cart = () => {
                   href={`/records/${record.id}`}
                   sx={{ display: "flex", placeItems: "center" }}
                   key={`buttonFor${record.id}`}
-                  fullWidth={"xl"}
+                  // fullWidth={xl}
                 >
                   <Container
                     key={`containerFor${record.id}`}
@@ -92,7 +87,12 @@ const Cart = () => {
                     </List>
                   </Container>
                 </Button>
-                <Select defaultValue={1} label="Quantity" size="small">
+                <Select
+                  defaultValue={record.cartRecord.quantity}
+                  label="Quantity"
+                  size="small"
+                >
+                  <MenuItem value={0}>0</MenuItem>
                   <MenuItem value={1}>1</MenuItem>
                   <MenuItem value={2}>2</MenuItem>
                   <MenuItem value={3}>3</MenuItem>
@@ -107,14 +107,14 @@ const Cart = () => {
             );
           })}
         </Container>
-        <Box key={`cartSubtotalContainer`} sx={{padding: "0"}}>
+        <Box key={`cartSubtotalContainer`} sx={{ padding: "0" }}>
           <Typography key={`subtotalInformation`}>{`Subtotal (${
-            cart?.records?.length
-          } Item${cart?.records?.length === 1 ? "" : "s"}):`}</Typography>
+            recordsInCart?.length
+          } Item${recordsInCart?.length === 1 ? "" : "s"}):`}</Typography>
           <Typography key={`subtotalPrice`}>
             $
             {(
-              cart?.records?.reduce(
+              recordsInCart?.reduce(
                 (currentTotal, itemValue) => currentTotal + itemValue.price,
                 0
               ) / 100
