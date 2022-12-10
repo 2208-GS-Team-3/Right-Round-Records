@@ -34,6 +34,7 @@ const BarCart = () => {
   const user = useSelector((state) => state.user.user);
   const orders = useSelector((state) => state.orders.orders);
 
+  // take the orders, filter out those without an order status of cart, and do not have an order.userId
   const cart = orders?.filter(
     (order) => order?.status === "cart" && order?.userId === user.id
   )[0];

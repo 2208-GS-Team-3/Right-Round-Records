@@ -5,12 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { setRecord, setLoadingRecord } from "../store/singleRecordSlice";
 import Container from "@mui/material/Container";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { Box } from "@mui/system";
 
 const SingleRecord = () => {
   const { selectedRecord, loadingRecord } = useSelector((state) => {
@@ -30,29 +27,6 @@ const SingleRecord = () => {
     } catch (err) {}
     // dispatch(setLoadingRecord(false));
   };
-
-  //-------pull image out of record object--------
-  const albumPhotoString = String(selectedRecord.imageUrls);
-  function getImageUrl(imageString) {
-    let imageUrl = "";
-    if (imageString[9] === "p") {
-      for (let i = 25; i < imageString.length; i++) {
-        if (imageString[i] === '"') {
-          break;
-        }
-        imageUrl += imageString[i];
-      }
-    } else {
-      for (let i = 27; i < imageString.length; i++) {
-        if (imageString[i] === '"') {
-          break;
-        }
-        imageUrl += imageString[i];
-      }
-    }
-    return imageUrl;
-  }
-  const recordAlbumPhoto = getImageUrl(albumPhotoString);
   //------------------------------------------------
 
   useEffect(() => {
@@ -69,63 +43,66 @@ const SingleRecord = () => {
 
   return (
     <Container
-      fixed
-      sx={{
-        bgcolor: "#cfe8fc",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-      }}
+      maxWidth="100vw"
+      // fixed
+      // sx={{
+      //   bgcolor: "#cfe8fc",
+      //   height: "100vh",
+      //   display: "flex",
+      //   justifyContent: "center",
+      // }}
     >
-      <Card sx={{ maxWidth: 345 }}>
-        {selectedRecord.imageUrls && (
-          <CardMedia
-            component="img"
-            height="300"
-            image={`${recordAlbumPhoto}`}
-            alt="record album"
-          />
-        )}
-
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            <h3>{selectedRecord.albumName}</h3>
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <span>
-              <b>Artist:</b> {selectedRecord.artist}
-            </span>
-            <br></br>
-            <span>
-              <b>Year:</b> {selectedRecord.year}
-            </span>
-            <br></br>
-            <span>
-              <b>Price:</b> {price}
-            </span>
-            <br></br>
-            <span>
-              <b>Genre(s):</b>
-              {selectedRecord.genres.map((genre, index) => (
-                <li key={index}>{genre.name} </li>
-              ))}
-            </span>
-            <br></br>
-            <span>
-              <b>Style(s):</b>
-              {selectedRecord.styles.map((style, index) => (
-                <li key={index}>{style.name} </li>
-              ))}
-            </span>
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small" href={"/"}>
-            Back
-          </Button>
-          <Button size="small">Add to cart</Button>
-        </CardActions>
-      </Card>
+      <Box>
+        <img
+          component="img"
+          height="300"
+          src={selectedRecord.imageUrls[0].uri}
+          alt="record album"
+        />
+        <Typography gutterBottom variant="h5" component="div">
+          <h3>{selectedRecord.albumName}</h3>
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          <span>
+            <b>Artist:</b> {selectedRecord.artist}
+          </span>
+          <br></br>
+          <span>
+            <b>Year:</b> {selectedRecord.year}
+          </span>
+          <br></br>
+          <span>
+            <b>Price:</b> {price}
+          </span>
+          <br></br>
+          <span>
+            <b>Genre(s):</b>
+            {selectedRecord.genres.map((genre, index) => (
+              <li key={index}>{genre.name} </li>
+            ))}
+          </span>
+          <br></br>
+          <span>
+            <b>Style(s):</b>
+            {selectedRecord.styles.map((style, index) => (
+              <li key={index}>{style.name} </li>
+            ))}
+          </span>
+        </Typography>
+        <p>
+          Reviews:
+          {selectedRecord.reviews.map((review, index) => (
+            <li key={index}>
+              Comment:{review.comment} <br></br>
+              Rating:{review.rating}{" "}
+            </li>
+          ))}
+        </p>
+        <Button size="small" href={"/"}>
+          Back
+        </Button>
+        <Button size="small">Add to cart</Button>
+      </Box>
     </Container>
   );
 };

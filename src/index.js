@@ -1,6 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import App from "./components/App";
@@ -12,6 +16,9 @@ import AllOrders from "./components/AllOrders";
 import SingleRecord from "./components/SingleRecord";
 import Dashboard from "./components/AdminDashboard/Dashboard";
 import Cart from "./components/Cart";
+import axios from "axios";
+import authTest from "./helpers/authTest";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -53,6 +60,7 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <Dashboard />,
         errorElement: <ErrorBoundary />,
+        loader: authTest,
       },
     ],
   },

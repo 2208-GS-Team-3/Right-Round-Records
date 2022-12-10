@@ -72,6 +72,7 @@ const User = db.define("user", {
       notEmpty: true,
       isEmail: true,
     },
+    unique: true,
   },
   shippingAddress: {
     type: STRING,

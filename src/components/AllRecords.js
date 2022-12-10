@@ -10,6 +10,7 @@ const AllRecords = () => {
   return (
     <Container
       fixed
+      maxWidth="100vw"
       sx={{
         display: "flex",
         gap: "20px",
@@ -20,6 +21,7 @@ const AllRecords = () => {
       <FilterGenre />
       <h1>Records</h1>
       <Container
+      maxWidth="100vw"
         sx={{
           display: "flex",
           gap: "20px",
