@@ -7,23 +7,29 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../store/cartSlice";
+import { addToCart, setCartInfo, setCartRecords } from "../store/cartSlice";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
 const RecordCard = ({ record }) => {
   const price = "$" + (record.price / 100).toFixed(2);
-  const cart = useSelector((state) => state.cart.cart);
+  const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const singleRecordPageUrl = `/records/${record.id}`;
-  // console.log(cart);
+  console.log(recordsInCart);
   const dispatch = useDispatch("");
-  const params = useParams();
-  const cartId = params.id;
 
   const handleAddToCart = async (event) => {
     event.preventDefault();
-
-    const recordToAdd = {
+    //get token of logged in user
+    const token = window.localStorage.getItem("token");
+    //data to send to backend
+    const tokenData = {
+      headers: {
+        authorization: token,
+      },
+    };
+    const recordData = {
       id: record.id,
       albumName: record.albumName,
       artist: record.artist,
@@ -34,12 +40,19 @@ const RecordCard = ({ record }) => {
       description: record.description,
       year: record.year,
     };
-    //update backend
-    const addedRecord = await axios.post(`/api/cart/${cartId}`, recordToAdd);
-    dispatch(addToCart(addedRecord.data));
-    console.log(addedRecord);
-    const updatedCart = await axios.get(`/api/cart/${cartId}`);
-    Navigate(`/cart/:${cartId}`);
+
+    //add record to cart in api
+    //send url, data, and then headers
+    await axios.post(`/api/cart`, recordData, tokenData);
+
+    //add data to cart in redux store
+    dispatch(addToCart(recordData));
+    const updatedCart = await axios.get(`/api/cart`, tokenData);
+    console.log(updatedCart);
+    dispatch(setCartInfo(updatedCart));
+
+    // console.log(addedRecord);
+    // console.log(updatedCart);
   };
 
   return (
@@ -69,14 +82,14 @@ const RecordCard = ({ record }) => {
           <br></br>
           <span>
             <b>Genre(s):</b>{" "}
-            {record.genres.map((genre, index) => (
+            {record.genres?.map((genre, index) => (
               <li key={index}>{genre.name} </li>
             ))}
           </span>
           <br></br>
           <span>
             <b>Style(s):</b>{" "}
-            {record.styles.map((style, index) => (
+            {record.styles?.map((style, index) => (
               <li key={index}>{style.name} </li>
             ))}
           </span>

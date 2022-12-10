@@ -1,6 +1,6 @@
 const user = require("disconnect/lib/user");
 const express = require("express");
-const { Record, User, Cart, CartRecords } = require("../db");
+const { Record, User, Cart, CartRecords, Style, Genre } = require("../db");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const JWT = process.env.JWT;
@@ -9,62 +9,54 @@ const JWT = process.env.JWT;
 // //display users cart
 router.get("/", async (req, res, next) => {
   try {
-    //this should be a 'findone' where the user that is authenticated is showing
-    // const cartsWithUser = await Cart.findAll({
-    //   include: [User, Record],
-    // });
-    const user = await User.findByToken(req.headers.authorization);
-    console.log(user);
-    const cartsWithUser = await Cart.findAll({
-      include: [User, Record],
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
+
+    const cart = await Cart.findOne({
+      where: { userId: user.id },
+      include: [User, { model: Record, include: [Genre, Style] }],
     });
-
-    //filter out from find all the user thats logged in?
-
-    res.send(cartsWithUser);
+    res.send(cart);
   } catch (err) {
     res.sendStatus(404);
     next(err);
   }
 });
 
-// router.post("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const {
-//       albumName,
-//       artist,
-//       tracks,
-//       imageUrls,
-//       condition,
-//       price,
-//       description,
-//       year,
-//     } = req.body;
-//     console.log(req.params);
-// const cart = await Cart.findByPk(id);
-// console.log(req.params);
-// const updatedCart = await cart.update({
-//   albumName,
-//   artist,
-//   tracks,
-//   imageUrls,
-//   condition,
-//   price,
-//   description,
-//   year,
-// });
+router.post("/", async (req, res, next) => {
+  try {
+    //coming from 'tokenData' object in 'handleAddToCart'
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
 
-// const cartWithRecords = await Cart.findByPk(id, {
-//   include: [Record],
-// });
-// //send updated student along with updated campus info
-// res.send(cartWithRecords);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+    //coming from 'recordData' object in 'handleAddToCart'
+    const { id } = req.body;
+
+    //find users cart
+    const cart = await Cart.findOne({
+      where: { userId: user.id },
+      include: [User, { model: Record, include: [Genre, Style] }],
+    });
+
+    //find record info
+    const recordToAdd = await Record.findByPk(id);
+
+    //make association btw cart and new record
+    await cart.addRecord(recordToAdd);
+
+    //find updated cart
+    const updatedCart = await Cart.findOne({
+      where: { userId: user.id },
+      include: [User, { model: Record, include: [Genre, Style] }],
+    });
+    //send it back to front end
+    console.log(updatedCart);
+    res.send(updatedCart);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 // // PUT /api/order/:id
 // router.put("/:id", async (req, res, next) => {

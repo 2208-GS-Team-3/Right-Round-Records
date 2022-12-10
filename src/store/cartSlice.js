@@ -1,26 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  cart: [],
+  cartRecords: [],
+  cartInfo: [],
 };
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    setCart: (state, action) => {
-      state.cart = action.payload;
+    setCartRecords: (state, action) => {
+      state.cartRecords = action.payload;
+    },
+    setCartInfo: (state, action) => {
+      state.cartInfo = action.payload;
     },
     addToCart: (state, action) => {
-      const recordInCart = state.cart.find(
+      const recordInCart = state.cartRecords.find(
         (record) => record.id === action.payload.id
       );
       // if record already in cart, add another, otherwise, add the record and give it a quantity of 1
       if (recordInCart) {
-        recordInCart.cartRecord.quantity = 1;
         recordInCart.cartRecord.quantity++;
       } else {
-        state.cart.push({ ...action.payload, quantity: 1 });
+        state.cartRecords.push({ ...action.payload, quantity: 1 });
       }
     },
     incrementQuantity: (state, action) => {
@@ -52,6 +55,7 @@ export const {
   incrementQuantity,
   decrementQuantity,
   removeFromCart,
-  setCart,
+  setCartRecords,
+  setCartInfo,
 } = cartSlice.actions;
 export default cartSlice.reducer;

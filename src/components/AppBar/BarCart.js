@@ -33,16 +33,11 @@ const BarCart = () => {
   });
   const user = useSelector((state) => state.user.user);
   const orders = useSelector((state) => state.orders.orders);
+  const cartInfo = useSelector((state) => state.cart.cartInfo);
 
-  // take the orders, filter out those without an order status of cart, and do not have an order.userId
-  const cart = orders?.filter(
-    (order) => order?.status === "cart" && order?.userId === user.id
-  )[0];
-
-  // console.log(user);
-  // console.log(cart);
-  // console.log(orders);
-  // console.log((cart?.records[0]?.imageUrls[0].uri150));
+  const setPrice = (num) => {
+    return `$${num / 100}`;
+  };
 
   return (
     <React.Fragment>
@@ -58,7 +53,7 @@ const BarCart = () => {
           <ClickAwayListener onClickAway={popupState.close}>
             <Fade {...TransitionProps} timeout={350}>
               <Paper>
-                {cart.records.map((record) => {
+                {cartInfo.records.map((record) => {
                   return (
                     <Container
                       key={`container${record.id}`}
@@ -79,7 +74,9 @@ const BarCart = () => {
                           {record.albumName}
                         </ListItem>
 
-                        <ListItem key={record.price}>{record.price}</ListItem>
+                        <ListItem key={record.price}>
+                          {setPrice(record.price)}
+                        </ListItem>
                       </List>
                     </Container>
                   );

@@ -8,7 +8,7 @@ import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
 import { setOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
-import { setCart } from "../store/cartSlice";
+import { setCartInfo, setCartRecords } from "../store/cartSlice";
 import { useParams } from "react-router-dom";
 
 const App = () => {
@@ -35,14 +35,18 @@ const App = () => {
 
   const getCart = async () => {
     try {
-      const cart = await axios.get(`/api/cart`);
-      // filter out the set users cart
-      // const usersCart = cart
-      console.log(cart.data);
-      // if (!cart.data.id) {
-      //   navigate("/records");
-      // }
-      // dispatch(setCart(cart.data.records));
+      //get token of logged in user
+      const token = window.localStorage.getItem("token");
+      //data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+      //check cart api, send tokenData to only get current users cart
+      const cart = await axios.get(`/api/cart`, tokenData);
+      dispatch(setCartInfo(cart.data));
+      dispatch(setCartRecords(cart.data.records));
     } catch (err) {
       console.log("ERROR");
       console.log(err);
