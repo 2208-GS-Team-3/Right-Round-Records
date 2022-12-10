@@ -48,11 +48,9 @@ const RecordCard = ({ record }) => {
     //add data to cart in redux store
     dispatch(addToCart(recordData));
     const updatedCart = await axios.get(`/api/cart`, tokenData);
-    console.log(updatedCart);
-    dispatch(setCartInfo(updatedCart));
 
-    // console.log(addedRecord);
-    // console.log(updatedCart);
+    dispatch(setCartRecords(updatedCart.data.records));
+    dispatch(setCartInfo(updatedCart.data));
   };
 
   return (
