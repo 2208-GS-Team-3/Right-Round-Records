@@ -28,6 +28,7 @@ function RRRAppBar() {
   const logout = () => {
     window.localStorage.removeItem("token");
     dispatch(resetUser());
+    navigate('/')
   };
 
   const login = () => {
@@ -133,13 +134,15 @@ function RRRAppBar() {
                     </MenuItem>
                   ))}
             </Menu>
-            <Typography sx={{ ml: 1 }}>
-              {user?.username ? (
-                `Welcome, ${user?.username}!`
-              ) : (
-                <Link href="/login">Sign-in</Link>
-              )}
+              {user.username ? (
+            <Typography color={"white"} sx={{ ml: 1 }}>
+                {`Welcome, ${user.username}!`}
             </Typography>
+              ) : (
+                <Link href="/login">
+                  <Typography color="white" sx={{ ml: 1 }}>Sign-in</Typography>
+                </Link>
+              )}
           </Box>
           <BarCart />
         </Toolbar>
