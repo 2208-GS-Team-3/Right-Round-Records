@@ -89,7 +89,7 @@ const seed = async () => {
         artist: record.artists[0].name,
         tracks: record.tracklist,
         imageUrls: record.images,
-        price: record.lowest_price,
+        price: record.lowest_price ?? 5.00,
         description: "",
         year: record.year,
         // below broke everything! now it works!
@@ -243,11 +243,11 @@ const seed = async () => {
 
   //records associated with orders -- WORKING
   order1.addRecord([record1]);
-  order2.setRecords([record5, record9, record3, record7]);
-  order3.setRecords([record4, record6]);
-  order4.setRecords([record10, record2, record8]);
-  order5.setRecords([record6, record3, record4]);
-    order6.setRecords([record6, record3, record4]);
+  order2.addRecord([record5, record9, record3, record7]);
+  order3.addRecord([record4, record6]);
+  order4.addRecord([record10, record2, record8]);
+  order5.addRecord([record6, record3, record4]);
+  order6.addRecord([record6, record3, record4]);
 
   // //reviews added to records -- WORKING
   record1.addReviews([review2]);

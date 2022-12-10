@@ -17,6 +17,7 @@ import SingleRecord from "./components/SingleRecord";
 import Dashboard from "./components/AdminDashboard/Dashboard";
 import axios from "axios";
 import authTest from "./helpers/authTest";
+import Cart from "./components/Cart/Cart";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,11 @@ const router = createBrowserRouter([
       {
         path: "orders",
         element: <AllOrders />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "cart",
+        element: <Cart />,
         errorElement: <ErrorBoundary />,
       },
       {
