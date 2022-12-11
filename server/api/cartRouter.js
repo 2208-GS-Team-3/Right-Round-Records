@@ -74,7 +74,10 @@ router.put("/", async (req, res, next) => {
       where: { userId: user.id },
       include: [User, { model: Record, include: [Genre, Style] }],
     });
-    console.log(req.body);
+
+    const cartRecordToUpdate = await CartRecords.findOne({
+      where: { recordId: req.body.recordId },
+    });
 
     if (req.body.quantity >= 1) {
       await cart.addRecord(req.body.recordId);
@@ -85,8 +88,9 @@ router.put("/", async (req, res, next) => {
     }
 
     //if quantity is 0, destroy the cartRecord for that record
-    if (req.body.quantity === 0) {
+    if (!req.body.quantity) {
       //destroy the record from the cart!
+      console.log("hello");
       await cartRecordToUpdate.destroy();
     }
 

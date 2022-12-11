@@ -26,7 +26,7 @@ const Cart = () => {
   useEffect(() => {
     setPurchaseItems(recordsInCart);
   }, [recordsInCart.length, numberOfRecords]);
-  console.log(recordsInCart);
+
   // If shallow copy becomes an issue, refactor to allow deepcopy or change array to include primity key pairs of recordId and quantity.
   const handleWillPurchaseRecord = (event) => {
     event.target.checked
