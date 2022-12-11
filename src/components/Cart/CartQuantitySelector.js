@@ -66,7 +66,7 @@ const CartQuantitySelector = ({ record }) => {
         <FormControl size="small" fullWidth>
           <InputLabel htmlFor="quantitySelector">Quantity</InputLabel>
           <Select
-            value={currentRecordInCart?.cartRecord?.quantity}
+            defaultValue={currentRecordInCart?.cartRecord?.quantity}
             label="Quantity"
             autoWidth
             id="quantitySelector"
