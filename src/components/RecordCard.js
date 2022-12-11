@@ -6,7 +6,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Select, MenuItem } from "@mui/material";
+import { Select, MenuItem, InputLabel } from "@mui/material";
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -21,7 +21,8 @@ import {
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import handleUpdateCart from "../helpers/handleUpdateCart";
+import handleUpdateCart from "./Cart/CartQuantitySelector";
+import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
 const RecordCard = ({ record }) => {
   const price = "$" + (record.price / 100).toFixed(2);
@@ -29,6 +30,10 @@ const RecordCard = ({ record }) => {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const singleRecordPageUrl = `/records/${record.id}`;
   const dispatch = useDispatch("");
+
+  const currentRecordInCart = recordsInCart?.filter(
+    (cartItem) => cartItem.id === record.id
+  )[0];
 
   // const [recordQuantity, setRecordQuantity] = useState(
   //   record.cartRecord?.quantity
@@ -111,7 +116,7 @@ const RecordCard = ({ record }) => {
   // console.log(record);
   // console.log(recordsInCart.includes(record[0]));
   // console.log(recordsInCart);
-  console.log(record);
+  // console.log(record);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -154,36 +159,21 @@ const RecordCard = ({ record }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button sx={{ mr: 5 }} size="small" href={singleRecordPageUrl}>
+        <Button
+          fullWidth={true}
+          sx={{ mr: 5 }}
+          variant="text"
+          size="small"
+          href={singleRecordPageUrl}
+        >
           More Details
         </Button>
-        {recordsInCart.map((cartItem) => cartItem.id).includes(record.id) ? (
-          <FormControl>
-            <Select
-              defaultValue={
-                recordsInCart.filter((cartItem) => cartItem.id === record.id)[0]
-                  .cartRecord.quantity
-              }
-              label="Quantity"
-              size="small"
-              // value={recordQuantity}
-              // onClick={handleQuantityChange}
-              // onChange={handleUpdateCart}
-            >
-              <MenuItem value={0}>0</MenuItem>
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-              <MenuItem value={6}>6</MenuItem>
-              <MenuItem value={7}>7</MenuItem>
-              <MenuItem value={8}>8</MenuItem>
-              <MenuItem value={9}>9</MenuItem>
-            </Select>
-          </FormControl>
+        {currentRecordInCart ? (
+          <CartQuantitySelector record={currentRecordInCart} />
         ) : (
-          <Button variant="contained">Add to Cart</Button>
+          <Button fullWidth={true} variant="contained">
+            Add to Cart
+          </Button>
         )}
       </CardActions>
     </Card>

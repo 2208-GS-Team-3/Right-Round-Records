@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "@mui/system";
 import {
   Avatar,
@@ -6,19 +6,39 @@ import {
   Button,
   Checkbox,
   Divider,
+  FormControl,
   List,
   ListItem,
-  MenuItem,
-  Select,
   Typography,
 } from "@mui/material";
 import { useSelector } from "react-redux";
+import CartQuantitySelector from "./CartQuantitySelector";
 
 const Cart = () => {
-  const user = useSelector((state) => state.user.user);
-  const orders = useSelector((state) => state.orders.orders);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-  const cartInfo = useSelector((state) => state.cart.cartInfo);
+  const [purchaseItems, setPurchaseItems] = useState([]);
+
+  
+  const numberOfRecords = recordsInCart.reduce(
+    (records, nextRecord) => records + nextRecord.cartRecord.quantity,
+    0
+    );
+    
+    useEffect(() => {
+      setPurchaseItems(recordsInCart);
+    }, [recordsInCart.length, numberOfRecords]);
+    console.log(recordsInCart)
+// If shallow copy becomes an issue, refactor to allow deepcopy or change array to include primity key pairs of recordId and quantity.
+  const handleWillPurchaseRecord = (event) => {
+    event.target.checked
+      ? setPurchaseItems([
+          ...purchaseItems,
+          recordsInCart.find((record) => record.id === Number(event.target.id)),
+        ])
+      : setPurchaseItems(
+          purchaseItems.filter((item) => item.id !== Number(event.target.id))
+        );
+  };
 
   return (
     <Box key={`wholeCart`} sx={{ display: "grid", gridAutoFlow: "row" }}>
@@ -33,7 +53,9 @@ const Cart = () => {
       >
         <img id="front-page-logo" src="static/RRR Logo.png" />
       </Container>
-      <Typography variant="h4">Cart</Typography>
+      <Typography sx={{ ml: 1 }} variant="h4">
+        Cart
+      </Typography>
       <Divider />
       <Box sx={{ display: "flex", padding: "0" }}>
         <Container
@@ -41,8 +63,9 @@ const Cart = () => {
           maxWidth="xl"
           sx={{
             display: "flex",
-            placeItems: "stretch",
+            placeItems: "center",
             flexDirection: "column",
+            pr: 0,
           }}
         >
           {recordsInCart?.map((record) => {
@@ -52,74 +75,91 @@ const Cart = () => {
                 maxWidth="xl"
                 sx={{
                   display: "flex",
-                  placeItems: "center",
+                  placeContent: "space-between",
+                  pr: 0,
                 }}
               >
-                <Checkbox defaultChecked></Checkbox>
-                <Button
-                  variant="text"
-                  href={`/records/${record.id}`}
-                  sx={{ display: "flex", placeItems: "center" }}
-                  key={`buttonFor${record.id}`}
-                  // fullWidth={xl}
-                >
-                  <Container
-                    key={`containerFor${record.id}`}
-                    variant="contained"
-                    sx={{ display: "flex", placeItems: "center" }}
+                <Box sx={{ display: "flex", boxSizing: "border-box" }}>
+                  <FormControl sx={{ placeSelf: "center" }}>
+                    <Checkbox
+                      checked={purchaseItems.includes(record)}
+                      record={record}
+                      onChange={handleWillPurchaseRecord}
+                      id={`${record.id}`}
+                    ></Checkbox>
+                  </FormControl>
+                  <Button
+                    variant="text"
+                    href={`/records/${record.id}`}
+                    sx={{ display: "flex", width: "70vw" }}
+                    key={`buttonFor${record.id}`}
                   >
-                    <Avatar
-                      key={`imageFor${record.id}`}
-                      src={
-                        record?.imageUrls[0]?.uri150 ?? "static/RRR Record.png"
-                      }
-                    />
-                    <List key={`listInfoFor${record.id}`}>
-                      <ListItem
-                        href={`/records/${record.id}`}
-                        key={`albumNameFor${record.id}`}
-                      >
-                        {record.albumName}
-                      </ListItem>
-                      <ListItem key={`priceFor${record.price}`}>
-                        ${(record.price / 100).toFixed(2)}
-                      </ListItem>
-                    </List>
-                  </Container>
-                </Button>
-                <Select
-                  defaultValue={record.cartRecord.quantity}
-                  label="Quantity"
-                  size="small"
-                >
-                  <MenuItem value={0}>0</MenuItem>
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={6}>6</MenuItem>
-                  <MenuItem value={7}>7</MenuItem>
-                  <MenuItem value={8}>8</MenuItem>
-                  <MenuItem value={9}>9</MenuItem>
-                </Select>
+                    <Container
+                      key={`containerFor${record.id}`}
+                      variant="contained"
+                      sx={{ display: "flex", placeSelf: "stretch" }}
+                    >
+                      <Avatar
+                        sx={{ placeSelf: "center" }}
+                        key={`imageFor${record.id}`}
+                        src={
+                          record?.imageUrls[0]?.uri150 ??
+                          "static/RRR Record.png"
+                        }
+                      />
+                      <List key={`listInfoFor${record.id}`}>
+                        <ListItem
+                          href={`/records/${record.id}`}
+                          key={`albumNameFor${record.id}`}
+                        >
+                          {record.albumName}
+                        </ListItem>
+                        <ListItem key={`priceFor${record.price}`}>
+                          ${(record.price / 100).toFixed(2)}
+                        </ListItem>
+                      </List>
+                    </Container>
+                  </Button>
+                </Box>
+                <Box width={75} sx={{ placeSelf: "center" }}>
+                  <CartQuantitySelector record={record} />
+                </Box>
               </Container>
             );
           })}
         </Container>
-        <Box key={`cartSubtotalContainer`} sx={{ padding: "0" }}>
-          <Typography key={`subtotalInformation`}>{`Subtotal (${
-            recordsInCart?.length
-          } Item${recordsInCart?.length === 1 ? "" : "s"}):`}</Typography>
-          <Typography key={`subtotalPrice`}>
-            $
-            {(
-              recordsInCart?.reduce(
-                (currentTotal, itemValue) => currentTotal + itemValue.price,
-                0
-              ) / 100
-            ).toFixed(2)}
-          </Typography>
+        <Box
+          key={`cartSubtotalContainer`}
+          sx={{
+            display: "flex",
+            pl: 0,
+            pr: 5,
+            flexDirection: "column",
+            gap: 10,
+          }}
+        >
+          <div>
+            <Typography
+              variant="h5"
+              key={`subtotalInformation`}
+            >{`Subtotal (${numberOfRecords} Item${
+              numberOfRecords === 1 ? "" : "s"
+            }):`}</Typography>
+            <Typography variant="h6" key={`subtotalPrice`}>
+              $
+              {(
+                purchaseItems?.reduce(
+                  (currentTotal, itemValue) =>
+                    currentTotal +
+                    itemValue.price * itemValue.cartRecord.quantity,
+                  0
+                ) / 100
+              ).toFixed(2)}
+            </Typography>
+          </div>
+          <Button variant="contained" sx={{ placeSelf: "stretch" }}>
+            Checkout
+          </Button>
         </Box>
       </Box>
     </Box>
