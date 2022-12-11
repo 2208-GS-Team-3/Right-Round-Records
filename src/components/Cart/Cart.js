@@ -15,19 +15,19 @@ import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
 
 const Cart = () => {
-  const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const [purchaseItems, setPurchaseItems] = useState([]);
+  const recordsInCart = useSelector((state) => state.cart.cartRecords);
 
   
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord.cartRecord.quantity,
     0
     );
-    
+
     useEffect(() => {
       setPurchaseItems(recordsInCart);
     }, [recordsInCart.length, numberOfRecords]);
-    console.log(recordsInCart)
+    
 // If shallow copy becomes an issue, refactor to allow deepcopy or change array to include primity key pairs of recordId and quantity.
   const handleWillPurchaseRecord = (event) => {
     event.target.checked
@@ -121,8 +121,8 @@ const Cart = () => {
                     </Container>
                   </Button>
                 </Box>
-                <Box width={75} sx={{ placeSelf: "center" }}>
-                  <CartQuantitySelector record={record} />
+                <Box key={`boxForQuantityOf${record.id}`} width={75} sx={{ placeSelf: "center" }}>
+                  <CartQuantitySelector key={`cartQuantitySelectorFor${record.id}`} record={record} />
                 </Box>
               </Container>
             );
