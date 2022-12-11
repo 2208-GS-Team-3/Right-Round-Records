@@ -15,16 +15,16 @@ export const cartSlice = createSlice({
     setCartInfo: (state, action) => {
       state.cartInfo = action.payload;
     },
-    addToCart: (state, action) => {
+    updateCart: (state, action) => {
       const recordInCart = state.cartRecords.find(
         (record) => record.id === action.payload.id
       );
       // if record already in cart, add another, otherwise, add the record and give it a quantity of 1
       if (recordInCart) {
-        console.log(recordInCart.cartRecord.quantity++);
-        recordInCart.cartRecord.quantity++;
+        // console.log(recordInCart.cartRecord.quantity++);
+        recordInCart.cartRecord.quantity = action.payload;
       } else {
-        console.log(action.payload);
+        // console.log(action.payload);
         state.cartRecords.push({ ...action.payload });
       }
     },
@@ -52,12 +52,6 @@ export const cartSlice = createSlice({
   },
 });
 
-export const {
-  addToCart,
-  // incrementQuantity,
-  // decrementQuantity,
-  removeFromCart,
-  setCartRecords,
-  setCartInfo,
-} = cartSlice.actions;
+export const { updateCart, removeFromCart, setCartRecords, setCartInfo } =
+  cartSlice.actions;
 export default cartSlice.reducer;

@@ -3,7 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
-  addToCart,
+  updateCart,
   removeFromCart,
   setCartInfo,
   setCartRecords,
@@ -15,40 +15,39 @@ const CartQuantitySelector = ({ record }) => {
     record?.cartRecord?.quantity
   );
 
-  const updateQuantity = 
-    async (event) => {
-      event.preventDefault();
-      setRecordQuantity(event.target.value);
-      //get token of logged in user
-      const token = window.localStorage.getItem("token");
-      //data to send to backend
-      const tokenData = {
-        headers: {
-          authorization: token,
-        },
-      };
+  const updateQuantity = async (event) => {
+    event.preventDefault();
+    setRecordQuantity(event.target.value);
+    //get token of logged in user
+    const token = window.localStorage.getItem("token");
+    //data to send to backend
+    const tokenData = {
+      headers: {
+        authorization: token,
+      },
+    };
 
-      //updated info coming in
-      const recordToUpdate = {
-        recordId: record.id,
-        quantity: event.target.value,
-        // send quantity to be updated as well
-      };
-      //update backend
-      await axios.put(`/api/cart`, recordToUpdate, tokenData);
+    //updated info coming in
+    const recordToUpdate = {
+      recordId: record.id,
+      quantity: event.target.value,
+      // send quantity to be updated as well
+    };
+    //update backend
+    await axios.put(`/api/cart`, recordToUpdate, tokenData);
 
-      //need an 'update cart' button to update UI if user wants to remove item
-      // this removes data from cart in redux store
-      if (recordToUpdate?.quantity === 0) {
-        dispatch(removeFromCart(recordToUpdate));
-      } else if (recordToUpdate?.quantity === 1) {
-        dispatch(addToCart(recordToUpdate));
-      }
-
-      const updatedCart = await axios.get(`/api/cart`, tokenData);
-      dispatch(setCartRecords(updatedCart.data.records));
-      dispatch(setCartInfo(updatedCart.data));
+    //need an 'update cart' button to update UI if user wants to remove item
+    // this removes data from cart in redux store
+    if (recordToUpdate?.quantity === 0) {
+      dispatch(removeFromCart(recordToUpdate));
+    } else if (recordToUpdate?.quantity >= 1) {
+      dispatch(updateCart(recordToUpdate));
     }
+
+    const updatedCart = await axios.get(`/api/cart`, tokenData);
+    dispatch(setCartRecords(updatedCart.data.records));
+    dispatch(setCartInfo(updatedCart.data));
+  };
 
   return (
     <FormControl size="small" fullWidth>

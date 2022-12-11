@@ -18,17 +18,16 @@ const Cart = () => {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const [purchaseItems, setPurchaseItems] = useState([]);
 
-  
   const numberOfRecords = recordsInCart.reduce(
-    (records, nextRecord) => records + nextRecord.cartRecord.quantity,
+    (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
     0
-    );
-    
-    useEffect(() => {
-      setPurchaseItems(recordsInCart);
-    }, [recordsInCart.length, numberOfRecords]);
-    console.log(recordsInCart)
-// If shallow copy becomes an issue, refactor to allow deepcopy or change array to include primity key pairs of recordId and quantity.
+  );
+
+  useEffect(() => {
+    setPurchaseItems(recordsInCart);
+  }, [recordsInCart.length, numberOfRecords]);
+  console.log(recordsInCart);
+  // If shallow copy becomes an issue, refactor to allow deepcopy or change array to include primity key pairs of recordId and quantity.
   const handleWillPurchaseRecord = (event) => {
     event.target.checked
       ? setPurchaseItems([
@@ -103,7 +102,7 @@ const Cart = () => {
                         sx={{ placeSelf: "center" }}
                         key={`imageFor${record.id}`}
                         src={
-                          record?.imageUrls[0]?.uri150 ??
+                          // record?.imageUrls[0]?.uri150 ??
                           "static/RRR Record.png"
                         }
                       />
