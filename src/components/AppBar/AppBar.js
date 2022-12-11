@@ -13,8 +13,10 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUser } from "../../store/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BarCart from "./BarCart";
+import { Badge } from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const pages = ["Records", "Reviews", "Community"];
 const userSettings = ["Profile", "Account", "Dashboard", "Orders", "Logout"];
@@ -24,11 +26,19 @@ function RRRAppBar() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const currentPage = useLocation();
+
+  const recordsInCart = useSelector((state) => state.cart.cartRecords);
+
+  const numberOfRecords = recordsInCart.reduce(
+    (records, nextRecord) => records + nextRecord.cartRecord.quantity,
+    0
+  );
 
   const logout = () => {
     window.localStorage.removeItem("token");
     dispatch(resetUser());
-    navigate('/')
+    navigate("/");
   };
 
   const login = () => {
@@ -134,17 +144,25 @@ function RRRAppBar() {
                     </MenuItem>
                   ))}
             </Menu>
-              {user.username ? (
-            <Typography color={"white"} sx={{ ml: 1 }}>
+            {user.username ? (
+              <Typography color={"white"} sx={{ ml: 1 }}>
                 {`Welcome, ${user.username}!`}
-            </Typography>
-              ) : (
-                <Link href="/login">
-                  <Typography color="white" sx={{ ml: 1 }}>Sign-in</Typography>
-                </Link>
-              )}
+              </Typography>
+            ) : (
+              <Link href="/login">
+                <Typography color="white" sx={{ ml: 1 }}>
+                  Sign-in
+                </Typography>
+              </Link>
+            )}
           </Box>
-          <BarCart />
+          {currentPage.pathname === `/cart` ? (
+            <Badge badgeContent={numberOfRecords} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          ) : (
+            <BarCart />
+          )}
         </Toolbar>
       </Container>
     </AppBar>
