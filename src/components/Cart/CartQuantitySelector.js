@@ -8,12 +8,23 @@ import {
   setCartInfo,
   setCartRecords,
 } from "../../store/cartSlice";
+import { useSelector } from "react-redux";
+import Button from "@mui/material/Button";
+import { current } from "@reduxjs/toolkit";
 
 const CartQuantitySelector = ({ record }) => {
   const dispatch = useDispatch();
+  const recordsInCart = useSelector((state) => state.cart.cartRecords);
+
   const [recordQuantity, setRecordQuantity] = useState(
     record?.cartRecord?.quantity
   );
+
+  const currentRecordInCart = recordsInCart?.filter(
+    (cartItem) => cartItem.id === record.id
+  )[0];
+
+  // console.log(currentRecordInCart);
 
   const updateQuantity = async (event) => {
     event.preventDefault();
@@ -50,26 +61,39 @@ const CartQuantitySelector = ({ record }) => {
   };
 
   return (
-    <FormControl size="small" fullWidth>
-      <InputLabel htmlFor="quantitySelector">Quantity</InputLabel>
-      <Select
-        value={recordQuantity}
-        label="Quantity"
-        autoWidth
-        id="quantitySelector"
-        onChange={updateQuantity}
-      >
-        <MenuItem value={1}>1</MenuItem>
-        <MenuItem value={2}>2</MenuItem>
-        <MenuItem value={3}>3</MenuItem>
-        <MenuItem value={4}>4</MenuItem>
-        <MenuItem value={5}>5</MenuItem>
-        <MenuItem value={6}>6</MenuItem>
-        <MenuItem value={7}>7</MenuItem>
-        <MenuItem value={8}>8</MenuItem>
-        <MenuItem value={9}>9</MenuItem>
-      </Select>
-    </FormControl>
+    <div>
+      {currentRecordInCart ? (
+        <FormControl size="small" fullWidth>
+          <InputLabel htmlFor="quantitySelector">Quantity</InputLabel>
+          <Select
+            value={currentRecordInCart?.cartRecord?.quantity}
+            label="Quantity"
+            autoWidth
+            id="quantitySelector"
+            onChange={updateQuantity}
+          >
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={4}>4</MenuItem>
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={6}>6</MenuItem>
+            <MenuItem value={7}>7</MenuItem>
+            <MenuItem value={8}>8</MenuItem>
+            <MenuItem value={9}>9</MenuItem>
+          </Select>
+        </FormControl>
+      ) : (
+        <Button
+          fullWidth={true}
+          variant="contained"
+          onClick={updateQuantity}
+          value={1}
+        >
+          Add to Cart
+        </Button>
+      )}
+    </div>
   );
 };
 export default CartQuantitySelector;

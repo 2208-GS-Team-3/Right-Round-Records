@@ -25,7 +25,8 @@ export const cartSlice = createSlice({
         recordInCart.cartRecord.quantity = action.payload;
       } else {
         // console.log(action.payload);
-        state.cartRecords.push({ ...action.payload });
+        console.log(action.payload);
+        // state.cartRecords.push({ ...cartRecord, ...action.payload });
       }
     },
     // incrementQuantity: (state, action) => {
