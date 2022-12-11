@@ -5,6 +5,7 @@ import Container from "@mui/material/Container";
 import "./homepage.css";
 import TopRecords from "../TopRecords";
 import axios from "axios";
+import { Box } from "@mui/material";
 
 const Home = () => {
   const { user } = useSelector((state) => state.user);
@@ -23,7 +24,7 @@ const Home = () => {
 };
 
   return (
-    <div>
+    <Box>
       <Container
         maxWidth="xl"
         sx={{
@@ -32,12 +33,11 @@ const Home = () => {
           maxHeight: "35vh",
           placeContent: "center",
         }}
-      >
+        >
         <img id="front-page-logo" src="static/RRR Logo.png" />
       </Container>
-      <Typography>Welcome {}{user.username ?? "Guest"}!</Typography>
       <TopRecords />
-    </div>
+        </Box>
   );
 };
 
