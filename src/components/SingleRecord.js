@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import CreateReviewForm from "./CreateReviewForm";
+import SingleRecReviews from "./SingleRecReviews";
 
 const SingleRecord = () => {
   const { selectedRecord, loadingRecord } = useSelector((state) => {
@@ -43,16 +44,7 @@ const SingleRecord = () => {
     return <h1>Oops, this record doesn't exist, please try again</h1>;
 
   return (
-    <Container
-      maxWidth="100vw"
-      // fixed
-      // sx={{
-      //   bgcolor: "#cfe8fc",
-      //   height: "100vh",
-      //   display: "flex",
-      //   justifyContent: "center",
-      // }}
-    >
+    <Container maxWidth="100vw">
       <Box>
         <img
           component="img"
@@ -90,16 +82,7 @@ const SingleRecord = () => {
             ))}
           </span>
         </Typography>
-        <p>
-          Reviews:
-          {selectedRecord.reviews.map((review, index) => (
-            <li key={index}>
-              Comment:{review.comment} <br></br>
-              Rating:{review.rating}{" "}
-            </li>
-          ))}
-        </p>
-        <CreateReviewForm selectedRecord={selectedRecord} />
+        <SingleRecReviews selectedRecord={selectedRecord} />
         <Button size="small" href={"/"}>
           Back
         </Button>

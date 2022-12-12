@@ -70,14 +70,14 @@ router.put("/", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
-  try {
-    const review = await Review.findByPk(req.params.id);
-    await todo.destroy();
-    res.send(todo);
-  } catch (error) {
-    next(error);
-  }
-});
+// router.delete("/:id", async (req, res, next) => {
+//   try {
+//     const review = await Review.findByPk(req.params.id);
+//     await review.destroy();
+//     res.send(review);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 module.exports = router;

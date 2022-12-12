@@ -60,6 +60,7 @@ const CreateReviewForm = ({ selectedRecord }) => {
     console.log(event.target.value);
     setReviewComment(event.target.value);
   };
+
   const collectRating = (event) => {
     let numRating = Number(event.target.value);
     setReviewRating(numRating);
