@@ -5,6 +5,7 @@ import genresReducer from "./genresSlice";
 import singleRecordReducer from "./singleRecordSlice";
 import ordersReducer from "./ordersSlice";
 import cartReducer from "./cartSlice";
+import createUserReducer from "./createUserSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     genres: genresReducer,
     selectedRecord: singleRecordReducer,
     cart: cartReducer,
+    userToCreate: createUserReducer,
   },
 });
 
