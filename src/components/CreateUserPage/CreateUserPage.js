@@ -17,7 +17,7 @@ import { setUserToCreate } from "../../store/createUserSlice";
 import { setUser } from "../../store/userSlice";
 
 const CreateUserPage = () => {
-  const userToCreate = useSelector((state) => state.userToCreate);
+  const userToCreate = useSelector((state) => state.userToCreate.userToCreate);
   // { username, password, firstName, lastName, email, phoneNum, shippingAddress, billingAddress, birthday, avatarUrl }
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const CreateUserPage = () => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
-    dispatch(setUserToCreate([name, value]));
+    dispatch(setUserToCreate({ ...userToCreate, [name]: value}));
     console.log(userToCreate);
   };
 

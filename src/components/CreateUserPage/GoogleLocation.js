@@ -31,12 +31,12 @@ export default function GoogleLocation() {
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
-  const userToCreate = useSelector((state) => state.userToCreate)
+  const userToCreate = useSelector((state) => state.userToCreate.userToCreate)
   const dispatch = useDispatch()
 
   const handleUserStateChange = (value) => {
     const name = "address";
-    dispatch(setUserToCreate([name, value]))
+    dispatch(setUserToCreate({ ...userToCreate, [name]: value}));
     console.log(userToCreate);
   };
 

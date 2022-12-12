@@ -21,7 +21,6 @@ const LoginPage = () => {
     username: "",
     password: "",
   });
-
   const navigate = useNavigate();
 
   const onChange = (ev) => {
@@ -37,7 +36,9 @@ const LoginPage = () => {
         },
       });
       dispatch(setUser(response.data));
+
       navigate("/");
+      window.location.reload();
     }
   };
 

@@ -8,7 +8,7 @@ const JWT = process.env.JWT;
 router.post("/", async (req, res, next) => {
   try {
     const { username, password, firstName, lastName, email, phoneNum, address, birthday, avatarUrl } = req.body;
-   await User.create({
+   const newUser = await User.create({
         username: username,
         password: password,
         firstName: firstName,
@@ -20,6 +20,10 @@ router.post("/", async (req, res, next) => {
         avatarUrl: avatarUrl,
         isAdmin: false,
       })
+
+      const newUserCart = await Cart.create()
+
+      newUserCart.setUser(newUser)
 
       res.sendStatus(200)
 

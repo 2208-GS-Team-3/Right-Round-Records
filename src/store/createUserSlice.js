@@ -8,7 +8,7 @@ export const createUserSlice = createSlice({
   reducers: {
     setUserToCreate: (state, action) => {
       // console.log(Object.keys(action.payload)[0])
-      state[action.payload[0]] = action.payload[1]
+      state.userToCreate = action.payload
   },
 }});
 
