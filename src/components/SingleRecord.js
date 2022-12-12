@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
+import CreateReviewForm from "./CreateReviewForm";
 
 const SingleRecord = () => {
   const { selectedRecord, loadingRecord } = useSelector((state) => {
@@ -98,6 +99,7 @@ const SingleRecord = () => {
             </li>
           ))}
         </p>
+        <CreateReviewForm selectedRecord={selectedRecord} />
         <Button size="small" href={"/"}>
           Back
         </Button>
