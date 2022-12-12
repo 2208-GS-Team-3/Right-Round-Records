@@ -1,14 +1,8 @@
-import { CircularProgress } from "@mui/material";
-import React, { useEffect } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { setRecord, setLoadingRecord } from "../store/singleRecordSlice";
+import React from "react";
+import { useSelector } from "react-redux";
 import Container from "@mui/material/Container";
 import Rating from "@mui/material/Rating";
-
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
+import { CardContent, Typography } from "@mui/material/CardContent";
 
 const Review = () => {
   const selectedRecord = useSelector(

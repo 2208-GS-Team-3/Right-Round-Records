@@ -2,13 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setRecord } from "../store/singleRecordSlice";
-import { addReview, setReviews } from "../store/reviewsSlice";
-import Rating from "@mui/material/Rating";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { FormControl, Button } from "@mui/material";
-
+import { setReviews } from "../store/reviewsSlice";
+import { Rating, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const CreateReviewForm = ({ selectedRecord }) => {
@@ -104,35 +99,6 @@ const CreateReviewForm = ({ selectedRecord }) => {
         </Button>
         <br></br>
       </form>
-
-      {/* <form
-        onSubmit={handleAddReview}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          height: "300px",
-          width: "800px",
-        }}
-      > */}
-      {/* <Textarea minRows={2} onChange={collectComment} /> */}
-      {/* <label>Review: </label> */}
-      {/* <input type={"text"} onChange={collectComment} /> */}
-      {/* <TextareaAutosize
-          maxRows={4}
-          aria-label="maximum height"
-          placeholder="Review this album!"
-          type={"text"}
-          defaultValue=""
-          style={{ width: 200 }}
-        /> */}
-      {/* <Typography component="legend">Rating:</Typography>
-        <Rating
-          name="simple-controlled"
-          // value={value}
-          onChange={collectRating}
-        /> */}
-      {/* <button type="submit">Submit</button> */}
-      {/* </form> */}
     </div>
   );
 };
