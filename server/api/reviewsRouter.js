@@ -12,8 +12,22 @@ const {
   CartRecords,
 } = require("../db");
 
+router.get("/", async (req, res, next) => {
+  try {
+    console.log("hello");
+    const reviews = await Review.findAll({
+      order: [["id", "DESC"]],
+      include: [User, { model: Record, include: [Genre, Style, Order] }],
+    });
+    res.send(reviews);
+  } catch (err) {
+    res.sendStatus(404);
+    next(err);
+  }
+});
+
 //update review and/or new contect on single record page
-router.post("/", async (req, res, next) => {
+router.put("/", async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
@@ -44,10 +58,25 @@ router.post("/", async (req, res, next) => {
     await record.addReview(newReview);
     await user.addReview(newReview);
 
-    res.status(201);
+    const updatedRecord = await Record.findOne({
+      where: { id: req.body.recordId },
+      include: [Review, Genre, Style, { model: Order, include: [User] }],
+    });
+    // send back the updated record!
+    res.send(updatedRecord);
   } catch (err) {
     console.error(err);
     next(err);
+  }
+});
+
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const review = await Review.findByPk(req.params.id);
+    await todo.destroy();
+    res.send(todo);
+  } catch (error) {
+    next(error);
   }
 });
 

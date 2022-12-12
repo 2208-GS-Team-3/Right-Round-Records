@@ -6,7 +6,6 @@ import Container from "@mui/material/Container";
 
 const AllRecords = () => {
   const records = useSelector((state) => state.records.records);
-  console.log(records);
   return (
     <Container
       fixed

@@ -2,21 +2,21 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setRecord } from "../store/singleRecordSlice";
+import { addReview, setReviews } from "../store/reviewsSlice";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { FormControl, Button } from "@mui/material";
 
-import { addReview } from "../store/singleRecordSlice";
 import { useNavigate } from "react-router-dom";
 
 const CreateReviewForm = ({ selectedRecord }) => {
-  const [dateReviewed, setDateReviewed] = useState("");
   const [reviewComment, setReviewComment] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // const params = useParams();
 
   const handleSubmitReview = async (event) => {
     event.preventDefault();
@@ -30,28 +30,30 @@ const CreateReviewForm = ({ selectedRecord }) => {
       },
     };
 
-    const newReview = {
+    const reviewToUpdate = {
       recordId: selectedRecord.id,
       comment: reviewComment,
       reviewRating: reviewRating,
     };
 
     //create new review in database
-    await axios.post(`/api/reviews`, newReview, tokenData);
-
-    //update reviews on front end
-    // dispatch(addReview(newReview));
+    await axios.put(`/api/reviews`, reviewToUpdate, tokenData);
 
     //fetch records again with updated reviews
-    const recordWithNewReview = await axios.get(
-      `/api/records/${selectedRecord.id}`
+    const allNewReviews = await axios.get(`/api/reviews/`, tokenData);
+    //update reviews on front end
+    dispatch(setReviews(allNewReviews.data));
+
+    //get updated record were reviewing
+    const updatedSingleRecord = await axios.get(
+      `/api/records/${selectedRecord.id}`,
+      tokenData
     );
-
-    //update global state of single record to include  new review
-    dispatch(setRecord(recordWithNewReview));
-
-    //why am i not refreshing here?
-    navigate(`records/:${selectedRecord.id}`);
+    //set that records new review data
+    dispatch(setRecord(updatedSingleRecord.data));
+    //show updated review on page
+    navigate(`/records/${selectedRecord.id}`);
+    //
   };
 
   const collectComment = (event) => {
@@ -62,6 +64,15 @@ const CreateReviewForm = ({ selectedRecord }) => {
     let numRating = Number(event.target.value);
     setReviewRating(numRating);
   };
+
+  // const handleDeleteReview = async (event) => {
+  //   event.preventDefault();
+  //   const { data: deleted } = await axios.delete(`/api/reviews/${params.id}`, {
+  //     //dont need anything here bc no info needs to be passed in?
+  //   });
+  //   dispatch(deleteReview(deleted));
+  //   navigate("/");
+  // };
 
   //add logic for (ONLY if user has ordered this record, they can review it)
   return (
