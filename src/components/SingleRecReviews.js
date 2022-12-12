@@ -10,29 +10,16 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import CreateReviewForm from "./CreateReviewForm";
 import Review from "./Review";
-import Rating from "@mui/material/Rating";
 
 const SingleRecReviews = () => {
   const selectedRecord = useSelector(
     (state) => state.selectedRecord.selectedRecord
   );
 
-  const sumOfRatings = selectedRecord.reviews.reduce(
-    (rating, nextRating) => rating + nextRating.reviewRating,
-    0
-  );
-  const avgRating = (sumOfRatings / selectedRecord.reviews.length).toFixed(1);
-
   return (
     <Container maxWidth="100vw">
       {selectedRecord.reviews.length > 0 ? (
         <>
-          <Typography component="legend">
-            <b>Average Rating</b>
-          </Typography>
-          <Rating name="read-only" value={Number(avgRating)} readOnly />
-          <br></br>
-          <br></br>
           Reviews:
           <Container maxWidth="100vw">
             <Review />
