@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  selectedRecord: {},
+  selectedRecord: [],
+  selectedRecordReviews: [],
   loadingRecord: false,
 };
 
@@ -19,9 +20,13 @@ export const singleRecordSlice = createSlice({
       state.selectedRecord = initialState.selectedRecord;
       state.loadingRecord = initialState.loadingRecord;
     },
+    // addReview: (state, action) => {
+    //   console.log(action.payload);
+    //   state.selectedRecordReviews.push(action.payload);
+    // },
   },
 });
 
-export const { setRecord, setLoadingRecord, resetRecord } =
+export const { setRecord, setLoadingRecord, resetRecord, addReview } =
   singleRecordSlice.actions;
 export default singleRecordSlice.reducer;
