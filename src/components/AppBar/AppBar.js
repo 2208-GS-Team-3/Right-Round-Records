@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,8 +13,10 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUser } from "../../store/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BarCart from "./BarCart";
+import { Badge } from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const pages = ["Records", "Reviews", "Community"];
 const userSettings = ["Profile", "Account", "Dashboard", "Orders", "Logout"];
@@ -24,11 +26,24 @@ function RRRAppBar() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const currentPage = useLocation();
+  const recordsInCart = useSelector((state) => state.cart.cartRecords);
+  const [recordTotal, setRecordTotal] = React.useState(0);
+
+  useEffect(() => {
+    setRecordTotal(
+      recordsInCart.reduce(
+        (records, nextRecord) => records + nextRecord.cartRecord.quantity,
+        0
+      )
+    );
+  }, [recordsInCart]);
 
   const logout = () => {
     window.localStorage.removeItem("token");
     dispatch(resetUser());
-    navigate('/')
+    navigate("/");
+    window.location.reload();
   };
 
   const login = () => {
@@ -134,17 +149,29 @@ function RRRAppBar() {
                     </MenuItem>
                   ))}
             </Menu>
-              {user.username ? (
-            <Typography color={"white"} sx={{ ml: 1 }}>
+            {user.username ? (
+              <Typography color={"white"} sx={{ ml: 1 }}>
                 {`Welcome, ${user.username}!`}
-            </Typography>
-              ) : (
-                <Link href="/login">
-                  <Typography color="white" sx={{ ml: 1 }}>Sign-in</Typography>
-                </Link>
-              )}
+              </Typography>
+            ) : (
+              <Link href="/login">
+                <Typography color="white" sx={{ ml: 1 }}>
+                  Sign-in
+                </Typography>
+              </Link>
+            )}
           </Box>
-          <BarCart />
+          {currentPage.pathname === `/cart` ? (
+            <Badge
+              key={`CartBadge`}
+              badgeContent={cartRecords}
+              color="secondary"
+            >
+              <ShoppingCartIcon />
+            </Badge>
+          ) : (
+            <BarCart />
+          )}
         </Toolbar>
       </Container>
     </AppBar>

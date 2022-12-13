@@ -23,6 +23,7 @@
     "@mui/material": "^5.10.16",
     "@popperjs/core": "^2.11.6",
     "@reduxjs/toolkit": "^1.9.1",
+    "autosuggest-highlight": "^3.3.4",
     "bcrypt": "^5.1.0",
     "css-loader": "^6.7.2",
     "disconnect": "^1.2.2",
