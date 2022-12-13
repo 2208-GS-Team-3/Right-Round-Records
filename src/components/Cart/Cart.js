@@ -13,15 +13,22 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
+import CheckoutPage from "../CheckoutPage";
+// import FormControl from "@mui/material/FormControl";
 
 const Cart = () => {
   const [purchaseItems, setPurchaseItems] = useState([]);
+  const [checkOut, setCheckOut] = useState(false);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
 
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
     0
   );
+
+  const displayCheckOut = () => {
+    setCheckOut((currValue) => !currValue);
+  };
 
   useEffect(() => {
     setPurchaseItems(recordsInCart);
@@ -52,6 +59,7 @@ const Cart = () => {
       >
         <img id="front-page-logo" src="static/RRR Logo.png" />
       </Container>
+      {checkOut && <CheckoutPage />}
       <Typography sx={{ ml: 1 }} variant="h4">
         Cart
       </Typography>
@@ -163,7 +171,11 @@ const Cart = () => {
               ).toFixed(2)}
             </Typography>
           </div>
-          <Button variant="contained" sx={{ placeSelf: "stretch" }}>
+          <Button
+            variant="contained"
+            sx={{ placeSelf: "stretch" }}
+            onClick={displayCheckOut}
+          >
             Checkout
           </Button>
         </Box>
