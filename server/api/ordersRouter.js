@@ -51,7 +51,7 @@ router.put("/", async (req, res, next) => {
 
     const cart = await Cart.findOne({
       where: { id: req.body.cartId },
-      include: [{ model: Record, include: [Genre, Style] }],
+      include: [User, { model: Record, include: [Genre, Style] }],
     });
 
     // associate new order with records
@@ -61,12 +61,12 @@ router.put("/", async (req, res, next) => {
 
     //order to send back to UI
     const orderWithRecords = await Order.findByPk(newOrder.id, {
-      include: [{ model: Record, include: [Genre, Style] }],
+      include: [User, { model: Record, include: [Genre, Style] }],
     });
 
     //how to include cart record with quantity?
-
-    res.send(orderWithRecords.data);
+    console.log(orderWithRecords);
+    res.send(orderWithRecords);
   } catch (err) {
     console.error(err);
     next(err);
