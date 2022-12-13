@@ -18,17 +18,16 @@ const Cart = () => {
   const [purchaseItems, setPurchaseItems] = useState([]);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
 
-  
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord.cartRecord.quantity,
     0
-    );
+  );
 
-    useEffect(() => {
-      setPurchaseItems(recordsInCart);
-    }, [recordsInCart.length, numberOfRecords]);
-    
-// If shallow copy becomes an issue, refactor to allow deepcopy or change array to include primity key pairs of recordId and quantity.
+  useEffect(() => {
+    setPurchaseItems(recordsInCart);
+  }, [recordsInCart.length, numberOfRecords]);
+
+  // If shallow copy becomes an issue, refactor to allow deepcopy or change array to include primity key pairs of recordId and quantity.
   const handleWillPurchaseRecord = (event) => {
     event.target.checked
       ? setPurchaseItems([
@@ -121,8 +120,15 @@ const Cart = () => {
                     </Container>
                   </Button>
                 </Box>
-                <Box key={`boxForQuantityOf${record.id}`} width={75} sx={{ placeSelf: "center" }}>
-                  <CartQuantitySelector key={`cartQuantitySelectorFor${record.id}`} record={record} />
+                <Box
+                  key={`boxForQuantityOf${record.id}`}
+                  width={75}
+                  sx={{ placeSelf: "center" }}
+                >
+                  <CartQuantitySelector
+                    key={`cartQuantitySelectorFor${record.id}`}
+                    record={record}
+                  />
                 </Box>
               </Container>
             );

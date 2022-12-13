@@ -1,74 +1,140 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setRecord } from '../store/singleRecordSlice'
+import axios from "axios";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setRecord } from "../store/singleRecordSlice";
+import { addReview, setReviews } from "../store/reviewsSlice";
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import { FormControl, Button } from "@mui/material";
 
-const CreateReviewForm = ({selectedRecord}) => {
-    const [dateReviewed, setDateReivewed] = useState("");
-    const [comment, setComment] = useState("");
-    const [reviewRating, setReviewRating] = useState("");
+import { useNavigate } from "react-router-dom";
 
+const CreateReviewForm = ({ selectedRecord }) => {
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviewRating, setReviewRating] = useState(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const params = useParams();
 
-    const handleDateChange = (event) => {
-        setDateReivewed(event.target.value);
-    }
+  const handleSubmitReview = async (event) => {
+    event.preventDefault();
 
-    const handleCommentChange = (event) => {
-        setComment(event.target.value);
-    }
+    //get token of logged in user
+    const token = window.localStorage.getItem("token");
+    //data to send to backend
+    const tokenData = {
+      headers: {
+        authorization: token,
+      },
+    };
 
-    const handleRatingChange = (event) => {
-        setReviewRating(event.target.value);
-    }
+    const reviewToUpdate = {
+      recordId: selectedRecord.id,
+      comment: reviewComment,
+      reviewRating: reviewRating,
+    };
 
-    const dispatch = useDispatch();
+    //create new review in database
+    await axios.put(`/api/reviews`, reviewToUpdate, tokenData);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    //fetch records again with updated reviews
+    const allNewReviews = await axios.get(`/api/reviews/`, tokenData);
+    //update reviews on front end
+    dispatch(setReviews(allNewReviews.data));
 
-        const newReview = {
-            dateReviewed,
-            comment,
-            reviewRating
-        }
+    //get updated record were reviewing
+    const updatedSingleRecord = await axios.get(
+      `/api/records/${selectedRecord.id}`,
+      tokenData
+    );
+    //set that records new review data
+    dispatch(setRecord(updatedSingleRecord.data));
+    //show updated review on page
+    navigate(`/records/${selectedRecord.id}`);
+    //
+  };
 
-        //retrive the selectedRecord info
-        const artist = selectedRecord.artist
-        const year = selectedRecord.year;
-        const price = selectedRecord.price;
-        const genres = selectedRecord.genres;
-        const styles = selectedRecord.styles;
-        selectedRecord.reviews.push(newReview);//push in the new review
-        const reviews = selectedRecord.reviews;
+  const collectComment = (event) => {
+    console.log(event.target.value);
+    setReviewComment(event.target.value);
+  };
 
-        const newRecord = {
-            artist, year, price, genres, styles, reviews
-        }
+  const collectRating = (event) => {
+    let numRating = Number(event.target.value);
+    setReviewRating(numRating);
+  };
 
-        //update new review on the page
-        dispatch(setRecord(newRecord))
-        await axios.post(`http://localhost:3000/api/records/${selectedRecord.id}`, newRecord);
-        
-        //fetch the updated record page with the new review updated
-        const newData = await axios.get(`http://localhost:3000/api/records/${selectedRecord.id}`);
-        dispatch(setRecord(newData.data));
+  // const handleDeleteReview = async (event) => {
+  //   event.preventDefault();
+  //   const { data: deleted } = await axios.delete(`/api/reviews/${params.id}`, {
+  //     //dont need anything here bc no info needs to be passed in?
+  //   });
+  //   dispatch(deleteReview(deleted));
+  //   navigate("/");
+  // };
 
-        return (
-            <div>
-                <h2>Create Review</h2>
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: "column", height: "300px", width: "800px" }}>
-                    <label>Date: </label>
-                    <input type={"text"} value={dateReviewed} onChange={handleDateChange} />
-                    <label>Review: </label>
-                    <input type={"text"} value={comment} onChange={handleCommentChange} />
-                    <label>Address: </label>
-                    <input type={"text"} value={reviewRating} onChange={handleRatingChange} />
-                
-                    <button type='submit'>Submit</button>
-                </form>
-            </div>
-        )
-    }
-}
+  //add logic for (ONLY if user has ordered this record, they can review it)
+  return (
+    <div styles={{ display: "flex", flexDirection: "column" }}>
+      <form onSubmit={handleSubmitReview}>
+        <label>Review this Record</label>
+        <br></br>
+        <TextField
+          id="outlined-basic"
+          type="text"
+          label="Outlined"
+          variant="outlined"
+          margin="normal"
+          value={reviewComment}
+          onChange={collectComment}
+        />
+        <br></br>
+        <label>Rating</label>
+        <br></br>
+        <Rating
+          name="simple-controlled"
+          type="number"
+          onChange={collectRating}
+        />
+        <br></br>
+        <Button type="submit" variant="contained">
+          Submit
+        </Button>
+        <br></br>
+      </form>
 
-    export default CreateReviewForm;
+      {/* <form
+        onSubmit={handleAddReview}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "300px",
+          width: "800px",
+        }}
+      > */}
+      {/* <Textarea minRows={2} onChange={collectComment} /> */}
+      {/* <label>Review: </label> */}
+      {/* <input type={"text"} onChange={collectComment} /> */}
+      {/* <TextareaAutosize
+          maxRows={4}
+          aria-label="maximum height"
+          placeholder="Review this album!"
+          type={"text"}
+          defaultValue=""
+          style={{ width: 200 }}
+        /> */}
+      {/* <Typography component="legend">Rating:</Typography>
+        <Rating
+          name="simple-controlled"
+          // value={value}
+          onChange={collectRating}
+        /> */}
+      {/* <button type="submit">Submit</button> */}
+      {/* </form> */}
+    </div>
+  );
+};
+
+export default CreateReviewForm;
