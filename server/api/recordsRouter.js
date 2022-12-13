@@ -40,6 +40,23 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+//update review and/or new contect on single record page
+router.put("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { artist, year, price, genres, styles, reviews } = req.boby;
+
+    const recordToUpdate = await Record.findByPk(id);
+    await recordToUpdate.update({
+      artist, year, price, genres, styles, reviews
+    });
+    res.send(recordToUpdate);
+  }
+  catch (err) {
+    next(err);
+  }
+})
+
 // router.post("/", async (req, res, next) => {
 //   try {
 // const { albumName,

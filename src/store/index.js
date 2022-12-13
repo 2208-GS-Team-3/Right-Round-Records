@@ -5,6 +5,7 @@ import genresReducer from "./genresSlice";
 import singleRecordReducer from "./singleRecordSlice";
 import ordersReducer from "./ordersSlice";
 import cartReducer from "./cartSlice";
+import reviewsReducer from "./reviewsSlice";
 import createUserReducer from "./createUserSlice";
 
 const store = configureStore({
@@ -15,6 +16,7 @@ const store = configureStore({
     genres: genresReducer,
     selectedRecord: singleRecordReducer,
     cart: cartReducer,
+    reviews: reviewsReducer,
     userToCreate: createUserReducer,
   },
 });

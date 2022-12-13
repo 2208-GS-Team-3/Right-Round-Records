@@ -6,7 +6,6 @@ import Container from "@mui/material/Container";
 
 const AllRecords = () => {
   const records = useSelector((state) => state.records.records);
-
   return (
     <Container
       fixed
@@ -21,7 +20,7 @@ const AllRecords = () => {
       <FilterGenre />
       <h1>Records</h1>
       <Container
-      maxWidth="100vw"
+        maxWidth="100vw"
         sx={{
           display: "flex",
           gap: "20px",

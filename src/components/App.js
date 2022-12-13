@@ -8,6 +8,7 @@ import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
 import { setOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
+import { setReviews } from "../store/reviewsSlice";
 import { setCartInfo, setCartRecords } from "../store/cartSlice";
 import { useParams } from "react-router-dom";
 
@@ -31,6 +32,10 @@ const App = () => {
   const getOrders = async () => {
     const orders = await axios.get("/api/orders");
     dispatch(setOrders(orders.data));
+  };
+  const getReviews = async () => {
+    const reviews = await axios.get("/api/reviews");
+    dispatch(setReviews(reviews.data));
   };
 
   const getCart = async () => {
@@ -69,6 +74,7 @@ const App = () => {
     loginWithToken();
     setLoading(true);
     getRecords();
+    getReviews();
     getOrders();
     getGenres();
     getCart();
