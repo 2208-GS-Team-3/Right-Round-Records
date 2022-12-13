@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setOrders } from "../store/ordersSlice";
+
 const containerStyles = {
   border: "1px solid black",
   borderRadius: "5px",
@@ -20,6 +21,8 @@ const containerStyles = {
 const CheckoutPage = () => {
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const dispatch = useDispatch();
+
+  //   need fxn to fetch user info to update shipping/payment info
 
   const completeCheckout = async (event) => {
     event.preventDefault();
