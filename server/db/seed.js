@@ -84,7 +84,7 @@ const seed = async () => {
         artist: record.artists[0].name,
         tracks: record.tracklist,
         imageUrls: record.images,
-        price: record.lowest_price ?? 5.00,
+        price: record.lowest_price ?? 5.0,
         description: "",
         year: record.year,
         // below broke everything! now it works!
