@@ -13,8 +13,15 @@ import {
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
-
+import {
+  updateCart,
+  setCartInfo,
+  setCartRecords,
+  removeFromCart,
+} from "../store/cartSlice";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
 const RecordCard = ({ record }) => {
@@ -78,13 +85,18 @@ const RecordCard = ({ record }) => {
         >
           More Details
         </Button>
-        {currentRecordInCart ? (
-          <CartQuantitySelector record={currentRecordInCart} />
-        ) : (
-          <Button fullWidth={true} variant="contained">
-            Add to Cart
-          </Button>
-        )}
+        {/* {currentRecordInCart ? ( */}
+        <CartQuantitySelector record={record} />
+        {/* ) : ( */}
+        {/* // <Button
+          //   fullWidth={true}
+          //   variant="contained"
+          //   onClick={addToCart}
+          //   value={1}
+          // >
+          //   Add to Cart
+          // </Button>
+        // )} */}
       </CardActions>
     </Card>
   );

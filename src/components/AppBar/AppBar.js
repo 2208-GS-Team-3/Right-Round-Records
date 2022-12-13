@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -27,18 +27,23 @@ function RRRAppBar() {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const currentPage = useLocation();
-
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
+  const [recordTotal, setRecordTotal] = React.useState(0);
 
-  const numberOfRecords = recordsInCart.reduce(
-    (records, nextRecord) => records + nextRecord.cartRecord.quantity,
-    0
-  );
+  useEffect(() => {
+    setRecordTotal(
+      recordsInCart.reduce(
+        (records, nextRecord) => records + nextRecord.cartRecord.quantity,
+        0
+      )
+    );
+  }, [recordsInCart]);
 
   const logout = () => {
     window.localStorage.removeItem("token");
     dispatch(resetUser());
     navigate("/");
+    window.location.reload();
   };
 
   const login = () => {
@@ -157,7 +162,11 @@ function RRRAppBar() {
             )}
           </Box>
           {currentPage.pathname === `/cart` ? (
-            <Badge badgeContent={numberOfRecords} color="secondary">
+            <Badge
+              key={`CartBadge`}
+              badgeContent={cartRecords}
+              color="secondary"
+            >
               <ShoppingCartIcon />
             </Badge>
           ) : (

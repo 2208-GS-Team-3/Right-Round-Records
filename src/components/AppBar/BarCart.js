@@ -33,19 +33,24 @@ const BarCart = () => {
   });
 
   const cartRecords = useSelector((state) => state.cart.cartRecords);
-  const [recordTotal, setRecordTotal] = useState(0)
+  const [recordTotal, setRecordTotal] = useState(0);
 
-  useEffect(() =>
-  setRecordTotal(cartRecords.reduce(
-    (records, nextRecord) => records + nextRecord.cartRecord.quantity,
-    0
-  )), [cartRecords]
-  )
+  useEffect(
+    () =>
+      setRecordTotal(
+        cartRecords.reduce(
+          (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
+          0
+        )
+      ),
+    [cartRecords]
+  );
 
   return (
     <React.Fragment>
       <IconButton color="inherit" {...bindToggle(popupState)}>
         <Badge
+        key={`cartBadge`}
           badgeContent={recordTotal}
           color="secondary"
         >
@@ -55,58 +60,62 @@ const BarCart = () => {
       <Popper {...bindPopper(popupState)} transition>
         {({ TransitionProps }) => (
           // <ClickAwayListener onClickAway={popupState.close}>
-            <Fade {...TransitionProps} timeout={350}>
-              <Paper>
-                {cartRecords.map((record) => {
-                  return (
-                    <Box
+          <Fade {...TransitionProps} timeout={350}>
+            <Paper>
+              {cartRecords.map((record) => {
+                return (
+                  <Box
                     key={`wholeBoxFor${record.id}`}
-                      sx={{ display: "flex", placeContent: "space-between" }}
+                    sx={{ display: "flex", placeContent: "space-between" }}
+                  >
+                    <Button
+                      key={`CartButtonFor${record.albumName}`}
+                      variant="text"
+                      href={`/records/${record.id}`}
+                      sx={{ display: "flex", placeItems: "center" }}
                     >
-                      <Button
-                        key={`CartButtonFor${record.albumName}`}
-                        variant="text"
-                        href={`/records/${record.id}`}
+                      <Container
+                        key={`container${record.id}`}
+                        variant="contained"
                         sx={{ display: "flex", placeItems: "center" }}
                       >
-                        <Container
-                          key={`container${record.id}`}
-                          variant="contained"
-                          sx={{ display: "flex", placeItems: "center" }}
-                        >
-                          <Avatar
-                            key={`ImageFor${record.albumName}`}
-                            src={
-                              record?.imageUrls[0]?.uri150 ??
-                              "static/RRR Record.png"
-                            }
-                          />
-                          <List>
-                            <ListItem
-                              href={`/records/${record.id}`}
-                              key={`recordNameFor${record.id}`}
-                            >
-                              {record.albumName}
-                            </ListItem>
-                            <ListItem
-                              key={`${record.albumName + record.price}`}
-                            >
-                              {(record.price / 100).toFixed(2)}
-                            </ListItem>
-                          </List>
-                        </Container>
-                      </Button>
-                      <Box key={`boxQuantityFor${record.id}`} sx={{ placeSelf: "center" }}>
-                        <CartQuantitySelector key={`quantityFor${record.id}`} record={record} />
-                      </Box>
+                        <Avatar
+                          key={`ImageFor${record.albumName}`}
+                          src={
+                            // record?.imageUrls[0]?.uri150 ??
+                            "static/RRR Record.png"
+                          }
+                        />
+                        <List>
+                          <ListItem
+                            href={`/records/${record.id}`}
+                            key={`recordNameFor${record.id}`}
+                          >
+                            {record.albumName}
+                          </ListItem>
+                          <ListItem key={`${record.albumName + record.price}`}>
+                            {(record.price / 100).toFixed(2)}
+                          </ListItem>
+                        </List>
+                      </Container>
+                    </Button>
+                    <Box
+                      key={`boxQuantityFor${record.id}`}
+                      sx={{ placeSelf: "center" }}
+                    >
+                      <CartQuantitySelector
+                        key={`quantityFor${record.id}`}
+                        record={record}
+                      />
                     </Box>
-                  );
-                })}
-                <Button variant="contained" href="/cart" fullWidth={true}>
-                  Go to Cart
-                </Button>
-              </Paper>
-            </Fade>
+                  </Box>
+                );
+              })}
+              <Button variant="contained" href="/cart" fullWidth={true}>
+                Go to Cart
+              </Button>
+            </Paper>
+          </Fade>
           // </ClickAwayListener>
         )}
       </Popper>

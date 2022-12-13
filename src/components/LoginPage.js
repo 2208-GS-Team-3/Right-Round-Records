@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,6 @@ const LoginPage = () => {
     username: "",
     password: "",
   });
-
   const navigate = useNavigate();
 
   const onChange = (ev) => {
@@ -37,7 +36,9 @@ const LoginPage = () => {
         },
       });
       dispatch(setUser(response.data));
+
       navigate("/");
+      window.location.reload();
     }
   };
 
@@ -111,7 +112,7 @@ const LoginPage = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/createuser" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
