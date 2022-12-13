@@ -242,12 +242,12 @@ const seed = async () => {
   jack.addOrder([order2]);
 
   //records associated with orders -- WORKING
-  // order1.addRecords([record1]);
-  // order2.addRecords([record5, record9, record3, record7]);
-  // order3.addRecords([record4, record6]);
-  // order4.addRecords([record10, record2, record8]);
-  // order5.addRecords([record6, record3, record4]);
-  // order6.addRecords([record6, record3, record4]);
+  order1.addRecords([record1]);
+  order2.addRecords([record5, record9, record3, record7]);
+  order3.addRecords([record4, record6]);
+  order4.addRecords([record10, record2, record8]);
+  order5.addRecords([record6, record3, record4]);
+  order6.addRecords([record6, record3, record4]);
 
   cart1.addRecords([record1]);
   cart2.addRecords([record5, record9, record3, record7]);

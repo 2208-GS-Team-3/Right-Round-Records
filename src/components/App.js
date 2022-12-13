@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import RRRAppBar from "./AppBar/AppBar";
 import { CssBaseline } from "@mui/material";
@@ -10,7 +10,6 @@ import { setOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
 import { setReviews } from "../store/reviewsSlice";
 import { setCartInfo, setCartRecords } from "../store/cartSlice";
-import { useParams } from "react-router-dom";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -29,10 +28,25 @@ const App = () => {
   };
 
   //all orders currently available.
-  const getOrders = async () => {
-    const orders = await axios.get("/api/orders");
-    dispatch(setOrders(orders.data));
+  const getUsersOrders = async () => {
+    try {
+      //get token of logged in user
+      const token = window.localStorage.getItem("token");
+      //data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+      //check order api, send tokenData to only get current users orders
+      const orders = await axios.get(`/api/orders`, tokenData);
+      dispatch(setOrders(orders.data));
+    } catch (err) {
+      console.log("ERROR");
+      console.log(err);
+    }
   };
+
   const getReviews = async () => {
     const reviews = await axios.get("/api/reviews");
     dispatch(setReviews(reviews.data));
@@ -75,7 +89,7 @@ const App = () => {
     setLoading(true);
     getRecords();
     getReviews();
-    getOrders();
+    getUsersOrders();
     getGenres();
     getCart();
     setLoading(false);
