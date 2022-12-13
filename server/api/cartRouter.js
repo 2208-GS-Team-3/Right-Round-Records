@@ -61,7 +61,6 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// DELETE /api/campuses/:id
 router.put("/", async (req, res, next) => {
   try {
     const token = req.headers.authorization;

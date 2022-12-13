@@ -14,7 +14,6 @@ const {
 
 router.get("/", async (req, res, next) => {
   try {
-    console.log("hello");
     const reviews = await Review.findAll({
       order: [["id", "DESC"]],
       include: [User, { model: Record, include: [Genre, Style, Order] }],

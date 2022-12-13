@@ -1,6 +1,17 @@
+const user = require("disconnect/lib/user");
 const express = require("express");
-const { Record, Order, User, Genre, Style } = require("../db");
+const {
+  Record,
+  User,
+  Cart,
+  CartRecords,
+  Style,
+  Genre,
+  Order,
+} = require("../db");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
+const JWT = process.env.JWT;
 
 // //localhost:3000/api/orders/
 // //list of all orders
@@ -20,52 +31,47 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.put("/", async (req, res, next) => {
+  console.log("help me");
   try {
-    const { datePlaced, status, shippingAddress, trackingNumber } = req.body;
+    const token = req.headers.authorization;
+    const { cartId, records } = req.body;
 
-    await Order.create({
-      datePlaced,
-      status,
-      shippingAddress,
-      trackingNumber,
+    //get user info
+    const user = await User.findByToken(token);
+    const randomTrackingNum = Math.floor(Math.random() * 1000000);
+
+    //create new order
+    const newOrder = await Order.create({
+      datePlaced: Date.now(),
+      status: "placed",
+      shippingAddress: user.address,
+      trackingNumber: randomTrackingNum,
     });
 
-    // will records array go in above?
-    const orderWithRecords = await Order.findByPk(id, {
-      include: [Record],
+    const cart = await Cart.findOne({
+      where: { id: req.body.cartId },
+      include: [{ model: Record, include: [Genre, Style] }],
     });
-    res.send(200).status(201);
+
+    // associate new order with records
+    newOrder.addRecords(cart.records);
+    // associate new order with records
+    user.addOrder(newOrder);
+
+    //order to send back to UI
+    const orderWithRecords = await Order.findByPk(newOrder.id, {
+      include: [{ model: Record, include: [Genre, Style] }],
+    });
+
+    //how to include cart record with quantity?
+
+    res.send(orderWithRecords.data);
   } catch (err) {
     console.error(err);
     next(err);
   }
 });
-
-// // PUT /api/order/:id
-// router.put("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const { status, shippingAddress } = req.body;
-//     const order = await Order.findByPk(id);
-
-//     // should only be able to update the status (i.e. to cancel or place order), not change 'date placed' or the tracking number
-//     const updatedOrder = await order.update({
-//       status,
-//       shippingAddress,
-//     });
-
-//     const orderWithRecords = await Order.findByPk(id, {
-//       include: [Record],
-//     });
-
-//     //send updated order along with updated info
-//     res.send(orderWithRecords);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
 
 // // DELETE /api/records/:id
 // router.delete("/:id", async (req, res, next) => {

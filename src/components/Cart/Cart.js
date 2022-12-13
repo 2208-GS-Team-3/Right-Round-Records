@@ -14,21 +14,50 @@ import {
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
 import CheckoutPage from "../CheckoutPage";
-// import FormControl from "@mui/material/FormControl";
+import axios from "axios";
+import { setOrders } from "../../store/ordersSlice";
+import { useDispatch } from "react-redux";
 
 const Cart = () => {
   const [purchaseItems, setPurchaseItems] = useState([]);
   const [checkOut, setCheckOut] = useState(false);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-
+  const cartInfo = useSelector((state) => state.cart.cartInfo);
+  const dispatch = useDispatch();
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
     0
   );
 
-  const displayCheckOut = () => {
+  const startCheckout = () => {
     setCheckOut((currValue) => !currValue);
   };
+
+  // const completeCheckout = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     //get token of logged in user
+  //     const token = window.localStorage.getItem("token");
+
+  //     //data to send to backend
+  //     const tokenData = {
+  //       headers: {
+  //         authorization: token,
+  //       },
+  //     };
+  //     //send cart to orders!
+  //     const cartData = {
+  //       cartId: cartInfo.id,
+  //     };
+
+  //     console.log(cartData);
+  //     await axios.put(`/api/orders`, cartData, tokenData);
+  //     const newOrders = await axios.get(`/api/orders`, tokenData);
+  //     dispatch(setOrders(newOrders.data));
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   useEffect(() => {
     setPurchaseItems(recordsInCart);
@@ -174,7 +203,7 @@ const Cart = () => {
           <Button
             variant="contained"
             sx={{ placeSelf: "stretch" }}
-            onClick={displayCheckOut}
+            onClick={startCheckout}
           >
             Checkout
           </Button>

@@ -4,7 +4,10 @@ import { Button, Typography, FormControl, FormLabel } from "@mui/material";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
-
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setOrders } from "../store/ordersSlice";
 const containerStyles = {
   border: "1px solid black",
   borderRadius: "5px",
@@ -15,6 +18,34 @@ const containerStyles = {
 };
 
 const CheckoutPage = () => {
+  const cartInfo = useSelector((state) => state.cart.cartInfo);
+  const dispatch = useDispatch();
+
+  const completeCheckout = async (event) => {
+    event.preventDefault();
+    try {
+      //get token of logged in user
+      const token = window.localStorage.getItem("token");
+
+      //data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+      //send cart to orders!
+      const cartData = {
+        cartId: cartInfo.id,
+      };
+
+      console.log(cartData);
+      await axios.put(`/api/orders`, cartData, tokenData);
+      const newOrders = await axios.get(`/api/orders`, tokenData);
+      dispatch(setOrders(newOrders.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <Container>
@@ -77,7 +108,7 @@ const CheckoutPage = () => {
           <Typography sx={{ ml: 1 }} variant="h4">
             Order Total:{" "}
           </Typography>
-          <Button>Place your order</Button>
+          <Button onClick={completeCheckout}>Place your order</Button>
         </Container>
       </Container>
     </>
