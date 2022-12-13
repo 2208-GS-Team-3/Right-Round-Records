@@ -19,7 +19,7 @@ const Cart = () => {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
 
   const numberOfRecords = recordsInCart.reduce(
-    (records, nextRecord) => records + nextRecord.cartRecord.quantity,
+    (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
     0
   );
 
@@ -102,7 +102,7 @@ const Cart = () => {
                         sx={{ placeSelf: "center" }}
                         key={`imageFor${record.id}`}
                         src={
-                          record?.imageUrls[0]?.uri150 ??
+                          // record?.imageUrls[0]?.uri150 ??
                           "static/RRR Record.png"
                         }
                       />

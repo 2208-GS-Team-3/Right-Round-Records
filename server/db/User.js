@@ -74,14 +74,7 @@ const User = db.define("user", {
     },
     unique: true,
   },
-  shippingAddress: {
-    type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-  billingAddress: {
+  address: {
     type: STRING,
     allowNull: false,
     validate: {
