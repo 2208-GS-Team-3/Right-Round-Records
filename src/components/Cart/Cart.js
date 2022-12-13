@@ -15,13 +15,14 @@ import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
 import CheckoutPage from "../CheckoutPage";
 import { useDispatch } from "react-redux";
+import AddressForm from "../AddressForm";
+import MuiCheckout from "../MuiCheckout";
 
 const Cart = () => {
   const [purchaseItems, setPurchaseItems] = useState([]);
   const [checkOut, setCheckOut] = useState(false);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-  const cartInfo = useSelector((state) => state.cart.cartInfo);
-  const dispatch = useDispatch();
+
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
     0
@@ -75,7 +76,8 @@ const Cart = () => {
 
   return (
     <Box key={`wholeCart`} sx={{ display: "grid", gridAutoFlow: "row" }}>
-      {checkOut && <CheckoutPage />}
+      {/* {checkOut && <CheckoutPage />} */}
+      {checkOut && <MuiCheckout />}
       {!checkOut && (
         <>
           <Container

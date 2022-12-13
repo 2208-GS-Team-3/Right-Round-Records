@@ -91,7 +91,7 @@ const CheckoutPage = () => {
     <>
       <Container>
         <Typography sx={{ ml: 1 }} variant="h4">
-          Check out (# items)
+          Check out ({numberOfRecords} items)
         </Typography>
         <Container sx={{ ml: 1 }} style={containerStyles}>
           <Typography sx={{ ml: 1 }} variant="h5">
