@@ -9,19 +9,31 @@ const SingleRecReviews = () => {
     (state) => state.selectedRecord.selectedRecord
   );
 
+  // array determines if the user has the record. if so, they can review it
+  const usersOrders = useSelector((state) => state.orders.orders);
+  const allUsersRecords = [];
+  usersOrders.map((orders) =>
+    orders.records.map((record) => allUsersRecords.push(record.id))
+  );
+
   return (
     <Container maxWidth="100vw">
+      {/* if there are reviews, display them */}
       {selectedRecord.reviews.length > 0 ? (
         <>
-          Reviews:
           <Container maxWidth="100vw">
             <Review />
           </Container>
         </>
       ) : (
-        <p>Be the first to review this record!</p>
+        <p style={{ color: "red" }}>There are no reviews for this record!</p>
       )}
-      <CreateReviewForm selectedRecord={selectedRecord} />
+      {/* if the user owns the record, they can review it */}
+      {allUsersRecords.includes(selectedRecord.id) && (
+        <>
+          <CreateReviewForm selectedRecord={selectedRecord} />
+        </>
+      )}
     </Container>
   );
 };

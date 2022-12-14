@@ -17,7 +17,6 @@ const SingleRecord = () => {
   const { selectedRecord, loadingRecord } = useSelector((state) => {
     return state.selectedRecord;
   });
-
   const [showReviews, setShowReviews] = useState(false);
 
   const displayAllReviews = () => {
@@ -30,10 +29,8 @@ const SingleRecord = () => {
 
   const fetchRecordById = async (id) => {
     try {
-      //   dispatch(setLoadingRecord(true));
       const response = await axios.get(`/api/records/${id}`);
       dispatch(setRecord(response.data));
-      //   dispatch(setLoadingRecord(false));
     } catch (err) {}
     // dispatch(setLoadingRecord(false));
   };
@@ -47,9 +44,10 @@ const SingleRecord = () => {
   const singleRecordPageUrl = `/records/${selectedRecord.id}`;
 
   if (loadingRecord) return <CircularProgress />;
+
   //check if selected record exist
   if (!Object.keys(selectedRecord).length)
-    return <h1>Oops, this record doesn't exist, please try again</h1>;
+    return <h1>Oops, this record does not exist, please try again</h1>;
   const sumOfRatings = selectedRecord.reviews.reduce(
     (rating, nextRating) => rating + nextRating.reviewRating,
     0
@@ -68,42 +66,39 @@ const SingleRecord = () => {
         <Typography gutterBottom variant="h5" component="div">
           <h3>{selectedRecord.albumName}</h3>
         </Typography>
-        {selectedRecord.reviews.length > 0 && (
-          <>
-            <Typography component="legend">
-              <b>Average Rating</b>
-            </Typography>
-            <Rating name="read-only" value={Number(avgRating)} readOnly />
-          </>
-        )}
-        <br></br>
-        <Typography variant="body2" color="text.secondary">
-          <span>
+        <Container>
+          {selectedRecord.reviews.length > 0 && (
+            <>
+              <Typography component="legend">
+                <b>Average Rating</b>
+              </Typography>
+              <Rating name="read-only" value={Number(avgRating)} readOnly />
+            </>
+          )}
+        </Container>
+        <Container>
+          <Typography variant="body2" color="text.secondary">
             <b>Artist:</b> {selectedRecord.artist}
-          </span>
-          <br></br>
-          <span>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
             <b>Year:</b> {selectedRecord.year}
-          </span>
-          <br></br>
-          <span>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
             <b>Price:</b> {price}
-          </span>
-          <br></br>
-          <span>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
             <b>Genre(s):</b>
             {selectedRecord.genres.map((genre, index) => (
               <li key={index}>{genre.name} </li>
             ))}
-          </span>
-          <br></br>
-          <span>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
             <b>Style(s):</b>
             {selectedRecord.styles.map((style, index) => (
               <li key={index}>{style.name} </li>
             ))}
-          </span>
-        </Typography>
+          </Typography>
+        </Container>
         <br></br>
         {showReviews ? (
           <>

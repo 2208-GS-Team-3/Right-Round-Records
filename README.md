@@ -35,11 +35,11 @@ AS A CUSTOMER/VISITOR, I WANT TO BE ABLE TO:
 [x] - edit my cart if I change my mind:
 [x] - change the quantity of a product in my cart.
 [x] - remove a product in my cart.
-[] - No one else should be able to edit my cart except me.
-[] - "checkout" the items in my cart so I can purchase my desired goods.
+[x] - No one else should be able to edit my cart except me.
+[x] - "checkout" the items in my cart so I can purchase my desired goods.
 
 Think of a typical user experience on popular websites from a guest user and logged-in user perspective.
-[ ] - simulate the experience of checking out with a simple confirmation page.
+[x] - simulate the experience of checking out with a simple confirmation page.
 [] -create an account so I can have a logged-in experience.
 
 AS A LOGGED-IN CUSTOMER, I WANT TO BE ABLE TO:
