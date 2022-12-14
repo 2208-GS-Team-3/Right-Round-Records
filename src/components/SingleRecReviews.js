@@ -17,23 +17,19 @@ const SingleRecReviews = () => {
   );
 
   return (
-    <Container maxWidth="100vw">
+    <Container maxWidth="100vw" style={{ border: "1px solid red" }}>
       {/* if there are reviews, display them */}
       {selectedRecord.reviews.length > 0 ? (
-        <>
-          <Container maxWidth="100vw">
-            <Review />
-          </Container>
-        </>
+        <Review />
       ) : (
         <p style={{ color: "red" }}>There are no reviews for this record!</p>
       )}
-      {/* if the user owns the record, they can review it */}
-      {allUsersRecords.includes(selectedRecord.id) && (
-        <>
+      <Container>
+        {/* if the user owns the record, they can review it */}
+        {allUsersRecords.includes(selectedRecord.id) && (
           <CreateReviewForm selectedRecord={selectedRecord} />
-        </>
-      )}
+        )}
+      </Container>
     </Container>
   );
 };

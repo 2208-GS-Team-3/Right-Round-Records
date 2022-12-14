@@ -55,10 +55,16 @@ const SingleRecord = () => {
   const avgRating = (sumOfRatings / selectedRecord.reviews.length).toFixed(1);
 
   return (
-    <Container maxWidth="sm">
+    <Container
+      maxWidth="sm"
+      style={{
+        border: "2px solid red",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
       <Box>
         <img
-          component="img"
           height="300"
           src={selectedRecord.imageUrls[0].uri}
           alt="record album"
@@ -67,52 +73,76 @@ const SingleRecord = () => {
           <h3>{selectedRecord.albumName}</h3>
         </Typography>
         <Container>
-          {selectedRecord.reviews.length > 0 && (
-            <>
-              <Typography component="legend">
-                <b>Average Rating</b>
-              </Typography>
-              <Rating name="read-only" value={Number(avgRating)} readOnly />
-            </>
-          )}
-        </Container>
-        <Container>
-          <Typography variant="body2" color="text.secondary">
-            <b>Artist:</b> {selectedRecord.artist}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <b>Year:</b> {selectedRecord.year}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <b>Price:</b> {price}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <b>Genre(s):</b>
-            {selectedRecord.genres.map((genre, index) => (
-              <li key={index}>{genre.name} </li>
-            ))}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <b>Style(s):</b>
-            {selectedRecord.styles.map((style, index) => (
-              <li key={index}>{style.name} </li>
-            ))}
-          </Typography>
-        </Container>
-        <br></br>
-        {showReviews ? (
-          <>
-            <Button onClick={displayAllReviews}>Hide reviews</Button>
-            <SingleRecReviews selectedRecord={selectedRecord} />
-          </>
-        ) : (
-          <Button onClick={displayAllReviews}>See all reviews</Button>
-        )}
+          {/* rating container */}
+          <Container>
+            {selectedRecord.reviews.length > 0 && (
+              <>
+                <Typography component="div" variant="h6">
+                  <b>Average Rating</b>
+                </Typography>
+                <Rating name="read-only" value={Number(avgRating)} readOnly />
+              </>
+            )}
+          </Container>
 
-        <Button size="small" href={"/"}>
-          Back
-        </Button>
-        <Button size="small">Add to cart</Button>
+          {/* record info container */}
+          <Container
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {/* artist, year, price on left */}
+            <Container>
+              <Typography variant="body2" color="text.secondary">
+                <b>Artist:</b> {selectedRecord.artist}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <b>Year:</b> {selectedRecord.year}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <b>Price:</b> {price}
+              </Typography>
+            </Container>
+
+            {/* genres, styles on right */}
+            <Container>
+              <Typography variant="body2" color="text.secondary">
+                <b>Genre(s):</b>
+                {selectedRecord.genres.map((genre, index) => (
+                  <li key={index}>{genre.name} </li>
+                ))}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <b>Style(s):</b>
+                {selectedRecord.styles.map((style, index) => (
+                  <li key={index}>{style.name} </li>
+                ))}
+              </Typography>
+            </Container>
+          </Container>
+          {/* end of record info */}
+
+          {/* Review information */}
+          <Container style={{ border: "2px solid red", display: "flex" }}>
+            {showReviews ? (
+              <>
+                <Button onClick={displayAllReviews}>Hide reviews</Button>
+                <SingleRecReviews selectedRecord={selectedRecord} />
+              </>
+            ) : (
+              <Button onClick={displayAllReviews}>See all reviews</Button>
+            )}
+          </Container>
+
+          {/* navigation container */}
+          <Container>
+            <Button size="small" href={"/"}>
+              Back
+            </Button>
+            <Button size="small">Add to cart</Button>
+          </Container>
+        </Container>
       </Box>
     </Container>
   );
