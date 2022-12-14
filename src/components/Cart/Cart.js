@@ -29,6 +29,19 @@ const Cart = () => {
     0
   );
 
+  const orderSubTotal =
+    recordsInCart.reduce(
+      (currentTotal, itemValue) =>
+        currentTotal + itemValue.price * itemValue.cartRecord.quantity,
+      0
+    ) / 100;
+
+  const tax = orderSubTotal * 0.08;
+  const finalOrderAmount = tax + orderSubTotal;
+
+  // console.log({ orderSubTotal });
+  // console.log(finalOrderAmount);
+
   const startCheckout = async () => {
     try {
       setCheckOut((currValue) => !currValue);
@@ -43,7 +56,9 @@ const Cart = () => {
       const dataToSend = {
         cartId: cartInfo.id,
         status: "cart",
+        totalCost: finalOrderAmount,
       };
+
       await axios.put("/api/orders", dataToSend, tokenData);
     } catch (err) {
       console.log(err);

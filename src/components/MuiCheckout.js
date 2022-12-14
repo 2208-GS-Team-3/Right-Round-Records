@@ -61,7 +61,6 @@ export default function Checkout() {
   const dispatch = useDispatch();
   const params = useParams("");
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-
   const orderId = params.id;
 
   const handleNext = () => {

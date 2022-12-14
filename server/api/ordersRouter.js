@@ -55,7 +55,7 @@ router.put("/", async (req, res, next) => {
     //get user info
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
-    const { cartId, shippingAddress } = req.body;
+    const { cartId, shippingAddress, totalCost } = req.body;
     const randomTrackingNum = Math.floor(Math.random() * 1000000);
 
     //users cart
@@ -76,6 +76,7 @@ router.put("/", async (req, res, next) => {
         datePlaced: Date.now(),
         status: "cart",
         shippingAddress: shippingAddress || user.address,
+        totalCost: totalCost,
       });
       // associate order with records
       cart.records.forEach((record) => orderInCart.addRecords([record]));
@@ -93,6 +94,7 @@ router.put("/", async (req, res, next) => {
           status: "cart",
           trackingNumber: randomTrackingNum,
           shippingAddress: shippingAddress || user.address,
+          totalCost: totalCost,
         });
 
         // associate order with records
@@ -111,6 +113,7 @@ router.put("/", async (req, res, next) => {
           status: "placed",
           trackingNumber: randomTrackingNum,
           shippingAddress: shippingAddress || user.address,
+          totalCost: totalCost,
         });
 
         // associate order with records
@@ -121,14 +124,15 @@ router.put("/", async (req, res, next) => {
           include: [User, { model: Record, include: [Genre, Style] }],
         });
 
+        //once order is placed, destroy cart
         await cart.destroy();
+
+        //then give user a new cart!
         const newCart = await Cart.create();
         newCart.setUser(user);
-        //how to include cart record with quantity?
+
         res.send(orderWithRecords);
       }
-      // remove all records from association with cart
-      // cart.update();
     }
   } catch (err) {
     console.error(err);

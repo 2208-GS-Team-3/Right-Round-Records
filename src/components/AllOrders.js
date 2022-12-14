@@ -3,21 +3,9 @@ import OrderCard from "./OrderCard";
 import { useSelector } from "react-redux";
 import Container from "@mui/material/Container";
 
-const orderCardStyle = {
-  width: "400px",
-  height: "200px",
-};
-
-const flexContainer = {
-  display: "flex",
-  gap: "20px",
-  flexWrap: "wrap",
-};
-
 const AllOrders = () => {
-  const { user } = useSelector((state) => state.user);
   const orders = useSelector((state) => state.orders.orders);
-
+  console.log(orders);
   return (
     <Container>
       <h1>Orders</h1>
