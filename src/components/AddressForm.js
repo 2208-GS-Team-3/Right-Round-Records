@@ -13,8 +13,6 @@ const AddressForm = () => {
   const cartInfo = useSelector((state) => state.cart.cartInfo);
 
   //route to update shipping info for order here
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [add1, setAdd1] = useState("");
   const [add2, setAdd2] = useState("");
   const [city, setCity] = useState("");
@@ -32,6 +30,7 @@ const AddressForm = () => {
       },
     };
     const shippingData = {
+      cartId: cartInfo.id,
       shippingAddress: `${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
       status: "cart",
     };
@@ -43,12 +42,6 @@ const AddressForm = () => {
     const updatedOrder = await axios.get(`/api/orders`, tokenData);
   };
 
-  const handleFirst = (e) => {
-    setFirstName(e.target.value);
-  };
-  const handleLast = (e) => {
-    setLastName(e.target.value);
-  };
   const handleAdd1 = (e) => {
     setAdd1(e.target.value);
   };
@@ -85,7 +78,6 @@ const AddressForm = () => {
               fullWidth
               autoComplete="given-name"
               variant="standard"
-              onChange={handleFirst}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -98,7 +90,6 @@ const AddressForm = () => {
               fullWidth
               autoComplete="family-name"
               variant="standard"
-              onChange={handleLast}
             />
           </Grid>
           <Grid item xs={12}>

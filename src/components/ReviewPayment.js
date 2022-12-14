@@ -29,6 +29,7 @@ const ReviewPayment = () => {
         },
       };
       const order = await axios.get(`/api/orders/${orderId}`, tokenData);
+      console.log({ order });
       setCurrentOrder(order.data);
       setLoading(false);
     } catch (err) {
@@ -48,7 +49,7 @@ const ReviewPayment = () => {
 
   const tax = orderSubTotal * 0.08;
   const finalOrderAmount = tax + orderSubTotal;
-  console.log(currentOrder);
+
   if (loading) return <p>loading....</p>;
   return (
     <React.Fragment>

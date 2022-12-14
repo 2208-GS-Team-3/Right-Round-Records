@@ -18,6 +18,8 @@ import PaymentForm from "./PaymentForm";
 import ReviewPayment from "./ReviewPayment";
 import { useSelector, useDispatch } from "react-redux";
 import { setOrders } from "../store/ordersSlice";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 function RRRecords() {
   return (
@@ -52,8 +54,13 @@ const theme = createTheme();
 // moves us from one component to the next in the checkout process
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [currentOrder, setCurrentOrder] = useState([]);
+  const [loading, setLoading] = useState(false);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const dispatch = useDispatch();
+  const params = useParams("");
+
+  const orderId = params.id;
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -81,7 +88,6 @@ export default function Checkout() {
         status: "placed",
       };
 
-      console.log(cartData);
       await axios.put(`/api/orders`, cartData, tokenData);
       const newOrders = await axios.get(`/api/orders`, tokenData);
       dispatch(setOrders(newOrders.data));
@@ -90,6 +96,29 @@ export default function Checkout() {
       console.log(err);
     }
   };
+
+  const getCurrentOrder = async () => {
+    setLoading(true);
+    try {
+      const token = window.localStorage.getItem("token");
+      //data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+      const order = await axios.get(`/api/orders/${orderId}`, tokenData);
+      console.log({ order });
+      setCurrentOrder(order.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentOrder();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -130,6 +159,8 @@ export default function Checkout() {
                 confirmation, and will send you an update when your order has
                 shipped.
               </Typography>
+
+              <Button href={"/orders"}>See All Orders</Button>
             </React.Fragment>
           ) : (
             <React.Fragment>

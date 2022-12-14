@@ -44,11 +44,7 @@ const Cart = () => {
         cartId: cartInfo.id,
         status: "cart",
       };
-      const response = await axios.put("/api/orders", dataToSend, tokenData);
-      // console.log(cartData);
-      // await axios.put(`/api/orders`, cartData, tokenData);
-      // const newOrders = await axios.get(`/api/orders`, tokenData);
-      // dispatch(setOrders(newOrders.data));
+      await axios.put("/api/orders", dataToSend, tokenData);
     } catch (err) {
       console.log(err);
     }

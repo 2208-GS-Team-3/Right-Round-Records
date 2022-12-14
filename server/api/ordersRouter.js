@@ -38,10 +38,9 @@ router.get("/:id", async (req, res, next) => {
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
 
-    // const id = req.params.id;
     const currentOrder = await Order.findOne({
       where: { status: "cart", userId: user.id },
-      include: [User, { model: Record, include: [Genre, Style] }],
+      include: [{ model: User, include: [{ model: Cart, include: [Record] }] }],
     });
 
     res.send(currentOrder);
@@ -53,18 +52,21 @@ router.get("/:id", async (req, res, next) => {
 
 router.put("/", async (req, res, next) => {
   try {
+    //get user info
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
-    const { cartId, shippingAddress, status } = req.body;
-
-    //get user info
+    const { cartId, shippingAddress } = req.body;
     const randomTrackingNum = Math.floor(Math.random() * 1000000);
 
-    //create new order with update shipping info (but it hasnt been placed yet)
+    //users cart
+    const cart = await Cart.findOne({
+      where: { id: req.body.cartId },
+      include: [User, { model: Record, include: [Genre, Style] }],
+    });
 
-    //order to send back to UI
+    //users current order. does it exist?
     const orderExists = await Order.findOne({
-      where: { status: "cart" },
+      where: { status: "cart", userId: user.id },
     });
 
     //if user does not have an order with status of cart
@@ -73,10 +75,14 @@ router.put("/", async (req, res, next) => {
       const orderInCart = await Order.create({
         datePlaced: Date.now(),
         status: "cart",
-        shippingAddress: shippingAddress,
+        shippingAddress: shippingAddress || user.address,
       });
+      // associate order with records
+      cart.records.forEach((record) => orderInCart.addRecords([record]));
+
       // associate new order with user
       user.addOrder(orderInCart);
+      // orderInCart.addRecordss();
       res.send(orderInCart);
     }
 
@@ -85,35 +91,36 @@ router.put("/", async (req, res, next) => {
         const updatedOrder = await orderExists.update({
           datePlaced: Date.now(),
           status: "cart",
+          trackingNumber: randomTrackingNum,
           shippingAddress: shippingAddress || user.address,
         });
+
+        // associate order with records
+        cart.records.forEach((record) => updatedOrder.addRecords([record]));
+
         res.send(updatedOrder);
       }
 
       //if the order gets placed, find the cart with all of the records
       if (req.body.status === "placed") {
         //identify the users cart
-        const cart = await Cart.findOne({
-          where: { id: req.body.cartId },
-          include: [User, { model: Record, include: [Genre, Style] }],
-        });
-
-        // associate new order with records
-        orderExists.addRecords(cart.records);
 
         //update the order status to placed
         await orderExists.update({
           datePlaced: Date.now(),
           status: "placed",
           trackingNumber: randomTrackingNum,
-          shippingAddress: shippingAddress,
+          shippingAddress: shippingAddress || user.address,
         });
+
+        // associate order with records
+        cart.records.forEach((record) => orderExists.addRecords(record));
 
         //send back order with all info to UI
         const orderWithRecords = await Order.findByPk(orderExists.id, {
           include: [User, { model: Record, include: [Genre, Style] }],
         });
-
+        console.log(orderWithRecords);
         //how to include cart record with quantity?
         res.send(orderWithRecords);
       }
