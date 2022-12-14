@@ -3,6 +3,7 @@ const { STRING, UUID, UUIDV4, VIRTUAL, DATE } = db.Sequelize;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { BOOLEAN } = require("sequelize");
+const user = require("disconnect/lib/user");
 const JWT = process.env.JWT;
 
 const User = db.define("user", {
@@ -14,17 +15,26 @@ const User = db.define("user", {
   username: {
     type: STRING,
     allowNull: false,
+    unique: true,
     validate: {
       notEmpty: true,
     },
-    unique: true,
+    set(usernameInput) {
+      this.setDataValue('username', usernameInput.toLowerCase());
+    },
+    get() {
+       const username = this.getDataValue('username')
+       const usernameArr = username.split('')
+       usernameArr[0] = usernameArr[0].toUpperCase()
+       return usernameArr.join('')
+    }
   },
   password: {
     type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
-    },
+    }
   },
   //new code starts here
   firstName: {
@@ -47,7 +57,7 @@ const User = db.define("user", {
       notEmpty: true,
     },
     get() {
-      return `${this.firstName} ${this.lastName}`;
+      return `${this.getDataValue('firstName')} ${this.getDataValue('lastName')}`;
     },
   },
   creditCardNum: {
@@ -68,11 +78,11 @@ const User = db.define("user", {
   email: {
     type: STRING,
     allowNull: false,
+    unique: true,
     validate: {
       notEmpty: true,
       isEmail: true,
     },
-    unique: true,
   },
   address: {
     type: STRING,

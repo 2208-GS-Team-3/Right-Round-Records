@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -18,7 +18,8 @@ import { setUser } from "../../store/userSlice";
 
 const CreateUserPage = () => {
   const userToCreate = useSelector((state) => state.userToCreate.userToCreate);
-  // { username, password, firstName, lastName, email, phoneNum, shippingAddress, billingAddress, birthday, avatarUrl }
+  const [validity, setValidity] = useState({});
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,15 +27,53 @@ const CreateUserPage = () => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
-    dispatch(setUserToCreate({ ...userToCreate, [name]: value}));
-    console.log(userToCreate);
+    dispatch(setUserToCreate({ ...userToCreate, [name]: value }));
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    const { data: created } = await axios.post("/api/user", userToCreate);
-    dispatch(setUser(created));
-    navigate("/");
+    if (!Object.values(validity).includes(true)) {
+      try {
+        event.preventDefault();
+        const { data: created } = await axios.post("/api/user", userToCreate);
+        dispatch(setUser(created));
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const validateUsername = async (event) => {
+    try {
+      const currentUsername = event.target.value;
+
+      const response = await axios.post("/api/user/usernameAuth", {
+        currentUsername,
+      });
+
+      const usernameValid = response.status !== 200;
+
+      setValidity({ ...validity, username: usernameValid });
+      // setUsernameValid(usernameValid);
+    } catch (error) {
+      setValidity({ ...validity, username: true });
+    }
+  };
+
+  const validateEmail = async (event) => {
+    try {
+      const currentEmail = event.target.value;
+
+      const response = await axios.post("/api/user/userEmailAuth", {
+        currentEmail,
+      });
+
+      const emailValid = response.status !== 200;
+
+      setValidity({ ...validity, email: emailValid });
+    } catch (error) {
+      setValidity(true);
+    }
   };
 
   return (
@@ -46,16 +85,21 @@ const CreateUserPage = () => {
       </Typography>
       <Form className="form">
         <div className="userForm">
-          <FormControl required>
+          <FormControl error={validity.username} required>
             <InputLabel htmlFor="username-input">Your Username</InputLabel>
             <Input
               name="username"
               id="username-input"
               aria-describedby="username-helper-text"
-              onChange={handleUserStateChange}
+              onChange={(event) => {
+                handleUserStateChange(event);
+                validateUsername(event);
+              }}
             />
             <FormHelperText id="username-helper-text">
-              Your Username must be unique.
+              {validity.username
+                ? "Your username must be unique."
+                : "Other users will see this username."}
             </FormHelperText>
           </FormControl>
 
@@ -97,17 +141,22 @@ const CreateUserPage = () => {
               Please enter your last name only.
             </FormHelperText>
           </FormControl>
-
-          <FormControl required>
+          <FormControl error={validity.email} required>
             <InputLabel htmlFor="email-input">Your Email</InputLabel>
             <Input
+              error={validity.email}
               name="email"
               id="email-input"
               aria-describedby="email-helper-text"
-              onChange={handleUserStateChange}
+              onChange={(event) => {
+                handleUserStateChange(event);
+                validateEmail(event);
+              }}
             />
             <FormHelperText id="email-helper-text">
-              Please enter your email address.
+              {validity.email
+                ? "This email address has already been used."
+                : "Please enter your email address."}
             </FormHelperText>
           </FormControl>
 

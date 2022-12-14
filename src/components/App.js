@@ -15,8 +15,6 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const params = useParams("");
-  const navigate = useNavigate();
-  const cartId = params.id;
 
   const getRecords = async () => {
     const records = await axios.get("/api/records");

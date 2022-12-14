@@ -164,7 +164,7 @@ function RRRAppBar() {
           {currentPage.pathname === `/cart` ? (
             <Badge
               key={`CartBadge`}
-              badgeContent={cartRecords}
+              badgeContent={recordTotal}
               color="secondary"
             >
               <ShoppingCartIcon />
