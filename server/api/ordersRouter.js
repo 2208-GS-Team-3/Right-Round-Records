@@ -124,6 +124,7 @@ router.put("/", async (req, res, next) => {
         //how to include cart record with quantity?
         res.send(orderWithRecords);
       }
+      // cart.destroy();
     }
   } catch (err) {
     console.error(err);

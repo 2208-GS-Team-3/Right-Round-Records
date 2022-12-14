@@ -38,9 +38,17 @@ export const cartSlice = createSlice({
       //new cart is filtered for the removed record
       state.cartRecords = removeRecord;
     },
+    resetCart: (state) => {
+      state.cartRecords = [];
+    },
   },
 });
 
-export const { updateCart, removeFromCart, setCartRecords, setCartInfo } =
-  cartSlice.actions;
+export const {
+  updateCart,
+  removeFromCart,
+  setCartRecords,
+  setCartInfo,
+  resetCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;

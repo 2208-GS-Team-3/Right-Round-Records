@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setOrders } from "../store/ordersSlice";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { resetCart } from "../store/cartSlice";
 
 function RRRecords() {
   return (
@@ -59,6 +60,7 @@ export default function Checkout() {
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const dispatch = useDispatch();
   const params = useParams("");
+  const recordsInCart = useSelector((state) => state.cart.cartRecords);
 
   const orderId = params.id;
 
@@ -91,6 +93,8 @@ export default function Checkout() {
       await axios.put(`/api/orders`, cartData, tokenData);
       const newOrders = await axios.get(`/api/orders`, tokenData);
       dispatch(setOrders(newOrders.data));
+      dispatch(resetCart(cartInfo));
+      dispatch(resetCart(recordsInCart));
       handleNext();
     } catch (err) {
       console.log(err);
@@ -108,7 +112,6 @@ export default function Checkout() {
         },
       };
       const order = await axios.get(`/api/orders/${orderId}`, tokenData);
-      console.log({ order });
       setCurrentOrder(order.data);
       setLoading(false);
     } catch (err) {
