@@ -85,6 +85,7 @@ export default function Checkout() {
       await axios.put(`/api/orders`, cartData, tokenData);
       const newOrders = await axios.get(`/api/orders`, tokenData);
       dispatch(setOrders(newOrders.data));
+      handleNext();
     } catch (err) {
       console.log(err);
     }
@@ -157,13 +158,6 @@ export default function Checkout() {
                     Place Order
                   </Button>
                 )}
-                {/* <Button
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{ mt: 3, ml: 1 }}
-                >
-                  {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                </Button> */}
               </Box>
             </React.Fragment>
           )}
