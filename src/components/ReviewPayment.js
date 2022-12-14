@@ -5,42 +5,51 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const Review = () => {
+const ReviewPayment = () => {
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-  console.log(recordsInCart);
-  const products = [
-    {
-      name: "Product 1",
-      desc: "A nice thing",
-      price: "$9.99",
-    },
-    {
-      name: "Product 2",
-      desc: "Another thing",
-      price: "$3.45",
-    },
-    {
-      name: "Product 3",
-      desc: "Something else",
-      price: "$6.51",
-    },
-    {
-      name: "Product 4",
-      desc: "Best thing of all",
-      price: "$14.11",
-    },
-    { name: "Shipping", desc: "", price: "Free" },
-  ];
+  const [currentOrder, setCurrentOrder] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const params = useParams("");
+  const orderId = params.id;
 
-  const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
-  const payments = [
-    { name: "Card type", detail: "Visa" },
-    { name: "Card holder", detail: "Mr John Smith" },
-    { name: "Card number", detail: "xxxx-xxxx-xxxx-1234" },
-    { name: "Expiry date", detail: "04/2024" },
-  ];
+  //request to get the order that hasnt been placed yet
+  const getCurrentOrder = async () => {
+    setLoading(true);
+    try {
+      const token = window.localStorage.getItem("token");
+      //data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+      const order = await axios.get(`/api/orders/${orderId}`, tokenData);
+      setCurrentOrder(order.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentOrder();
+  }, []);
+  const orderSubTotal =
+    recordsInCart.reduce(
+      (currentTotal, itemValue) =>
+        currentTotal + itemValue.price * itemValue.cartRecord.quantity,
+      0
+    ) / 100;
+
+  const tax = orderSubTotal * 0.08;
+  const finalOrderAmount = tax + orderSubTotal;
+  console.log(currentOrder);
+  if (loading) return <p>loading....</p>;
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -50,17 +59,19 @@ const Review = () => {
         {recordsInCart.map((record) => (
           <ListItem key={record.albumName} sx={{ py: 1, px: 0 }}>
             <ListItemText
-              primary={`${record.albumName}(quantity: ${record.cartRecord.quantity})`}
+              primary={`${record.albumName}(${record.cartRecord.quantity})`}
               secondary={record.artist}
             />
-            <Typography variant="body2">{record.price}</Typography>
+            <Typography variant="body2">{`$${(record.price / 100).toFixed(
+              2
+            )}`}</Typography>
           </ListItem>
         ))}
 
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $34.06
+            {finalOrderAmount.toFixed(2)}
           </Typography>
         </ListItem>
       </List>
@@ -69,15 +80,15 @@ const Review = () => {
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Shipping
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(", ")}</Typography>
+          <Typography gutterBottom>{cartInfo.user.fullName}</Typography>
+          <Typography gutterBottom>{currentOrder.shippingAddress}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Payment details
           </Typography>
           <Grid container>
-            {payments.map((payment) => (
+            {/* {payments.map((payment) => (
               <React.Fragment key={payment.name}>
                 <Grid item xs={6}>
                   <Typography gutterBottom>{payment.name}</Typography>
@@ -86,7 +97,7 @@ const Review = () => {
                   <Typography gutterBottom>{payment.detail}</Typography>
                 </Grid>
               </React.Fragment>
-            ))}
+            ))} */}
           </Grid>
         </Grid>
       </Grid>
@@ -94,4 +105,4 @@ const Review = () => {
   );
 };
 
-export default Review;
+export default ReviewPayment;

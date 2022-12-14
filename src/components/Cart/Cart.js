@@ -17,46 +17,42 @@ import CheckoutPage from "../CheckoutPage";
 import { useDispatch } from "react-redux";
 import AddressForm from "../AddressForm";
 import MuiCheckout from "../MuiCheckout";
+import axios from "axios";
 
 const Cart = () => {
   const [purchaseItems, setPurchaseItems] = useState([]);
   const [checkOut, setCheckOut] = useState(false);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-
+  const cartInfo = useSelector((state) => state.cart.cartInfo);
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
     0
   );
 
-  const startCheckout = () => {
-    setCheckOut((currValue) => !currValue);
+  const startCheckout = async () => {
+    try {
+      setCheckOut((currValue) => !currValue);
+      const token = window.localStorage.getItem("token");
+      //data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+
+      const dataToSend = {
+        cartId: cartInfo.id,
+        status: "cart",
+      };
+      const response = await axios.put("/api/orders", dataToSend, tokenData);
+      // console.log(cartData);
+      // await axios.put(`/api/orders`, cartData, tokenData);
+      // const newOrders = await axios.get(`/api/orders`, tokenData);
+      // dispatch(setOrders(newOrders.data));
+    } catch (err) {
+      console.log(err);
+    }
   };
-
-  // const completeCheckout = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     //get token of logged in user
-  //     const token = window.localStorage.getItem("token");
-
-  //     //data to send to backend
-  //     const tokenData = {
-  //       headers: {
-  //         authorization: token,
-  //       },
-  //     };
-  //     //send cart to orders!
-  //     const cartData = {
-  //       cartId: cartInfo.id,
-  //     };
-
-  //     console.log(cartData);
-  //     await axios.put(`/api/orders`, cartData, tokenData);
-  //     const newOrders = await axios.get(`/api/orders`, tokenData);
-  //     dispatch(setOrders(newOrders.data));
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   useEffect(() => {
     setPurchaseItems(recordsInCart);

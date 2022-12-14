@@ -1,5 +1,6 @@
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
+import axios from "axios";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -15,6 +16,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
 import ReviewPayment from "./ReviewPayment";
+import { useSelector, useDispatch } from "react-redux";
+import { setOrders } from "../store/ordersSlice";
 
 function RRRecords() {
   return (
@@ -49,6 +52,8 @@ const theme = createTheme();
 // moves us from one component to the next in the checkout process
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const cartInfo = useSelector((state) => state.cart.cartInfo);
+  const dispatch = useDispatch();
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -56,6 +61,33 @@ export default function Checkout() {
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+  };
+
+  const completeCheckout = async (event) => {
+    event.preventDefault();
+    try {
+      //get token of logged in user
+      const token = window.localStorage.getItem("token");
+
+      //data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+      //send cart to orders!
+      const cartData = {
+        cartId: cartInfo.id,
+        status: "placed",
+      };
+
+      console.log(cartData);
+      await axios.put(`/api/orders`, cartData, tokenData);
+      const newOrders = await axios.get(`/api/orders`, tokenData);
+      dispatch(setOrders(newOrders.data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -107,14 +139,31 @@ export default function Checkout() {
                     Back
                   </Button>
                 )}
-
-                <Button
+                {activeStep < steps.length - 1 && (
+                  <Button
+                    variant="contained"
+                    onClick={handleNext}
+                    sx={{ mt: 3, ml: 1 }}
+                  >
+                    Next
+                  </Button>
+                )}
+                {activeStep >= steps.length - 1 && (
+                  <Button
+                    variant="contained"
+                    onClick={completeCheckout}
+                    sx={{ mt: 3, ml: 1 }}
+                  >
+                    Place Order
+                  </Button>
+                )}
+                {/* <Button
                   variant="contained"
                   onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
                   {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                </Button>
+                </Button> */}
               </Box>
             </React.Fragment>
           )}

@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 
 const OrderCard = ({ order }) => {
-  console.log(order);
   return (
     <Container
       maxWidth="200vw"

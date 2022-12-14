@@ -23,43 +23,43 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
-  try {
-    //coming from 'tokenData' object in 'handleAddToCart'
-    const token = req.headers.authorization;
-    const user = await User.findByToken(token);
+// router.post("/", async (req, res, next) => {
+//   try {
+//     //coming from 'tokenData' object in 'handleAddToCart'
+//     const token = req.headers.authorization;
+//     const user = await User.findByToken(token);
 
-    //coming from 'recordData' object in 'handleAddToCart'
-    const { id } = req.body;
+//     //coming from 'recordData' object in 'handleAddToCart'
+//     const { id } = req.body;
 
-    //find users cart
-    const cart = await Cart.findOne({
-      where: { userId: user.id },
-      include: [User, { model: Record, include: [Genre, Style] }],
-    });
+//     //find users cart
+//     const cart = await Cart.findOne({
+//       where: { userId: user.id },
+//       include: [User, { model: Record, include: [Genre, Style] }],
+//     });
 
-    //find record info
-    const recordToAdd = await Record.findByPk(id);
+//     //find record info
+//     const recordToAdd = await Record.findByPk(id);
 
-    //otherwise, make association btw cart and new record
-    await cart.addRecord(recordToAdd);
-    // }
-    //----------------------------------------------
+//     //otherwise, make association btw cart and new record
+//     await cart.addRecord(recordToAdd);
+//     // }
+//     //----------------------------------------------
 
-    //find updated cart
-    const updatedCart = await Cart.findOne({
-      where: { userId: user.id },
-      include: [User, { model: Record, include: [Genre, Style] }],
-    });
+//     //find updated cart
+//     const updatedCart = await Cart.findOne({
+//       where: { userId: user.id },
+//       include: [User, { model: Record, include: [Genre, Style] }],
+//     });
 
-    // console.log(updatedCart);
-    //send it back to front end
-    res.send(updatedCart);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
+//     // console.log(updatedCart);
+//     //send it back to front end
+//     res.send(updatedCart);
+//   } catch (err) {
+//     console.error(err);
+//     next(err);
+//   }
+// });
 
 router.put("/", async (req, res, next) => {
   try {

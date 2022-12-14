@@ -49,11 +49,7 @@ const BarCart = () => {
   return (
     <React.Fragment>
       <IconButton color="inherit" {...bindToggle(popupState)}>
-        <Badge
-        key={`cartBadge`}
-          badgeContent={recordTotal}
-          color="secondary"
-        >
+        <Badge key={`cartBadge`} badgeContent={recordTotal} color="secondary">
           <ShoppingCartIcon />
         </Badge>
       </IconButton>
