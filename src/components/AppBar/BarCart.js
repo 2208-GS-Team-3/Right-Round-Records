@@ -33,8 +33,11 @@ const BarCart = () => {
   });
 
   const cartRecords = useSelector((state) => state.cart.cartRecords);
+  const cartInfo = useSelector((state) => state.cart.cartInfo);
   const [recordTotal, setRecordTotal] = useState(0);
 
+  console.log(cartInfo);
+  console.log(cartRecords);
   useEffect(
     () =>
       setRecordTotal(
