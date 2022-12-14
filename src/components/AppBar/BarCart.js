@@ -25,19 +25,14 @@ import CartQuantitySelector from "../Cart/CartQuantitySelector";
 import { Box } from "@mui/system";
 
 const BarCart = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const popupState = usePopupState({
     variant: "popper",
     popupId: "cartPopper",
   });
 
   const cartRecords = useSelector((state) => state.cart.cartRecords);
-  const cartInfo = useSelector((state) => state.cart.cartInfo);
   const [recordTotal, setRecordTotal] = useState(0);
 
-  console.log(cartInfo);
-  console.log(cartRecords);
   useEffect(
     () =>
       setRecordTotal(
