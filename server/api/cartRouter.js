@@ -17,6 +17,11 @@ router.get("/", async (req, res, next) => {
       include: [User, { model: Record, include: [Genre, Style] }],
     });
 
+    if (!cart) {
+      const newCart = await Cart.create();
+      res.send(newCart);
+    }
+
     res.send(cart);
   } catch (err) {
     res.sendStatus(404);
@@ -30,12 +35,14 @@ router.put("/", async (req, res, next) => {
     const user = await User.findByToken(token);
 
     //coming from 'recordData' object in 'handleRemoveFromCart'
-    const { recordId, quantity } = req.body;
+    const { recordId, quantity, status } = req.body;
 
     const cart = await Cart.findOne({
       where: { userId: user.id },
       include: [User, { model: Record, include: [Genre, Style] }],
     });
+
+    //-----------------------------------------
 
     const cartRecordToUpdate = await CartRecords.findOne({
       where: { recordId: req.body.recordId },
@@ -52,7 +59,6 @@ router.put("/", async (req, res, next) => {
     //if quantity is 0, destroy the cartRecord for that record
     if (!req.body.quantity) {
       //destroy the record from the cart!
-      console.log("hello");
       await cartRecordToUpdate.destroy();
     }
 

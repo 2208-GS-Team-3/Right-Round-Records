@@ -120,7 +120,10 @@ router.put("/", async (req, res, next) => {
         const orderWithRecords = await Order.findByPk(orderExists.id, {
           include: [User, { model: Record, include: [Genre, Style] }],
         });
-        console.log(orderWithRecords);
+
+        await cart.destroy();
+        const newCart = await Cart.create();
+        newCart.setUser(user);
         //how to include cart record with quantity?
         res.send(orderWithRecords);
       }

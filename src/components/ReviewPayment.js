@@ -29,7 +29,6 @@ const ReviewPayment = () => {
         },
       };
       const order = await axios.get(`/api/orders/${orderId}`, tokenData);
-      console.log({ order });
       setCurrentOrder(order.data);
       setLoading(false);
     } catch (err) {
