@@ -10,8 +10,6 @@ import {
 } from "@mui/material";
 
 const OrderCard = ({ order }) => {
-  console.log(order);
-
   const totalPrice = (total) => {
     return (total / 100).toFixed(2);
   };

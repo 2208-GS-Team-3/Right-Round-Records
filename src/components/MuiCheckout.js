@@ -98,7 +98,6 @@ export default function Checkout() {
 
       //hit cart route & update cart to be empty
       const emptiedCart = await axios.get(`/api/cart`, tokenData);
-      console.log({ emptiedCart });
       dispatch(resetCart(cartInfo));
       dispatch(resetCart(recordsInCart));
       handleNext();
