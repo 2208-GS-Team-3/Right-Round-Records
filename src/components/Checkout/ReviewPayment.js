@@ -8,51 +8,18 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { setTotalCost } from "../../store/checkoutSlice";
+import { useDispatch } from "react-redux";
 
 const ReviewPayment = () => {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const creditCard = useSelector((state) => state.checkoutData.creditCard);
   const billing = useSelector((state) => state.checkoutData.billing);
   const shipping = useSelector((state) => state.checkoutData.shipping);
+  const finalOrderAmount = useSelector((state) => state.checkoutData.totalCost);
 
-  const [currentOrder, setCurrentOrder] = useState([]);
   const [loading, setLoading] = useState(false);
   const params = useParams("");
-  const orderId = params.id;
-
-  console.log({ shipping, billing, creditCard });
-
-  //request to get the order that hasnt been placed yet
-  const getCurrentOrder = async () => {
-    setLoading(true);
-    try {
-      const token = window.localStorage.getItem("token");
-      //data to send to backend
-      const tokenData = {
-        headers: {
-          authorization: token,
-        },
-      };
-      const order = await axios.get(`/api/orders/${orderId}`, tokenData);
-      setCurrentOrder(order.data);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getCurrentOrder();
-  }, []);
-  const orderSubTotal =
-    recordsInCart.reduce(
-      (currentTotal, itemValue) =>
-        currentTotal + itemValue.price * itemValue.cartRecord.quantity,
-      0
-    ) / 100;
-
-  const tax = orderSubTotal * 0.08;
-  const finalOrderAmount = tax + orderSubTotal;
 
   if (loading) return <p>loading....</p>;
   return (

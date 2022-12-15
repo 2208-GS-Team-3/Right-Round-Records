@@ -89,22 +89,15 @@ router.put("/", async (req, res, next) => {
         creditCardNum: creditCardNum,
         ccSecurity: ccSecurity,
         expiryDate: expiryDate,
-        // totalCost: totalCost,
+        totalCost: totalCost,
       });
 
-      //send back order with all info to UI
-      // const orderWithRecords = await Order.findByPk(currentOrder.id, {
-      //   include: [User, { model: Record, include: [Genre, Style] }],
-      // });
-      console.log({ updatedOrder });
-
-      //once order is placed, destroy cart
+      //logic to clear out and renew cart
       await cart.destroy();
-
       //then give user a new cart!
       const newCart = await Cart.create();
       newCart.setUser(user);
-
+      //send back order
       res.send(updatedOrder);
     }
   } catch (err) {

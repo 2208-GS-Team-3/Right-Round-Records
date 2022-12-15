@@ -60,13 +60,13 @@ export default function Checkout() {
   const creditCard = useSelector((state) => state.checkoutData.creditCard);
   const billing = useSelector((state) => state.checkoutData.billing);
   const shipping = useSelector((state) => state.checkoutData.shipping);
+  const totalCost = useSelector((state) => state.checkoutData.totalCost);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const dispatch = useDispatch();
   const params = useParams("");
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const orderId = params.id;
 
-  console.log({ shipping }, { billing }, { creditCard });
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
@@ -78,7 +78,6 @@ export default function Checkout() {
   const shippingString = `${shipping.firstName} ${shipping.lastName}, ${shipping.address1}, ${shipping.address2}, ${shipping.city}, ${shipping.state}, ${shipping.country}, ${shipping.zip}`;
   const billingString = `${billing.firstName} ${billing.lastName}, ${billing.address1}, ${billing.address2}, ${billing.city}, ${billing.state}, ${billing.country}, ${billing.zip}`;
 
-  console.log(shippingString);
   const completeCheckout = async (event) => {
     event.preventDefault();
     try {
@@ -101,7 +100,7 @@ export default function Checkout() {
         creditCardNum: `${creditCard.creditCardNum}`,
         ccSecurity: `${creditCard.ccSecurity}`,
         expiryDate: `${creditCard.expiryDate}`,
-        // totalCost: ,
+        totalCost: totalCost,
       };
 
       //change order status to placed

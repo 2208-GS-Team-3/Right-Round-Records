@@ -5,6 +5,7 @@ const initialState = {
   shipping: {},
   billing: {},
   creditCard: {},
+  totalCost: 0,
 };
 
 export const checkoutSlice = createSlice({
@@ -23,9 +24,17 @@ export const checkoutSlice = createSlice({
     setCreditCard: (state, action) => {
       state.creditCard = action.payload;
     },
+    setTotalCost: (state, action) => {
+      state.totalCost = action.payload;
+    },
   },
 });
 
-export const { setCheckoutData, setShipping, setBilling, setCreditCard } =
-  checkoutSlice.actions;
+export const {
+  setCheckoutData,
+  setShipping,
+  setBilling,
+  setCreditCard,
+  setTotalCost,
+} = checkoutSlice.actions;
 export default checkoutSlice.reducer;
