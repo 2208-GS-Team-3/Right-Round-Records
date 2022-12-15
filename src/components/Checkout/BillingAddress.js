@@ -2,79 +2,51 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { useSelector } from "react-redux";
-import { useState } from "react";
 import { Button } from "@mui/material";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setBilling } from "../../store/checkoutSlice";
 
 const BillingAddress = () => {
+  const billing = useSelector((state) => state.checkoutData.billing);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
+  const dispatch = useDispatch();
 
-  //billing local state
-  const [billingFN, setBillingFN] = useState("");
-  const [billingLN, setBillingLN] = useState("");
-  const [billingAdd1, setBillingAdd1] = useState("");
-  const [billingAdd2, setBillingAdd2] = useState("");
-  const [billingCity, setBillingCity] = useState("");
-  const [billingState, setBillingState] = useState("");
-  const [billingZip, setBillingZip] = useState("");
-  const [billingCountry, setBillingCountry] = useState("");
+  const handleCheckoutStateChange = (e) => {
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+    dispatch(setBilling({ ...billing, [name]: value }));
+  };
+  // const handleBillingAddress = async (event) => {
+  //   event.preventDefault();
+  //   const token = window.localStorage.getItem("token");
+  //   //data to send to backend
+  //   const tokenData = {
+  //     headers: {
+  //       authorization: token,
+  //     },
+  //   };
+  //   const billingData = {
+  //     cartId: cartInfo.id,
+  //     billingAddress: `${billingFN} ${billingLN}, ${billingAdd1}, ${billingAdd2}, ${billingCity}, ${billingState}, ${billingZip}, ${billingCountry}`,
+  //     status: "cart",
+  //   };
 
-  const handleBillingAddress = async (event) => {
-    event.preventDefault();
-    const token = window.localStorage.getItem("token");
-    //data to send to backend
-    const tokenData = {
-      headers: {
-        authorization: token,
-      },
-    };
-    const billingData = {
-      cartId: cartInfo.id,
-      billingAddress: `${billingFN} ${billingLN}, ${billingAdd1}, ${billingAdd2}, ${billingCity}, ${billingState}, ${billingZip}, ${billingCountry}`,
-      status: "cart",
-    };
+  //   //update shipping info, order created but still 'cart' status
+  //   await axios.put(`/api/orders`, billingData, tokenData);
 
-    //update shipping info, order created but still 'cart' status
-    await axios.put(`/api/orders`, billingData, tokenData);
-
-    //get the order back bc we'll need the info for the checkout page to display shipping data
-    const updatedOrder = await axios.get(`/api/orders`, tokenData);
-  };
-
-  const handleFirstName = (e) => {
-    setBillingFN(e.target.value);
-  };
-  const handleLastName = (e) => {
-    setBillingLN(e.target.value);
-  };
-  const handleAdd1 = (e) => {
-    setBillingAdd1(e.target.value);
-  };
-  const handleAdd2 = (e) => {
-    setBillingAdd2(e.target.value);
-  };
-  const handleCity = (e) => {
-    setBillingCity(e.target.value);
-  };
-  const handleState = (e) => {
-    setBillingState(e.target.value);
-  };
-  const handleZip = (e) => {
-    setBillingZip(e.target.value);
-  };
-  const handleCountry = (e) => {
-    setBillingCountry(e.target.value);
-  };
+  //   //get the order back bc we'll need the info for the checkout page to display shipping data
+  //   const updatedOrder = await axios.get(`/api/orders`, tokenData);
+  // };
 
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Billing address:
       </Typography>
-      <form onSubmit={handleBillingAddress}>
+      <form>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -86,7 +58,7 @@ const BillingAddress = () => {
               fullWidth
               autoComplete="given-name"
               variant="standard"
-              onChange={handleFirstName}
+              onChange={handleCheckoutStateChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -99,7 +71,7 @@ const BillingAddress = () => {
               fullWidth
               autoComplete="family-name"
               variant="standard"
-              onChange={handleLastName}
+              onChange={handleCheckoutStateChange}
             />
           </Grid>
           <Grid item xs={12}>
@@ -108,7 +80,7 @@ const BillingAddress = () => {
               id="address1"
               name="address1"
               label="Address line 1"
-              onChange={handleAdd1}
+              onChange={handleCheckoutStateChange}
               fullWidth
               autoComplete="shipping address-line1"
               variant="standard"
@@ -120,7 +92,7 @@ const BillingAddress = () => {
               name="address2"
               label="Address line 2"
               fullWidth
-              onChange={handleAdd2}
+              onChange={handleCheckoutStateChange}
               autoComplete="shipping address-line2"
               variant="standard"
             />
@@ -134,7 +106,7 @@ const BillingAddress = () => {
               fullWidth
               autoComplete="shipping address-level2"
               variant="standard"
-              onChange={handleCity}
+              onChange={handleCheckoutStateChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -144,7 +116,7 @@ const BillingAddress = () => {
               label="State/Province/Region"
               fullWidth
               variant="standard"
-              onChange={handleState}
+              onChange={handleCheckoutStateChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -156,7 +128,7 @@ const BillingAddress = () => {
               fullWidth
               autoComplete="shipping postal-code"
               variant="standard"
-              onChange={handleZip}
+              onChange={handleCheckoutStateChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -168,14 +140,11 @@ const BillingAddress = () => {
               fullWidth
               autoComplete="shipping country"
               variant="standard"
-              onChange={handleCountry}
+              onChange={handleCheckoutStateChange}
             />
           </Grid>
           <Grid item xs={12}></Grid>
         </Grid>
-        <Button variant="outlined" type="submit">
-          update
-        </Button>
       </form>
     </React.Fragment>
   );

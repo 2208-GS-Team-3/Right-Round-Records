@@ -13,10 +13,8 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
-import CheckoutPage from "../CheckoutPage";
 import { useDispatch } from "react-redux";
-import AddressForm from "../AddressForm";
-import MuiCheckout from "../MuiCheckout";
+import MuiCheckout from "../Checkout/MuiCheckout";
 import axios from "axios";
 
 const Cart = () => {

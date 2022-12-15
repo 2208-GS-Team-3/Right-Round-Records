@@ -12,10 +12,16 @@ import { useParams } from "react-router-dom";
 const ReviewPayment = () => {
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
+  const creditCard = useSelector((state) => state.checkoutData.creditCard);
+  const billing = useSelector((state) => state.checkoutData.billing);
+  const shipping = useSelector((state) => state.checkoutData.shipping);
+
   const [currentOrder, setCurrentOrder] = useState([]);
   const [loading, setLoading] = useState(false);
   const params = useParams("");
   const orderId = params.id;
+
+  console.log({ shipping, billing, creditCard });
 
   //request to get the order that hasnt been placed yet
   const getCurrentOrder = async () => {
@@ -80,23 +86,25 @@ const ReviewPayment = () => {
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Shipping
           </Typography>
-          <Typography gutterBottom>{currentOrder.shippingAddress}</Typography>
+          <Typography gutterBottom>
+            Ship to: {shipping.firstName} {shipping.lastName}
+          </Typography>
+          <Typography gutterBottom>
+            Address: {shipping.address1}, {shipping.address2}, {shipping.city},{" "}
+            {shipping.state}, {shipping.zip}, {shipping.country}
+          </Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Payment details
+            Billing Information
           </Typography>
           <Grid container>
-            {/* {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))} */}
+            <Typography gutterBottom>
+              Name: {billing.firstName} {billing.lastName}
+              Billing Address: {billing.address1}, {billing.address2},{" "}
+              {billing.city}, {billing.state}, {billing.zip}, {billing.country}
+            </Typography>
+            <Typography gutterBottom>Last 4 digits of CC*: `HERE`</Typography>
           </Grid>
         </Grid>
       </Grid>
