@@ -5,11 +5,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-import axios from "axios";
+
 import { useParams } from "react-router-dom";
-import { setTotalCost } from "../../store/checkoutSlice";
-import { useDispatch } from "react-redux";
 
 const ReviewPayment = () => {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
@@ -18,10 +15,8 @@ const ReviewPayment = () => {
   const shipping = useSelector((state) => state.checkoutData.shipping);
   const finalOrderAmount = useSelector((state) => state.checkoutData.totalCost);
 
-  const [loading, setLoading] = useState(false);
   const params = useParams("");
 
-  if (loading) return <p>loading....</p>;
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

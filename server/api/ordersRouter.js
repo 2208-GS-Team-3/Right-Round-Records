@@ -12,7 +12,7 @@ router.get("/", async (req, res, next) => {
 
     const orders = await Order.findAll({
       order: [["id", "DESC"]],
-      where: { userId: user.id },
+      where: { userId: user.id, status: "placed" },
       include: [User, { model: Record, include: [Genre, Style] }],
     });
 
@@ -56,8 +56,6 @@ router.put("/", async (req, res, next) => {
       expiryDate,
     } = req.body;
 
-    console.log(req.body);
-
     if (req.body.status === "placed") {
       // get users cart
       const cart = await Cart.findOne({
@@ -66,17 +64,16 @@ router.put("/", async (req, res, next) => {
       });
 
       //users current order
-      const currentOrder = await Order.findOne({
+      const currentOrder = await Order.create({
         where: { status: "cart", userId: user.id },
         include: [User, { model: Record, include: [Genre, Style] }],
       });
 
+      await user.addOrder(currentOrder);
+
       const mappedRecordsForAssociations = [];
       const mappedRecords = cart.records.forEach((record) =>
         mappedRecordsForAssociations.push(record)
-      );
-      mappedRecordsForAssociations.forEach((record) =>
-        currentOrder.addRecords(record)
       );
 
       //update the order status to placed
@@ -92,13 +89,26 @@ router.put("/", async (req, res, next) => {
         totalCost: totalCost,
       });
 
+      mappedRecordsForAssociations.forEach((record) =>
+        currentOrder.addRecords([record])
+      );
+
+      const finalOrderDetails = await Order.findOne({
+        where: { id: updatedOrder.id },
+        include: [
+          { model: User, attributes: ["username"] },
+          { model: Record, include: [Genre, Style] },
+        ],
+      });
+
       //logic to clear out and renew cart
       await cart.destroy();
       //then give user a new cart!
       const newCart = await Cart.create();
       newCart.setUser(user);
       //send back order
-      res.send(updatedOrder);
+      console.log(finalOrderDetails);
+      res.send(finalOrderDetails);
     }
   } catch (err) {
     console.error(err);

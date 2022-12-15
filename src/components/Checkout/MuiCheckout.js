@@ -104,6 +104,7 @@ export default function Checkout() {
       };
 
       //change order status to placed
+      console.log("hello");
       await axios.put(`/api/orders`, orderData, tokenData);
 
       //newOrders will include all record/order associations
@@ -113,7 +114,7 @@ export default function Checkout() {
       dispatch(setOrders(newOrders.data));
 
       //hit cart route & update cart to be empty
-      const emptiedCart = await axios.get(`/api/cart`, tokenData);
+      // const emptiedCart = await axios.get(`/api/cart`, tokenData);
       dispatch(resetCart(cartInfo));
       dispatch(resetCart(recordsInCart));
       handleNext();

@@ -14,7 +14,6 @@ import {
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
 import MuiCheckout from "../Checkout/MuiCheckout";
-import axios from "axios";
 import { setTotalCost } from "../../store/checkoutSlice";
 import { useDispatch } from "react-redux";
 const Cart = () => {
@@ -64,7 +63,6 @@ const Cart = () => {
 
   return (
     <Box key={`wholeCart`} sx={{ display: "grid", gridAutoFlow: "row" }}>
-      {/* {checkOut && <CheckoutPage />} */}
       {checkOut && <MuiCheckout />}
       {!checkOut && (
         <>
