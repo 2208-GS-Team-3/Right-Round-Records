@@ -31,18 +31,8 @@ Record.belongsToMany(Genre, { through: "record_genre" });
 Style.belongsToMany(Record, { through: "record_style" });
 Record.belongsToMany(Style, { through: "record_style" });
 
-// Genre.hasMany(Record);
-// Record.hasMany(Genre);
-
-// Record.hasMany(Style);
-// Style.hasMany(Record);
-
 User.hasMany(Review);
 Record.hasMany(Review);
-
-//may want to use this later to track records already owned, not purchased through us
-// User.belongsToMany(Record, { through: "owned_records" });
-// Record.belongsToMany(User, { through: "owned_records" });
 
 module.exports = {
   User,

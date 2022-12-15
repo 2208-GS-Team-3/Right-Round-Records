@@ -36,6 +36,12 @@ const Order = db.define("order", {
     type: Sequelize.STRING,
     unique: true,
   },
+  totalCost: {
+    type: Sequelize.INTEGER,
+    set(value) {
+      this.setDataValue("totalCost", Math.floor(value * 100));
+    },
+  },
 });
 
 module.exports = Order;

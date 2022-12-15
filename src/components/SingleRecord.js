@@ -17,7 +17,6 @@ const SingleRecord = () => {
   const { selectedRecord, loadingRecord } = useSelector((state) => {
     return state.selectedRecord;
   });
-
   const [showReviews, setShowReviews] = useState(false);
 
   const displayAllReviews = () => {
@@ -30,10 +29,8 @@ const SingleRecord = () => {
 
   const fetchRecordById = async (id) => {
     try {
-      //   dispatch(setLoadingRecord(true));
       const response = await axios.get(`/api/records/${id}`);
       dispatch(setRecord(response.data));
-      //   dispatch(setLoadingRecord(false));
     } catch (err) {}
     // dispatch(setLoadingRecord(false));
   };
@@ -47,9 +44,10 @@ const SingleRecord = () => {
   const singleRecordPageUrl = `/records/${selectedRecord.id}`;
 
   if (loadingRecord) return <CircularProgress />;
+
   //check if selected record exist
   if (!Object.keys(selectedRecord).length)
-    return <h1>Oops, this record doesn't exist, please try again</h1>;
+    return <h1>Oops, this record does not exist, please try again</h1>;
   const sumOfRatings = selectedRecord.reviews.reduce(
     (rating, nextRating) => rating + nextRating.reviewRating,
     0
@@ -57,10 +55,16 @@ const SingleRecord = () => {
   const avgRating = (sumOfRatings / selectedRecord.reviews.length).toFixed(1);
 
   return (
-    <Container maxWidth="sm">
+    <Container
+      maxWidth="sm"
+      style={{
+        border: "2px solid red",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
       <Box>
         <img
-          component="img"
           height="300"
           src={selectedRecord.imageUrls[0].uri}
           alt="record album"
@@ -68,56 +72,77 @@ const SingleRecord = () => {
         <Typography gutterBottom variant="h5" component="div">
           <h3>{selectedRecord.albumName}</h3>
         </Typography>
-        {selectedRecord.reviews.length > 0 && (
-          <>
-            <Typography component="legend">
-              <b>Average Rating</b>
-            </Typography>
-            <Rating name="read-only" value={Number(avgRating)} readOnly />
-          </>
-        )}
-        <br></br>
-        <Typography variant="body2" color="text.secondary">
-          <span>
-            <b>Artist:</b> {selectedRecord.artist}
-          </span>
-          <br></br>
-          <span>
-            <b>Year:</b> {selectedRecord.year}
-          </span>
-          <br></br>
-          <span>
-            <b>Price:</b> {price}
-          </span>
-          <br></br>
-          <span>
-            <b>Genre(s):</b>
-            {selectedRecord.genres.map((genre, index) => (
-              <li key={index}>{genre.name} </li>
-            ))}
-          </span>
-          <br></br>
-          <span>
-            <b>Style(s):</b>
-            {selectedRecord.styles.map((style, index) => (
-              <li key={index}>{style.name} </li>
-            ))}
-          </span>
-        </Typography>
-        <br></br>
-        {showReviews ? (
-          <>
-            <Button onClick={displayAllReviews}>Hide reviews</Button>
-            <SingleRecReviews selectedRecord={selectedRecord} />
-          </>
-        ) : (
-          <Button onClick={displayAllReviews}>See all reviews</Button>
-        )}
+        <Container>
+          {/* rating container */}
+          <Container>
+            {selectedRecord.reviews.length > 0 && (
+              <>
+                <Typography component="div" variant="h6">
+                  <b>Average Rating</b>
+                </Typography>
+                <Rating name="read-only" value={Number(avgRating)} readOnly />
+              </>
+            )}
+          </Container>
 
-        <Button size="small" href={"/"}>
-          Back
-        </Button>
-        <Button size="small">Add to cart</Button>
+          {/* record info container */}
+          <Container
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {/* artist, year, price on left */}
+            <Container>
+              <Typography variant="body2" color="text.secondary">
+                <b>Artist:</b> {selectedRecord.artist}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <b>Year:</b> {selectedRecord.year}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <b>Price:</b> {price}
+              </Typography>
+            </Container>
+
+            {/* genres, styles on right */}
+            <Container>
+              <Typography variant="body2" color="text.secondary">
+                <b>Genre(s):</b>
+                {selectedRecord.genres.map((genre, index) => (
+                  <li key={index}>{genre.name} </li>
+                ))}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <b>Style(s):</b>
+                {selectedRecord.styles.map((style, index) => (
+                  <li key={index}>{style.name} </li>
+                ))}
+              </Typography>
+            </Container>
+          </Container>
+          {/* end of record info */}
+
+          {/* Review information */}
+          <Container style={{ border: "2px solid red", display: "flex" }}>
+            {showReviews ? (
+              <>
+                <Button onClick={displayAllReviews}>Hide reviews</Button>
+                <SingleRecReviews selectedRecord={selectedRecord} />
+              </>
+            ) : (
+              <Button onClick={displayAllReviews}>See all reviews</Button>
+            )}
+          </Container>
+
+          {/* navigation container */}
+          <Container>
+            <Button size="small" href={"/"}>
+              Back
+            </Button>
+            <Button size="small">Add to cart</Button>
+          </Container>
+        </Container>
       </Box>
     </Container>
   );

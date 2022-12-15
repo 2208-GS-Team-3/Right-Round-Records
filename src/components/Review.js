@@ -2,8 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Container from "@mui/material/Container";
 import Rating from "@mui/material/Rating";
-import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+
 
 const Review = () => {
   const selectedRecord = useSelector(

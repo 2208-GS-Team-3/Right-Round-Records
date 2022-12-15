@@ -1,6 +1,17 @@
+const user = require("disconnect/lib/user");
 const express = require("express");
-const { Record, Order, User, Genre, Style } = require("../db");
+const {
+  Record,
+  User,
+  Cart,
+  CartRecords,
+  Style,
+  Genre,
+  Order,
+} = require("../db");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
+const JWT = process.env.JWT;
 
 // //localhost:3000/api/orders/
 // //list of all orders
@@ -8,11 +19,13 @@ router.get("/", async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
+
     const orders = await Order.findAll({
       order: [["id", "DESC"]],
       where: { userId: user.id },
       include: [User, { model: Record, include: [Genre, Style] }],
     });
+
     res.send(orders);
   } catch (err) {
     res.sendStatus(404);
@@ -20,65 +33,111 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
-    const { datePlaced, status, shippingAddress, trackingNumber } = req.body;
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
 
-    await Order.create({
-      datePlaced,
-      status,
-      shippingAddress,
-      trackingNumber,
+    const currentOrder = await Order.findOne({
+      where: { status: "cart", userId: user.id },
+      include: [{ model: User, include: [{ model: Cart, include: [Record] }] }],
     });
 
-    // will records array go in above?
-    const orderWithRecords = await Order.findByPk(id, {
-      include: [Record],
+    res.send(currentOrder);
+  } catch (err) {
+    res.sendStatus(404);
+    next(err);
+  }
+});
+
+router.put("/", async (req, res, next) => {
+  try {
+    //get user info
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
+    const { cartId, shippingAddress, totalCost } = req.body;
+    const randomTrackingNum = Math.floor(Math.random() * 1000000);
+
+    //users cart
+    const cart = await Cart.findOne({
+      where: { id: req.body.cartId },
+      include: [User, { model: Record, include: [Genre, Style] }],
     });
-    res.send(200).status(201);
+
+    //users current order. does it exist?
+    const orderExists = await Order.findOne({
+      where: { status: "cart", userId: user.id },
+    });
+
+    //if user does not have an order with status of cart
+    if (!orderExists) {
+      //create the order
+      const orderInCart = await Order.create({
+        datePlaced: Date.now(),
+        status: "cart",
+        shippingAddress: shippingAddress || user.address,
+        totalCost: totalCost,
+      });
+      // associate order with records
+      cart.records.forEach((record) => orderInCart.addRecords([record]));
+
+      // associate new order with user
+      user.addOrder(orderInCart);
+      // orderInCart.addRecordss();
+      res.send(orderInCart);
+    }
+
+    if (orderExists) {
+      if (req.body.status === "cart") {
+        const updatedOrder = await orderExists.update({
+          datePlaced: Date.now(),
+          status: "cart",
+          trackingNumber: randomTrackingNum,
+          shippingAddress: shippingAddress || user.address,
+          totalCost: totalCost,
+        });
+
+        // associate order with records
+        cart.records.forEach((record) => updatedOrder.addRecords([record]));
+
+        res.send(updatedOrder);
+      }
+
+      //if the order gets placed, find the cart with all of the records
+      if (req.body.status === "placed") {
+        //identify the users cart
+
+        //update the order status to placed
+        await orderExists.update({
+          datePlaced: Date.now(),
+          status: "placed",
+          trackingNumber: randomTrackingNum,
+          shippingAddress: shippingAddress || user.address,
+          totalCost: totalCost,
+        });
+
+        // associate order with records
+        cart.records.forEach((record) => orderExists.addRecords(record));
+
+        //send back order with all info to UI
+        const orderWithRecords = await Order.findByPk(orderExists.id, {
+          include: [User, { model: Record, include: [Genre, Style] }],
+        });
+
+        //once order is placed, destroy cart
+        await cart.destroy();
+
+        //then give user a new cart!
+        const newCart = await Cart.create();
+        newCart.setUser(user);
+
+        res.send(orderWithRecords);
+      }
+    }
   } catch (err) {
     console.error(err);
     next(err);
   }
 });
-
-// // PUT /api/order/:id
-// router.put("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const { status, shippingAddress } = req.body;
-//     const order = await Order.findByPk(id);
-
-//     // should only be able to update the status (i.e. to cancel or place order), not change 'date placed' or the tracking number
-//     const updatedOrder = await order.update({
-//       status,
-//       shippingAddress,
-//     });
-
-//     const orderWithRecords = await Order.findByPk(id, {
-//       include: [Record],
-//     });
-
-//     //send updated order along with updated info
-//     res.send(orderWithRecords);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
-
-// // DELETE /api/records/:id
-// router.delete("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const order = await Order.findByPk(id);
-//     // if (!order) return res.sendStatus(404)
-//     await order.destroy();
-//     res.sendStatus(204);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
 
 module.exports = router;

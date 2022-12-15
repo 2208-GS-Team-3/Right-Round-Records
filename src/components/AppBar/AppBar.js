@@ -17,7 +17,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import BarCart from "./BarCart";
 import { Badge } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
 const pages = ["Records", "Reviews", "Community"];
 const userSettings = ["Profile", "Account", "Dashboard", "Orders", "Logout"];
 const guestSettings = ["Profile", "Account", "Dashboard", "Login"];
