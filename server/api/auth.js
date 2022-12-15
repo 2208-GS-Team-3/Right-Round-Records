@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { User } = require("../db");
-const { authenticateUser } = require('./helpers/authUserMiddleware')
+const { authenticateUser } = require("./helpers/authUserMiddleware");
 
 /**
  * Get user based on token
@@ -25,12 +25,11 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.get('/testAuth', authenticateUser, (req, res, next) => {
-  if(req.user.isAdmin === false) return res.sendStatus(404)
+router.get("/testAuth", authenticateUser, (req, res, next) => {
+  if (req.user.isAdmin === false) return res.sendStatus(404);
   const userInfo = req.user;
   console.log(userInfo.username);
-  res.send(userInfo)
-})
-
+  res.send(userInfo);
+});
 
 module.exports = router;

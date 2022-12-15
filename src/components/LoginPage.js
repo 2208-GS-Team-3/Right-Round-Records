@@ -44,9 +44,12 @@ const LoginPage = () => {
 
   const attemptLogin = async (event) => {
     event.preventDefault();
-    const response = await axios.post("/api/auth", credentials);
+    const normalizeCredentials = {
+      ...credentials,
+      username: credentials.username.toLowerCase(),
+    };
+    const response = await axios.post("/api/auth", normalizeCredentials);
     const token = response.data;
-    // console.log(token);
     window.localStorage.setItem("token", token);
 
     loginWithToken(token);
