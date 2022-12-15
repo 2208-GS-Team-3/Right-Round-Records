@@ -55,7 +55,6 @@ const SingleRecord = () => {
     <Container
       maxWidth="sm"
       style={{
-        border: "2px solid red",
         display: "flex",
         justifyContent: "center",
       }}
@@ -121,7 +120,7 @@ const SingleRecord = () => {
           {/* end of record info */}
 
           {/* Review information */}
-          <Container style={{ border: "2px solid red", display: "flex" }}>
+          <Container style={{ display: "flex" }}>
             {showReviews ? (
               <>
                 <Button onClick={displayAllReviews}>Hide reviews</Button>
