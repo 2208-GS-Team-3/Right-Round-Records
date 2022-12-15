@@ -20,7 +20,7 @@ const seed = async () => {
       lastName: "Wolf",
       email: "kolbywolf@gmail.com",
       phoneNum: "828-423-2588",
-     address: "902 Brisbane ST. NE, Palm Bay, FL, 32907",
+      address: "902 Brisbane ST. NE, Palm Bay, FL, 32907",
       birthday: "January 4, 1991",
       avatarUrl: "static/KolbyIMG.jpeg",
       isAdmin: true,
@@ -181,38 +181,44 @@ const seed = async () => {
   const [order1, order2, order3, order4, order5, order6] = await Promise.all([
     Order.create({
       datePlaced: Date.now(),
-      status: "cart",
+      status: "placed",
       shippingAddress: "1234 album lane, NY, NY 10005",
+      totalCost: 2345
       trackingNumber: "12345",
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "placed",
       shippingAddress: "2222 album lane, NY, NY 10005",
+      totalCost: 2345
       trackingNumber: "54321",
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "shipped",
       shippingAddress: "3333 album lane, NY, NY 10005",
+      totalCost: 2345
       trackingNumber: "74625",
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "delivered",
       shippingAddress: "4444 album lane, NY, NY 10005",
+      totalCost: 2345
       trackingNumber: "444443",
     }),
     Order.create({
       datePlaced: Date.now(),
-      status: "cart",
+      status: "placed",
       shippingAddress: "7777 album lane, NY, NY 10005",
+      totalCost: 2345
       trackingNumber: "4324789",
     }),
     Order.create({
       datePlaced: Date.now(),
-      status: "cart",
+      status: "placed",
       shippingAddress: "7777 album lane, NY, NY 10005",
+      totalCost: 2345
       trackingNumber: "4324788",
     }),
   ]);

@@ -46,6 +46,10 @@ const CreateReviewForm = ({ selectedRecord }) => {
     );
     //set that records new review data
     dispatch(setRecord(updatedSingleRecord.data));
+
+    //zero out fields after submission
+    setReviewComment("");
+    setReviewRating(null);
     //show updated review on page
     navigate(`/records/${selectedRecord.id}`);
     //
@@ -61,25 +65,14 @@ const CreateReviewForm = ({ selectedRecord }) => {
     setReviewRating(numRating);
   };
 
-  // const handleDeleteReview = async (event) => {
-  //   event.preventDefault();
-  //   const { data: deleted } = await axios.delete(`/api/reviews/${params.id}`, {
-  //     //dont need anything here bc no info needs to be passed in?
-  //   });
-  //   dispatch(deleteReview(deleted));
-  //   navigate("/");
-  // };
-
-  //add logic for (ONLY if user has ordered this record, they can review it)
   return (
-    <div styles={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <form onSubmit={handleSubmitReview}>
         <label>Review this Record</label>
         <br></br>
         <TextField
           id="outlined-basic"
           type="text"
-          label="Outlined"
           variant="outlined"
           margin="normal"
           value={reviewComment}
@@ -91,6 +84,7 @@ const CreateReviewForm = ({ selectedRecord }) => {
         <Rating
           name="simple-controlled"
           type="number"
+          value={reviewRating}
           onChange={collectRating}
         />
         <br></br>

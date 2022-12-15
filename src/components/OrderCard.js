@@ -7,11 +7,13 @@ import {
   CardMedia,
   Typography,
   Container,
-  Box,
 } from "@mui/material";
 
 const OrderCard = ({ order }) => {
-  console.log(order);
+  const totalPrice = (total) => {
+    return (total / 100).toFixed(2);
+  };
+
   return (
     <Container
       maxWidth="200vw"
@@ -22,22 +24,26 @@ const OrderCard = ({ order }) => {
         padding: "30px",
       }}
     >
-      <h3>
+      <h3></h3>
+      <Typography variant="h4" gutterBottom>
         <b>Order #:</b>
-        {order.id}
-      </h3>
-      <p>
+        {order.id}{" "}
+      </Typography>
+      <Typography variant="h6" gutterBottom>
         <b>Date Placed:</b> {order.datePlaced}
-      </p>
-      <p>
+      </Typography>
+      <Typography variant="h6" gutterBottom>
         <b>Shipping Address:</b> {order.shippingAddress}
-      </p>
-      <p>
+      </Typography>
+      <Typography variant="h6" gutterBottom>
         <b>Tracking Number:</b> {order.trackingNumber}
-      </p>
-      <p>
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        <b>Order total: {`$${totalPrice(order.totalCost)}`}</b>
+      </Typography>
+      <Typography variant="h6" gutterBottom>
         <b>Records purchased:</b>
-      </p>
+      </Typography>
       {/* order.records.map here */}
       <Container style={{ display: "flex", gap: "50px" }} maxWidth="75%">
         {order.records.map((record) => {

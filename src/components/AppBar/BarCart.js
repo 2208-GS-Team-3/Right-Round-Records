@@ -25,8 +25,6 @@ import CartQuantitySelector from "../Cart/CartQuantitySelector";
 import { Box } from "@mui/system";
 
 const BarCart = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const popupState = usePopupState({
     variant: "popper",
     popupId: "cartPopper",
@@ -49,11 +47,7 @@ const BarCart = () => {
   return (
     <React.Fragment>
       <IconButton color="inherit" {...bindToggle(popupState)}>
-        <Badge
-        key={`cartBadge`}
-          badgeContent={recordTotal}
-          color="secondary"
-        >
+        <Badge key={`cartBadge`} badgeContent={recordTotal} color="secondary">
           <ShoppingCartIcon />
         </Badge>
       </IconButton>
