@@ -10,7 +10,6 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const ReviewPayment = () => {
-  const cartInfo = useSelector((state) => state.cart.cartInfo);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const creditCard = useSelector((state) => state.checkoutData.creditCard);
   const billing = useSelector((state) => state.checkoutData.billing);

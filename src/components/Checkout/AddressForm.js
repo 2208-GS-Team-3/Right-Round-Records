@@ -6,8 +6,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { Button } from "@mui/material";
-// import axios from "axios";
 import BillingAddress from "./BillingAddress";
 import { setShipping, setBilling } from "../../store/checkoutSlice";
 import { useDispatch } from "react-redux";

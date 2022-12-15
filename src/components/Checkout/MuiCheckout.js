@@ -57,12 +57,16 @@ export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [currentOrder, setCurrentOrder] = useState([]);
   const [loading, setLoading] = useState(false);
+  const creditCard = useSelector((state) => state.checkoutData.creditCard);
+  const billing = useSelector((state) => state.checkoutData.billing);
+  const shipping = useSelector((state) => state.checkoutData.shipping);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const dispatch = useDispatch();
   const params = useParams("");
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const orderId = params.id;
 
+  console.log({ shipping }, { billing }, { creditCard });
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
@@ -71,6 +75,10 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
+  const shippingString = `${shipping.firstName} ${shipping.lastName}, ${shipping.address1}, ${shipping.address2}, ${shipping.city}, ${shipping.state}, ${shipping.country}, ${shipping.zip}`;
+  const billingString = `${billing.firstName} ${billing.lastName}, ${billing.address1}, ${billing.address2}, ${billing.city}, ${billing.state}, ${billing.country}, ${billing.zip}`;
+
+  console.log(shippingString);
   const completeCheckout = async (event) => {
     event.preventDefault();
     try {
@@ -83,14 +91,22 @@ export default function Checkout() {
           authorization: token,
         },
       };
-      //send cart to orders!
-      const cartData = {
+      //send orderData to ordersRouter
+      const orderData = {
         cartId: cartInfo.id,
         status: "placed",
+        shippingAddress: shippingString,
+        billingAddress: billingString,
+        creditCardName: `${creditCard.creditCardName}`,
+        creditCardNum: `${creditCard.creditCardNum}`,
+        ccSecurity: `${creditCard.ccSecurity}`,
+        expiryDate: `${creditCard.expiryDate}`,
+        // totalCost: ,
       };
+      console.log({ orderData });
 
       //change order status to placed
-      await axios.put(`/api/orders`, cartData, tokenData);
+      await axios.put(`/api/orders`, orderData, tokenData);
 
       //newOrders will include all record/order associations
       const newOrders = await axios.get(`/api/orders`, tokenData);
@@ -118,7 +134,6 @@ export default function Checkout() {
       };
       const order = await axios.get(`/api/orders/${orderId}`, tokenData);
       setCurrentOrder(order.data);
-      setLoading(false);
     } catch (err) {
       console.log(err);
     }

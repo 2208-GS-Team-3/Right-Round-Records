@@ -2,8 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import axios from "axios";
-import { Button } from "@mui/material";
+
 import { useSelector } from "react-redux";
 import { setCreditCard } from "../../store/checkoutSlice";
 import { useDispatch } from "react-redux";
@@ -18,26 +17,6 @@ const PaymentForm = () => {
     const name = target.name;
     dispatch(setCreditCard({ ...creditCard, [name]: value }));
   };
-
-  // const handleCreditCard = async (event) => {
-  //   event.preventDefault();
-  //   const token = window.localStorage.getItem("token");
-  //   //data to send to backend
-  //   const tokenData = {
-  //     headers: {
-  //       authorization: token,
-  //     },
-  //   };
-  //   const ccData = {
-  //     cartId: cartInfo.id,
-  //     creditCardName: checkoutData.creditCardName,
-  //     creditCardNum: checkoutData.creditCardNum,
-  //     expiryDate: checkoutData.expiryDate,
-  //     ccSecurity: checkoutData.ccSecurity,
-  //   };
-  //   console.log(ccData);
-  //   await axios.put(`/api/orders`, checkoutData, tokenData);
-  // };
 
   return (
     <>

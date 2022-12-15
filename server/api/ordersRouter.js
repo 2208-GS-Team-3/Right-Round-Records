@@ -73,8 +73,8 @@ router.put("/", async (req, res, next) => {
       const orderInCart = await Order.create({
         datePlaced: Date.now(),
         status: "cart",
-        shippingAddress: shippingAddress || user.address,
-        billingAddress: billingAddress || user.address,
+        shippingAddress: shippingAddress,
+        billingAddress: billingAddress,
         creditCardName: creditCardName,
         creditCardNum: creditCardNum,
         ccSecurity: ccSecurity,
@@ -103,7 +103,6 @@ router.put("/", async (req, res, next) => {
 
         // associate order with records
         cart.records.forEach((record) => updatedOrder.addRecords([record]));
-        console.log(updatedOrder);
 
         res.send(updatedOrder);
       }
@@ -116,9 +115,12 @@ router.put("/", async (req, res, next) => {
         await orderExists.update({
           datePlaced: Date.now(),
           status: "placed",
-          trackingNumber: randomTrackingNum,
-          shippingAddress: shippingAddress || user.address,
-          billingAddress: billingAddress || user.address,
+          shippingAddress: shippingAddress,
+          billingAddress: billingAddress,
+          creditCardName: creditCardName,
+          creditCardNum: creditCardNum,
+          ccSecurity: ccSecurity,
+          expiryDate: expiryDate,
           totalCost: totalCost,
         });
 
