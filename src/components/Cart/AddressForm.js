@@ -8,22 +8,17 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import axios from "axios";
-import BillingAddress from "./BillingAddress";
 
 const AddressForm = () => {
   const cartInfo = useSelector((state) => state.cart.cartInfo);
 
-  //shipping local state
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  //route to update shipping info for order here
   const [add1, setAdd1] = useState("");
   const [add2, setAdd2] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [country, setCountry] = useState("");
-
-  const [billingIsSame, setBillingIsSame] = useState(false);
 
   const handleShippingAddress = async (event) => {
     event.preventDefault();
@@ -34,34 +29,19 @@ const AddressForm = () => {
         authorization: token,
       },
     };
+    const shippingData = {
+      cartId: cartInfo.id,
+      shippingAddress: `${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
+      status: "cart",
+    };
 
-    if (!billingIsSame) {
-      const shippingData = {
-        cartId: cartInfo.id,
-        shippingAddress: `${firstName} ${lastName}, ${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
-        status: "cart",
-      };
-      await axios.put(`/api/orders`, shippingData, tokenData);
-    } else {
-      const shippingData = {
-        cartId: cartInfo.id,
-        shippingAddress: `${firstName} ${lastName}, ${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
-        billingAddress: `${firstName} ${lastName}, ${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
-        status: "cart",
-      };
-      await axios.put(`/api/orders`, shippingData, tokenData);
-    }
+    //update shipping info, order created but still 'cart' status
+    await axios.put(`/api/orders`, shippingData, tokenData);
 
     //get the order back bc we'll need the info for the checkout page to display shipping data
     const updatedOrder = await axios.get(`/api/orders`, tokenData);
   };
 
-  const handleFirstName = (e) => {
-    setFirstName(e.target.value);
-  };
-  const handleLastName = (e) => {
-    setLastName(e.target.value);
-  };
   const handleAdd1 = (e) => {
     setAdd1(e.target.value);
   };
@@ -81,10 +61,6 @@ const AddressForm = () => {
     setCountry(e.target.value);
   };
 
-  const handleSameAddress = () => {
-    setBillingIsSame((val) => !val);
-  };
-
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -102,7 +78,6 @@ const AddressForm = () => {
               fullWidth
               autoComplete="given-name"
               variant="standard"
-              onChange={handleFirstName}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -115,7 +90,6 @@ const AddressForm = () => {
               fullWidth
               autoComplete="family-name"
               variant="standard"
-              onChange={handleLastName}
             />
           </Grid>
           <Grid item xs={12}>
@@ -190,22 +164,14 @@ const AddressForm = () => {
           <Grid item xs={12}>
             <FormControlLabel
               control={
-                <Checkbox
-                  color="secondary"
-                  name="saveAddress"
-                  value="yes"
-                  onClick={handleSameAddress}
-                />
+                <Checkbox color="secondary" name="saveAddress" value="yes" />
               }
               label="Use this address for payment details"
             />
           </Grid>
         </Grid>
-        <Button variant="outlined" type="submit">
-          update
-        </Button>
+        <Button type="submit">update</Button>
       </form>
-      {!billingIsSame && <BillingAddress />}
     </React.Fragment>
   );
 };

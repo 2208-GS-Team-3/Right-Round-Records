@@ -1,17 +1,6 @@
-const user = require("disconnect/lib/user");
 const express = require("express");
-const {
-  Record,
-  User,
-  Cart,
-  CartRecords,
-  Style,
-  Genre,
-  Order,
-} = require("../db");
+const { Record, User, Cart, Style, Genre, Order } = require("../db");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
-const JWT = process.env.JWT;
 
 // //localhost:3000/api/orders/
 // //list of all orders
@@ -55,7 +44,16 @@ router.put("/", async (req, res, next) => {
     //get user info
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
-    const { cartId, shippingAddress, totalCost } = req.body;
+    const {
+      cartId,
+      shippingAddress,
+      billingAddress,
+      totalCost,
+      creditCardName,
+      creditCardNum,
+      ccSecurity,
+      expiryDate,
+    } = req.body;
     const randomTrackingNum = Math.floor(Math.random() * 1000000);
 
     //users cart
@@ -76,6 +74,11 @@ router.put("/", async (req, res, next) => {
         datePlaced: Date.now(),
         status: "cart",
         shippingAddress: shippingAddress || user.address,
+        billingAddress: billingAddress || user.address,
+        creditCardName: creditCardName,
+        creditCardNum: creditCardNum,
+        ccSecurity: ccSecurity,
+        expiryDate: expiryDate,
         totalCost: totalCost,
       });
       // associate order with records
@@ -94,11 +97,13 @@ router.put("/", async (req, res, next) => {
           status: "cart",
           trackingNumber: randomTrackingNum,
           shippingAddress: shippingAddress || user.address,
+          billingAddress: billingAddress || user.address,
           totalCost: totalCost,
         });
 
         // associate order with records
         cart.records.forEach((record) => updatedOrder.addRecords([record]));
+        console.log(updatedOrder);
 
         res.send(updatedOrder);
       }
@@ -113,6 +118,7 @@ router.put("/", async (req, res, next) => {
           status: "placed",
           trackingNumber: randomTrackingNum,
           shippingAddress: shippingAddress || user.address,
+          billingAddress: billingAddress || user.address,
           totalCost: totalCost,
         });
 

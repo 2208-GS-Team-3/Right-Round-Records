@@ -32,9 +32,35 @@ const Order = db.define("order", {
     type: Sequelize.STRING,
     allowNull: true,
   },
+  billingAddress: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  creditCardName: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  creditCardNum: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    validate: {
+      isNumeric: true,
+      len: [16, 16],
+    },
+  },
+  expiryDate: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  ccSecurity: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    validate: {
+      isNumeric: true,
+    },
+  },
   trackingNumber: {
     type: Sequelize.INTEGER,
-    unique: true,
     defaultValue: Math.floor(Math.random() * 100000),
   },
   totalCost: {

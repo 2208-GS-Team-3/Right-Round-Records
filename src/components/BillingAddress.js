@@ -8,24 +8,21 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import axios from "axios";
-import BillingAddress from "./BillingAddress";
 
-const AddressForm = () => {
+const BillingAddress = () => {
   const cartInfo = useSelector((state) => state.cart.cartInfo);
 
-  //shipping local state
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [add1, setAdd1] = useState("");
-  const [add2, setAdd2] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zipcode, setZipcode] = useState("");
-  const [country, setCountry] = useState("");
+  //billing local state
+  const [billingFN, setBillingFN] = useState("");
+  const [billingLN, setBillingLN] = useState("");
+  const [billingAdd1, setBillingAdd1] = useState("");
+  const [billingAdd2, setBillingAdd2] = useState("");
+  const [billingCity, setBillingCity] = useState("");
+  const [billingState, setBillingState] = useState("");
+  const [billingZip, setBillingZip] = useState("");
+  const [billingCountry, setBillingCountry] = useState("");
 
-  const [billingIsSame, setBillingIsSame] = useState(false);
-
-  const handleShippingAddress = async (event) => {
+  const handleBillingAddress = async (event) => {
     event.preventDefault();
     const token = window.localStorage.getItem("token");
     //data to send to backend
@@ -34,63 +31,50 @@ const AddressForm = () => {
         authorization: token,
       },
     };
+    const billingData = {
+      cartId: cartInfo.id,
+      billingAddress: `${billingFN} ${billingLN}, ${billingAdd1}, ${billingAdd2}, ${billingCity}, ${billingState}, ${billingZip}, ${billingCountry}`,
+      status: "cart",
+    };
 
-    if (!billingIsSame) {
-      const shippingData = {
-        cartId: cartInfo.id,
-        shippingAddress: `${firstName} ${lastName}, ${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
-        status: "cart",
-      };
-      await axios.put(`/api/orders`, shippingData, tokenData);
-    } else {
-      const shippingData = {
-        cartId: cartInfo.id,
-        shippingAddress: `${firstName} ${lastName}, ${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
-        billingAddress: `${firstName} ${lastName}, ${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
-        status: "cart",
-      };
-      await axios.put(`/api/orders`, shippingData, tokenData);
-    }
+    //update shipping info, order created but still 'cart' status
+    await axios.put(`/api/orders`, billingData, tokenData);
 
     //get the order back bc we'll need the info for the checkout page to display shipping data
     const updatedOrder = await axios.get(`/api/orders`, tokenData);
   };
 
   const handleFirstName = (e) => {
-    setFirstName(e.target.value);
+    setBillingFN(e.target.value);
   };
   const handleLastName = (e) => {
-    setLastName(e.target.value);
+    setBillingLN(e.target.value);
   };
   const handleAdd1 = (e) => {
-    setAdd1(e.target.value);
+    setBillingAdd1(e.target.value);
   };
   const handleAdd2 = (e) => {
-    setAdd2(e.target.value);
+    setBillingAdd2(e.target.value);
   };
   const handleCity = (e) => {
-    setCity(e.target.value);
+    setBillingCity(e.target.value);
   };
   const handleState = (e) => {
-    setState(e.target.value);
+    setBillingState(e.target.value);
   };
   const handleZip = (e) => {
-    setZipcode(e.target.value);
+    setBillingZip(e.target.value);
   };
   const handleCountry = (e) => {
-    setCountry(e.target.value);
-  };
-
-  const handleSameAddress = () => {
-    setBillingIsSame((val) => !val);
+    setBillingCountry(e.target.value);
   };
 
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Shipping address:
+        Billing address:
       </Typography>
-      <form onSubmit={handleShippingAddress}>
+      <form onSubmit={handleBillingAddress}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -187,27 +171,14 @@ const AddressForm = () => {
               onChange={handleCountry}
             />
           </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="secondary"
-                  name="saveAddress"
-                  value="yes"
-                  onClick={handleSameAddress}
-                />
-              }
-              label="Use this address for payment details"
-            />
-          </Grid>
+          <Grid item xs={12}></Grid>
         </Grid>
         <Button variant="outlined" type="submit">
           update
         </Button>
       </form>
-      {!billingIsSame && <BillingAddress />}
     </React.Fragment>
   );
 };
 
-export default AddressForm;
+export default BillingAddress;

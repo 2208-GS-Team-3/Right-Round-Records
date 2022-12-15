@@ -7,7 +7,7 @@ import ordersReducer from "./ordersSlice";
 import cartReducer from "./cartSlice";
 import reviewsReducer from "./reviewsSlice";
 import createUserReducer from "./createUserSlice";
-
+import checkoutReducer from "./checkoutSlice";
 const store = configureStore({
   reducer: {
     user: userReducer,
@@ -18,6 +18,7 @@ const store = configureStore({
     cart: cartReducer,
     reviews: reviewsReducer,
     userToCreate: createUserReducer,
+    checkoutData: checkoutReducer,
   },
 });
 
