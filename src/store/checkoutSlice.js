@@ -5,11 +5,11 @@ const initialState = {
 };
 
 export const checkoutSlice = createSlice({
-  name: "checkout",
+  name: "checkoutData",
   initialState,
   reducers: {
     setCheckoutData: (state, action) => {
-      state.checkoutData = { ...state.checkoutData, ...action.payload };
+      state.checkoutData = action.payload;
     },
   },
 });
