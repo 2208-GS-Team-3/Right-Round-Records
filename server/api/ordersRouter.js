@@ -78,11 +78,13 @@ router.put("/", async (req, res, next) => {
         shippingAddress: shippingAddress || user.address,
         totalCost: totalCost,
       });
+
       // associate order with records
       cart.records.forEach((record) => orderInCart.addRecords([record]));
 
       // associate new order with user
       user.addOrder(orderInCart);
+
       // orderInCart.addRecordss();
       res.send(orderInCart);
     }
