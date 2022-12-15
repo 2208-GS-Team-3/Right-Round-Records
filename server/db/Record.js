@@ -34,7 +34,7 @@ const Record = db.define("record", {
     validate: {
       notEmpty: true,
     },
-    //setter here
+    // setter here
     set(value) {
       this.setDataValue("price", Math.floor(value * 100));
     },
@@ -51,7 +51,7 @@ const Record = db.define("record", {
   // styleName: {
   //   type: Sequelize.ARRAY(Sequelize.STRING),
   // },
-  //this would be calculated by orders?
+  // this would be calculated by orders?
   //   numberSold: {
   //     type: Sequelize.INTEGER,
   //   },

@@ -1,17 +1,13 @@
-const user = require("disconnect/lib/user");
 const express = require("express");
 const {
   Record,
   User,
   Cart,
-  CartRecords,
   Style,
   Genre,
   Order,
 } = require("../db");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
-const JWT = process.env.JWT;
 
 // //localhost:3000/api/orders/
 // //list of all orders
@@ -52,31 +48,31 @@ router.get("/:id", async (req, res, next) => {
 
 router.put("/", async (req, res, next) => {
   try {
-    //get user info
+    // get user info
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
-    const { cartId, shippingAddress, totalCost } = req.body;
+    const { shippingAddress, totalCost } = req.body;
     const randomTrackingNum = Math.floor(Math.random() * 1000000);
 
-    //users cart
+    // users cart
     const cart = await Cart.findOne({
       where: { id: req.body.cartId },
       include: [User, { model: Record, include: [Genre, Style] }],
     });
 
-    //users current order. does it exist?
+    // users current order. does it exist?
     const orderExists = await Order.findOne({
       where: { status: "cart", userId: user.id },
     });
 
-    //if user does not have an order with status of cart
+    // if user does not have an order with status of cart
     if (!orderExists) {
-      //create the order
+      // create the order
       const orderInCart = await Order.create({
         datePlaced: Date.now(),
         status: "cart",
         shippingAddress: shippingAddress || user.address,
-        totalCost: totalCost,
+        totalCost,
       });
       // associate order with records
       cart.records.forEach((record) => orderInCart.addRecords([record]));
@@ -94,7 +90,7 @@ router.put("/", async (req, res, next) => {
           status: "cart",
           trackingNumber: randomTrackingNum,
           shippingAddress: shippingAddress || user.address,
-          totalCost: totalCost,
+          totalCost,
         });
 
         // associate order with records
@@ -103,31 +99,31 @@ router.put("/", async (req, res, next) => {
         res.send(updatedOrder);
       }
 
-      //if the order gets placed, find the cart with all of the records
+      // if the order gets placed, find the cart with all of the records
       if (req.body.status === "placed") {
-        //identify the users cart
+        // identify the users cart
 
-        //update the order status to placed
+        // update the order status to placed
         await orderExists.update({
           datePlaced: Date.now(),
           status: "placed",
           trackingNumber: randomTrackingNum,
           shippingAddress: shippingAddress || user.address,
-          totalCost: totalCost,
+          totalCost,
         });
 
         // associate order with records
         cart.records.forEach((record) => orderExists.addRecords(record));
 
-        //send back order with all info to UI
+        // send back order with all info to UI
         const orderWithRecords = await Order.findByPk(orderExists.id, {
           include: [User, { model: Record, include: [Genre, Style] }],
         });
 
-        //once order is placed, destroy cart
+        // once order is placed, destroy cart
         await cart.destroy();
 
-        //then give user a new cart!
+        // then give user a new cart!
         const newCart = await Cart.create();
         newCart.setUser(user);
 

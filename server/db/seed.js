@@ -11,7 +11,7 @@ const recordArray = require("./DataStorage");
 const seed = async () => {
   await db.sync({ force: true });
 
-  //--------------USERS--------------
+  // --------------USERS--------------
   const [kolby, olivia, lily, jack] = await Promise.all([
     User.create({
       username: "Kolby",
@@ -72,14 +72,14 @@ const seed = async () => {
     }),
   ]);
 
-  //--------------RECORDS--------------
+  // --------------RECORDS--------------
 
-  //were not pushing into recordData
-  let recordData = [];
+  // were not pushing into recordData
+  const recordData = [];
 
   await Promise.all([
     recordArray.forEach(async (record) => {
-      let tempRec = await Record.create({
+      const tempRec = await Record.create({
         albumName: record.title,
         artist: record.artists[0].name,
         tracks: record.tracklist,
@@ -112,7 +112,7 @@ const seed = async () => {
     }),
   ]);
 
-  //--------------REVIEWS--------------
+  // --------------REVIEWS--------------
   const [
     review1,
     review2,
@@ -177,58 +177,58 @@ const seed = async () => {
     }),
   ]);
 
-  //---------------ORDERS-----------------
+  // ---------------ORDERS-----------------
   const [order1, order2, order3, order4, order5, order6] = await Promise.all([
     Order.create({
       datePlaced: Date.now(),
       status: "placed",
       shippingAddress: "1234 album lane, NY, NY 10005",
-      totalCost: 2345
+      totalCost: 2345,
       trackingNumber: "12345",
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "placed",
       shippingAddress: "2222 album lane, NY, NY 10005",
-      totalCost: 2345
+      totalCost: 2345,
       trackingNumber: "54321",
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "shipped",
       shippingAddress: "3333 album lane, NY, NY 10005",
-      totalCost: 2345
+      totalCost: 2345,
       trackingNumber: "74625",
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "delivered",
       shippingAddress: "4444 album lane, NY, NY 10005",
-      totalCost: 2345
+      totalCost: 2345,
       trackingNumber: "444443",
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "placed",
       shippingAddress: "7777 album lane, NY, NY 10005",
-      totalCost: 2345
+      totalCost: 2345,
       trackingNumber: "4324789",
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "placed",
       shippingAddress: "7777 album lane, NY, NY 10005",
-      totalCost: 2345
+      totalCost: 2345,
       trackingNumber: "4324788",
     }),
   ]);
-  //----------  CART--------
+  // ----------  CART--------
   const [cart1, cart2] = await Promise.all([Cart.create(), Cart.create()]);
 
   cart1.setUser(olivia);
   cart2.setUser(kolby);
 
-  //--------------ASSOCIATIONS--------------
+  // --------------ASSOCIATIONS--------------
 
   const record1 = await recordData[0];
   const record2 = await recordData[55];
@@ -241,13 +241,13 @@ const seed = async () => {
   const record9 = await recordData[33];
   const record10 = await recordData[467];
 
-  //orders associated with users -- WORKING
+  // orders associated with users -- WORKING
   lily.addOrder([order4]);
   olivia.addOrder([order1, order5]);
   kolby.addOrder([order3, order6]);
   jack.addOrder([order2]);
 
-  //records associated with orders -- WORKING
+  // records associated with orders -- WORKING
   order1.addRecords([record1]);
   order2.addRecords([record5, record9, record3, record7]);
   order3.addRecords([record4, record6]);

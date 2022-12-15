@@ -17,12 +17,12 @@ const ReviewPayment = () => {
   const params = useParams("");
   const orderId = params.id;
 
-  //request to get the order that hasnt been placed yet
+  // request to get the order that hasnt been placed yet
   const getCurrentOrder = async () => {
     setLoading(true);
     try {
       const token = window.localStorage.getItem("token");
-      //data to send to backend
+      // data to send to backend
       const tokenData = {
         headers: {
           authorization: token,

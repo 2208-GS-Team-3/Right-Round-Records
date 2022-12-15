@@ -1,16 +1,14 @@
 import { CircularProgress } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect , useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { setRecord, setLoadingRecord } from "../store/singleRecordSlice";
+import { setRecord } from "../store/singleRecordSlice";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
-import CreateReviewForm from "./CreateReviewForm";
 import SingleRecReviews from "./SingleRecReviews";
-import { useState } from "react";
 import Rating from "@mui/material/Rating";
 
 const SingleRecord = () => {
@@ -34,18 +32,17 @@ const SingleRecord = () => {
     } catch (err) {}
     // dispatch(setLoadingRecord(false));
   };
-  //------------------------------------------------
+  // ------------------------------------------------
 
   useEffect(() => {
     fetchRecordById(recordId);
   }, []);
 
   const price = "$" + (selectedRecord.price / 100).toFixed(2);
-  const singleRecordPageUrl = `/records/${selectedRecord.id}`;
 
   if (loadingRecord) return <CircularProgress />;
 
-  //check if selected record exist
+  // check if selected record exist
   if (!Object.keys(selectedRecord).length)
     return <h1>Oops, this record does not exist, please try again</h1>;
   const sumOfRatings = selectedRecord.reviews.reduce(

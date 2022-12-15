@@ -1,39 +1,18 @@
 import React from "react";
 import Card from "@mui/material/Card";
 import {
-  Select,
-  MenuItem,
-  InputLabel,
-  TextField,
   CardActions,
   CardContent,
   CardMedia,
   Button,
   Typography,
 } from "@mui/material";
-
-import { useDispatch } from "react-redux";
-import {
-  updateCart,
-  setCartInfo,
-  setCartRecords,
-  removeFromCart,
-} from "../store/cartSlice";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import axios from "axios";
 import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
 const RecordCard = ({ record }) => {
   const price = "$" + (record.price / 100).toFixed(2);
-  const allRecords = useSelector((state) => state.records.records);
-  const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const singleRecordPageUrl = `/records/${record.id}`;
-  const dispatch = useDispatch("");
 
-  const currentRecordInCart = recordsInCart?.filter(
-    (cartItem) => cartItem.id === record.id
-  )[0];
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -85,18 +64,7 @@ const RecordCard = ({ record }) => {
         >
           More Details
         </Button>
-        {/* {currentRecordInCart ? ( */}
         <CartQuantitySelector record={record} />
-        {/* ) : ( */}
-        {/* // <Button
-          //   fullWidth={true}
-          //   variant="contained"
-          //   onClick={addToCart}
-          //   value={1}
-          // >
-          //   Add to Cart
-          // </Button>
-        // )} */}
       </CardActions>
     </Card>
   );

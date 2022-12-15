@@ -17,10 +17,10 @@ import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
 import ReviewPayment from "./ReviewPayment";
 import { useSelector, useDispatch } from "react-redux";
-import { setOrders } from "../store/ordersSlice";
+import { setOrders } from "../../store/ordersSlice";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { resetCart } from "../store/cartSlice";
+import { resetCart } from "../../store/cartSlice";
 
 function RRRecords() {
   return (
@@ -74,30 +74,29 @@ export default function Checkout() {
   const completeCheckout = async (event) => {
     event.preventDefault();
     try {
-      //get token of logged in user
+      // get token of logged in user
       const token = window.localStorage.getItem("token");
 
-      //data to send to backend
+      // data to send to backend
       const tokenData = {
         headers: {
           authorization: token,
         },
       };
-      //send cart to orders!
+      // send cart to orders!
       const cartData = {
         cartId: cartInfo.id,
         status: "placed",
       };
 
-      //change order status to placed
+      // change order status to placed
       await axios.put(`/api/orders`, cartData, tokenData);
 
-      //newOrders will include all record/order associations
+      // newOrders will include all record/order associations
       const newOrders = await axios.get(`/api/orders`, tokenData);
       dispatch(setOrders(newOrders.data));
 
-      //hit cart route & update cart to be empty
-      const emptiedCart = await axios.get(`/api/cart`, tokenData);
+      // hit cart route & update cart to be empty
       dispatch(resetCart(cartInfo));
       dispatch(resetCart(recordsInCart));
       handleNext();
@@ -110,7 +109,7 @@ export default function Checkout() {
     setLoading(true);
     try {
       const token = window.localStorage.getItem("token");
-      //data to send to backend
+      // data to send to backend
       const tokenData = {
         headers: {
           authorization: token,
@@ -126,6 +125,8 @@ export default function Checkout() {
 
   useEffect(() => {
     getCurrentOrder();
+    console.log(loading)
+    console.log(currentOrder)
   }, []);
 
   return (

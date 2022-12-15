@@ -7,8 +7,8 @@ const TopRecords = () => {
   const records = useSelector((state) => state.records.records);
 
   function giveFiveRecords(arr) {
-    let randomRecords = [];
-    let randomIndex = Math.floor(Math.random() * 500);
+    const randomRecords = [];
+    const randomIndex = Math.floor(Math.random() * 500);
     for (let i = randomIndex; i < arr.length; i++) {
       if (randomRecords.length === 5) {
         break;

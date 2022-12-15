@@ -8,7 +8,7 @@ const Style = require("./Style");
 const Cart = require("./Cart");
 const CartRecords = require("./CartRecords");
 
-//working on these first
+// working on these first
 User.hasMany(Order);
 Order.belongsTo(User);
 

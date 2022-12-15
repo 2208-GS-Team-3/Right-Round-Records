@@ -16,9 +16,9 @@ const CreateReviewForm = ({ selectedRecord }) => {
   const handleSubmitReview = async (event) => {
     event.preventDefault();
 
-    //get token of logged in user
+    // get token of logged in user
     const token = window.localStorage.getItem("token");
-    //data to send to backend
+    // data to send to backend
     const tokenData = {
       headers: {
         authorization: token,
@@ -28,29 +28,29 @@ const CreateReviewForm = ({ selectedRecord }) => {
     const reviewToUpdate = {
       recordId: selectedRecord.id,
       comment: reviewComment,
-      reviewRating: reviewRating,
+      reviewRating,
     };
 
-    //create new review in database
+    // create new review in database
     await axios.put(`/api/reviews`, reviewToUpdate, tokenData);
 
-    //fetch records again with updated reviews
+    // fetch records again with updated reviews
     const allNewReviews = await axios.get(`/api/reviews/`, tokenData);
-    //update reviews on front end
+    // update reviews on front end
     dispatch(setReviews(allNewReviews.data));
 
-    //get updated record were reviewing
+    // get updated record were reviewing
     const updatedSingleRecord = await axios.get(
       `/api/records/${selectedRecord.id}`,
       tokenData
     );
-    //set that records new review data
+    // set that records new review data
     dispatch(setRecord(updatedSingleRecord.data));
 
-    //zero out fields after submission
+    // zero out fields after submission
     setReviewComment("");
     setReviewRating(null);
-    //show updated review on page
+    // show updated review on page
     navigate(`/records/${selectedRecord.id}`);
     //
   };
@@ -61,7 +61,7 @@ const CreateReviewForm = ({ selectedRecord }) => {
   };
 
   const collectRating = (event) => {
-    let numRating = Number(event.target.value);
+    const numRating = Number(event.target.value);
     setReviewRating(numRating);
   };
 

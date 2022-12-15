@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
-import MuiCheckout from "../MuiCheckout";
+import MuiCheckout from "../Checkout/MuiCheckout";
 import axios from "axios";
 
 const Cart = () => {
@@ -35,9 +35,6 @@ const Cart = () => {
 
   const tax = orderSubTotal * 0.08;
   const finalOrderAmount = tax + orderSubTotal;
-
-  // console.log({ orderSubTotal });
-  // console.log(finalOrderAmount);
 
   const startCheckout = async () => {
     try {
