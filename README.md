@@ -40,30 +40,30 @@ AS A CUSTOMER/VISITOR, I WANT TO BE ABLE TO:
 
 Think of a typical user experience on popular websites from a guest user and logged-in user perspective.
 [x] - simulate the experience of checking out with a simple confirmation page.
-[] -create an account so I can have a logged-in experience.
+[x] -create an account so I can have a logged-in experience.
 
 AS A LOGGED-IN CUSTOMER, I WANT TO BE ABLE TO:
-[] - have a persistent cart so I can revisit and pick up where I left off.
-[] - Logged-in-user across multiple devices: I'm logged in on my mobile device and add some items to my cart. When I open the browser on my laptop and log in, I want to see those items in my cart.
-[] - No one else should be able to edit my cart except me.
+[x] - have a persistent cart so I can revisit and pick up where I left off.
+[x] - Logged-in-user across multiple devices: I'm logged in on my mobile device and add some items to my cart. When I open the browser on my laptop and log in, I want to see those items in my cart.
+[x] - No one else should be able to edit my cart except me.
 
 AS AN ADMINISTRATOR, I WANT TO BE ABLE TO:
-[] - have validated data to ensure reliability.
-[] - i.e. each customer that creates an account should only be able to do so once with a single email address.
+[x] - have validated data to ensure reliability.
+[x] - i.e. each customer that creates an account should only be able to do so once with a single email address.
 [] - have full rights to make backend requests to add, edit, and remove products.
 [] - No one else should have access to view user information.
 
-[]AS AN ENGINEER, I WANT TO:
+AS AN ENGINEER, I WANT TO:
 [x] - have a well-seeded database so that I am able to simulate a number of different scenarios for the user stories below.
 [x] - Likewise, add a bunch of users with products in their carts so editing the cart can be worked on without already having the “add to cart” functionality built out.
-[i think done?] - user data to be secure so that no one can unrightfully manipulate information.
+[x] - user data to be secure so that no one can unrightfully manipulate information.
 
 TIER 2: E-COMMERCE ESSENTIALS
 AS A CUSTOMER, I WANT TO BE ABLE TO:
 [ ] - see all products that belong to a certain category.
-[ ] - explore an aesthetically pleasing website so I can easily navigate around and enjoy the experience (UI/UX).
-[ ] - This includes front-end data validations. For example, if certain fields of a form are required and must be in a specific format, this is obvious to the user.
-[ ] - have a persistent cart so I can revisit and pick up where I left off.
+[x] - explore an aesthetically pleasing website so I can easily navigate around and enjoy the experience (UI/UX).
+[x] - This includes front-end data validations. For example, if certain fields of a form are required and must be in a specific format, this is obvious to the user.
+[x] - have a persistent cart so I can revisit and pick up where I left off.
 
 There are two more experiences to consider here. Explore your favorite websites to see what the intended behavior is for the following cases:
 [ ] - Guest-only: I don't want to create an account, but I want my cart to persist between browser refreshes.

@@ -2,9 +2,7 @@ import {
   Avatar,
   Badge,
   Button,
-  ClickAwayListener,
   Container,
-  Divider,
   Fade,
   IconButton,
   List,
@@ -12,15 +10,14 @@ import {
   Paper,
   Popper,
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   usePopupState,
   bindToggle,
   bindPopper,
 } from "material-ui-popup-state/hooks";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import CartQuantitySelector from "../Cart/CartQuantitySelector";
 import { Box } from "@mui/system";
 

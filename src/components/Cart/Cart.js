@@ -13,9 +13,6 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
-import CheckoutPage from "../CheckoutPage";
-import { useDispatch } from "react-redux";
-import AddressForm from "../AddressForm";
 import MuiCheckout from "../MuiCheckout";
 import axios from "axios";
 
@@ -46,7 +43,7 @@ const Cart = () => {
     try {
       setCheckOut((currValue) => !currValue);
       const token = window.localStorage.getItem("token");
-      //data to send to backend
+      // data to send to backend
       const tokenData = {
         headers: {
           authorization: token,
