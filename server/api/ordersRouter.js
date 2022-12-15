@@ -60,13 +60,12 @@ router.put("/", async (req, res, next) => {
       // get users cart
       const cart = await Cart.findOne({
         where: { id: req.body.cartId },
-        include: [User, { model: Record, include: [Genre, Style] }],
+        include: [{ model: Record, include: [Genre, Style] }],
       });
 
       //users current order
       const currentOrder = await Order.create({
         where: { status: "cart", userId: user.id },
-        include: [User, { model: Record, include: [Genre, Style] }],
       });
 
       await user.addOrder(currentOrder);
@@ -95,10 +94,7 @@ router.put("/", async (req, res, next) => {
 
       const finalOrderDetails = await Order.findOne({
         where: { id: updatedOrder.id },
-        include: [
-          { model: User, attributes: ["username"] },
-          { model: Record, include: [Genre, Style] },
-        ],
+        include: [{ model: Record, include: [Genre, Style] }],
       });
 
       //logic to clear out and renew cart
