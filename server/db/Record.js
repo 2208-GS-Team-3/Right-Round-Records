@@ -34,7 +34,6 @@ const Record = db.define("record", {
     validate: {
       notEmpty: true,
     },
-    //setter here
     set(value) {
       this.setDataValue("price", Math.floor(value * 100));
     },
@@ -45,34 +44,6 @@ const Record = db.define("record", {
   year: {
     type: Sequelize.INTEGER,
   },
-  // genreName: {
-  //   type: Sequelize.ARRAY(Sequelize.STRING),
-  // },
-  // styleName: {
-  //   type: Sequelize.ARRAY(Sequelize.STRING),
-  // },
-  //this would be calculated by orders?
-  //   numberSold: {
-  //     type: Sequelize.INTEGER,
-  //   },
-  // maturityRating: {
-  //   type: Sequelize.ENUM("Everyone", "Mature"),
-  // },
-  // recordLabel: {
-  //   type: Sequelize.STRING,
-  // },
-  // country: {
-  //   type: Sequelize.STRING,
-  // },
-  // mainRelease: {
-  //   type: Sequelize.STRING,
-  //   set(data) {
-  //     return JSON.stringify(data);
-  //   },
-  //   get(data) {
-  //     return JSON.parse(data);
-  //   },
-  // },
 });
 
 module.exports = Record;

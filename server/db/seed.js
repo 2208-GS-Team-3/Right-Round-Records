@@ -183,43 +183,37 @@ const seed = async () => {
       datePlaced: Date.now(),
       status: "placed",
       shippingAddress: "1234 album lane, NY, NY 10005",
-      totalCost: 2345
-      trackingNumber: "12345",
+      totalCost: 2345,
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "placed",
       shippingAddress: "2222 album lane, NY, NY 10005",
-      totalCost: 2345
-      trackingNumber: "54321",
+      totalCost: 2345,
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "shipped",
       shippingAddress: "3333 album lane, NY, NY 10005",
-      totalCost: 2345
-      trackingNumber: "74625",
+      totalCost: 2345,
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "delivered",
       shippingAddress: "4444 album lane, NY, NY 10005",
-      totalCost: 2345
-      trackingNumber: "444443",
+      totalCost: 2345,
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "placed",
       shippingAddress: "7777 album lane, NY, NY 10005",
-      totalCost: 2345
-      trackingNumber: "4324789",
+      totalCost: 2345,
     }),
     Order.create({
       datePlaced: Date.now(),
       status: "placed",
       shippingAddress: "7777 album lane, NY, NY 10005",
-      totalCost: 2345
-      trackingNumber: "4324788",
+      totalCost: 2345,
     }),
   ]);
   //----------  CART--------

@@ -33,8 +33,9 @@ const Order = db.define("order", {
     allowNull: true,
   },
   trackingNumber: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     unique: true,
+    defaultValue: Math.floor(Math.random() * 100000),
   },
   totalCost: {
     type: Sequelize.INTEGER,
