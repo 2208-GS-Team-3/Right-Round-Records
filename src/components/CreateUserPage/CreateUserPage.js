@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import "./createUserPage.css";
-import GoogleLocation from "./GoogleLocation";
+import GoogleLocation from "../CreateUserPage/GoogleLocation";
 import { setUserToCreate } from "../../store/createUserSlice";
 import { setUser } from "../../store/userSlice";
 

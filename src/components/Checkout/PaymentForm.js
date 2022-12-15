@@ -4,14 +4,15 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Form } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { setCreditCard } from "../../store/checkoutSlice";
+import { setCreditCard, setCardValidity } from "../../store/checkoutSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { FormControl, FormHelperText } from "@mui/material";
 
-const dateFormat = /^\d{1,2}\/\d{2,4}$/;
 const PaymentForm = () => {
   const creditCard = useSelector((state) => state.checkoutData.creditCard);
+  const cardValidity = useSelector((state) => state.checkoutData.cardValidity);
+
   const [validity, setValidity] = useState({
     creditCardNum: false,
     expiryDate: false,
@@ -19,7 +20,6 @@ const PaymentForm = () => {
   });
   const dispatch = useDispatch();
 
-  console.log(creditCard);
   const validateCreditCard = () => {
     if (creditCard?.creditCardNum?.length === 15) {
       setValidity({ ...validity, creditCardNum: true });
@@ -35,6 +35,7 @@ const PaymentForm = () => {
     }
   };
 
+  // not working
   const validateCvv = () => {
     if (creditCard?.ccSecurity?.length === 2) {
       setValidity({ ...validity, cvv: true });
@@ -48,11 +49,15 @@ const PaymentForm = () => {
     const value = target.value;
     const name = target.name;
     dispatch(setCreditCard({ ...creditCard, [name]: value }));
+
+    //if the below worked, i should be able to access from the MUI checkout page whether or not my card info is valid
+    //if its not valid, i want to blur the 'next' button on mui checkout page
+    if (!Object.values(validity).includes(false)) {
+      dispatch(setCardValidity(true));
+    }
   };
 
-  if (Object.values(validity).includes(false)) {
-    console.log("dont allow next");
-  }
+  console.log(cardValidity);
 
   return (
     <>
