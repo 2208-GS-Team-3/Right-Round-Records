@@ -103,13 +103,14 @@ export default function Checkout() {
         expiryDate: `${creditCard.expiryDate}`,
         // totalCost: ,
       };
-      console.log({ orderData });
 
       //change order status to placed
       await axios.put(`/api/orders`, orderData, tokenData);
 
       //newOrders will include all record/order associations
       const newOrders = await axios.get(`/api/orders`, tokenData);
+      console.log({ newOrders });
+
       dispatch(setOrders(newOrders.data));
 
       //hit cart route & update cart to be empty

@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
-import { useDispatch } from "react-redux";
 import MuiCheckout from "../Checkout/MuiCheckout";
 import axios from "axios";
 
@@ -43,21 +42,21 @@ const Cart = () => {
   const startCheckout = async () => {
     try {
       setCheckOut((currValue) => !currValue);
-      const token = window.localStorage.getItem("token");
-      //data to send to backend
-      const tokenData = {
-        headers: {
-          authorization: token,
-        },
-      };
+      // const token = window.localStorage.getItem("token");
+      // //data to send to backend
+      // const tokenData = {
+      //   headers: {
+      //     authorization: token,
+      //   },
+      // };
 
-      const dataToSend = {
-        cartId: cartInfo.id,
-        status: "cart",
-        totalCost: finalOrderAmount,
-      };
+      // const dataToSend = {
+      //   cartId: cartInfo.id,
+      //   status: "cart",
+      //   totalCost: finalOrderAmount,
+      // };
 
-      await axios.put("/api/orders", dataToSend, tokenData);
+      // await axios.put("/api/orders", dataToSend, tokenData);
     } catch (err) {
       console.log(err);
     }

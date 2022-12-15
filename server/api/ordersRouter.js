@@ -1,3 +1,4 @@
+const { current } = require("@reduxjs/toolkit");
 const express = require("express");
 const { Record, User, Cart, Style, Genre, Order } = require("../db");
 const router = express.Router();
@@ -54,93 +55,57 @@ router.put("/", async (req, res, next) => {
       ccSecurity,
       expiryDate,
     } = req.body;
-    const randomTrackingNum = Math.floor(Math.random() * 1000000);
 
-    //users cart
-    const cart = await Cart.findOne({
-      where: { id: req.body.cartId },
-      include: [User, { model: Record, include: [Genre, Style] }],
-    });
+    console.log(req.body);
 
-    //users current order. does it exist?
-    const orderExists = await Order.findOne({
-      where: { status: "cart", userId: user.id },
-    });
+    if (req.body.status === "placed") {
+      // get users cart
+      const cart = await Cart.findOne({
+        where: { id: req.body.cartId },
+        include: [User, { model: Record, include: [Genre, Style] }],
+      });
 
-    //if user does not have an order with status of cart
-    if (!orderExists) {
-      //create the order
-      const orderInCart = await Order.create({
+      //users current order
+      const currentOrder = await Order.findOne({
+        where: { status: "cart", userId: user.id },
+        include: [User, { model: Record, include: [Genre, Style] }],
+      });
+
+      const mappedRecordsForAssociations = [];
+      const mappedRecords = cart.records.forEach((record) =>
+        mappedRecordsForAssociations.push(record)
+      );
+      mappedRecordsForAssociations.forEach((record) =>
+        currentOrder.addRecords(record)
+      );
+
+      //update the order status to placed
+      const updatedOrder = await currentOrder.update({
         datePlaced: Date.now(),
-        status: "cart",
+        status: "placed",
         shippingAddress: shippingAddress,
         billingAddress: billingAddress,
         creditCardName: creditCardName,
         creditCardNum: creditCardNum,
         ccSecurity: ccSecurity,
         expiryDate: expiryDate,
-        totalCost: totalCost,
+        // totalCost: totalCost,
       });
-      // associate order with records
-      cart.records.forEach((record) => orderInCart.addRecords([record]));
 
-      // associate new order with user
-      user.addOrder(orderInCart);
-      // orderInCart.addRecordss();
-      res.send(orderInCart);
-    }
+      //send back order with all info to UI
+      // const orderWithRecords = await Order.findByPk(currentOrder.id, {
+      //   include: [User, { model: Record, include: [Genre, Style] }],
+      // });
+      console.log({ updatedOrder });
 
-    if (orderExists) {
-      if (req.body.status === "cart") {
-        const updatedOrder = await orderExists.update({
-          datePlaced: Date.now(),
-          status: "cart",
-          trackingNumber: randomTrackingNum,
-          shippingAddress: shippingAddress || user.address,
-          billingAddress: billingAddress || user.address,
-          totalCost: totalCost,
-        });
+      //once order is placed, destroy cart
+      await cart.destroy();
 
-        // associate order with records
-        cart.records.forEach((record) => updatedOrder.addRecords([record]));
+      //then give user a new cart!
+      const newCart = await Cart.create();
+      newCart.setUser(user);
 
-        res.send(updatedOrder);
-      }
-
-      //if the order gets placed, find the cart with all of the records
-      if (req.body.status === "placed") {
-        //identify the users cart
-
-        //update the order status to placed
-        await orderExists.update({
-          datePlaced: Date.now(),
-          status: "placed",
-          shippingAddress: shippingAddress,
-          billingAddress: billingAddress,
-          creditCardName: creditCardName,
-          creditCardNum: creditCardNum,
-          ccSecurity: ccSecurity,
-          expiryDate: expiryDate,
-          totalCost: totalCost,
-        });
-
-        // associate order with records
-        cart.records.forEach((record) => orderExists.addRecords(record));
-
-        //send back order with all info to UI
-        const orderWithRecords = await Order.findByPk(orderExists.id, {
-          include: [User, { model: Record, include: [Genre, Style] }],
-        });
-
-        //once order is placed, destroy cart
-        await cart.destroy();
-
-        //then give user a new cart!
-        const newCart = await Cart.create();
-        newCart.setUser(user);
-
-        res.send(orderWithRecords);
-      }
+      res.send(updatedOrder);
     }
   } catch (err) {
     console.error(err);
