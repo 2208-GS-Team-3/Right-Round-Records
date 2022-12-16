@@ -44,38 +44,38 @@ const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
   return (      
 
 <Container
-      sx={{ display: "flex", flexDirection: "column", placeSelf: "center" }}
+      sx={{ display: "flex", flexDirection: "column", placeSelf: "center" , gap: '20px', padding: '20px'}}
     >
       <Typography sx={{ placeSelf: "center" }} variant={"h5"}>
         Change Product Information
       </Typography>
 
-      <Form className="form">
-          <FormControl>
+      <form>
+          <FormControl >
             <InputLabel htmlFor="username-input">Product Id</InputLabel>
-            <Input defaultValue={recordToEdit[0].id}
+            <Input defaultValue={recordToEdit[0].id} sx={{ margin: '20px'}}
             />
-          </FormControl>
+          </FormControl><br></br>
           <FormControl>
             <InputLabel htmlFor="username-input">Album Name</InputLabel>
-            <Input defaultValue={recordToEdit[0].albumName}
+            <Input defaultValue={recordToEdit[0].albumName} sx={{ margin: '20px'}}
             />
-          </FormControl>
+          </FormControl><br></br>
           <FormControl>
             <InputLabel htmlFor="username-input">Artist Name</InputLabel>
-            <Input defaultValue={recordToEdit[0].artist}
+            <Input defaultValue={recordToEdit[0].artist} sx={{ margin: '20px'}}
             />
-          </FormControl>
+          </FormControl><br></br>
           <FormControl>
             <InputLabel htmlFor="username-input">Price</InputLabel>
-            <Input defaultValue={recordToEdit[0].price}
+            <Input defaultValue={recordToEdit[0].price} sx={{ margin: '20px'}}
             />
-          </FormControl>
+          </FormControl><br></br>
           <FormControl>
             <InputLabel htmlFor="username-input">Year</InputLabel>
-            <Input defaultValue={recordToEdit[0].year}
+            <Input defaultValue={recordToEdit[0].year} sx={{ margin: '20px'}}
             />
-          </FormControl>
+          </FormControl><br></br>
           {/* <FormControl>
             <InputLabel htmlFor="username-input">Track List</InputLabel>
             <Input defaultValue={recordToEdit[0].tracks}
@@ -86,8 +86,10 @@ const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
             <Input defaultValue={recordToEdit[0].}
             />
           </FormControl> */}
-
-        </Form>
+        </form>
+<Button>Save Changes</Button>
+<Button>Cancel</Button>
+<Button>Back to Dashboard</Button>
     </Container>
 
   );

@@ -48,7 +48,7 @@ const displayInput = (event) => {
       placeholder="Search..."
       size="small"
     />
-      <div style={{overflowX: 'auto', height: '400px'}}>
+      <div style={{overflowX: 'auto', height: '500px'}}>
       {!editInfo && (<Table size="small">
         <TableHead>
           <TableRow>
