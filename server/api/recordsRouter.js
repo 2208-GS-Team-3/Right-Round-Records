@@ -68,87 +68,36 @@ router.delete("/:id", async (req, res, next) => {
   }
 })
 
-// router.post("/", async (req, res, next) => {
-//   try {
-// const { albumName,
-//   artists,
-//   tracks,
-//   imageUrls,
-//   condition,
-//   price,
-//   description,
-//   year } = req.body;
+router.post("/", async (req, res, next) => {
+  try {
+const { albumName,
+  artist,
+  tracks,
+  imageUrls,
+  price,
+  year,
+  genre } = req.body;
 
-// await Record.create({
-// albumName,
-// artists,
+
+  const newRecord = await Record.create({
+albumName,
+artist,
 // tracks,
 // imageUrls,
-// condition,
-// price,
-// description,
-// year,
-// quantity
-// });
+price,
+year
+});
 
-//     res.sendStatus(201)
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+console.log(newRecord)
 
-// // PUT /api/record/:id
-// router.put("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
+// set genre depending on info coming in
+// add genre to record, add record to genre
 
-//     const { // albumName,
-// artists,
-// tracks,
-// imageUrls,
-// condition,
-// price,
-// description,
-// year,
-// quantity } = req.body;
-//     const record = await Record.findByPk(id);
-
-//     const updatedRecord = await record.update({
-//       // albumName,
-// artists,
-// tracks,
-// imageUrls,
-// condition,
-// price,
-// description,
-// year,
-// quantity
-//     });
-
-//     const recordWithGenres = await Record.findByPk(id, {
-//       include: [Genre],
-//     });
-//     //send updated record along with updated genre info
-//     res.send(recordWithGenres);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
-
-// // DELETE /api/records/:id
-// router.delete("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const record = await Record.findByPk(id);
-//     // if (!record) return res.sendStatus(404)
-//     await record.destroy();
-//     res.sendStatus(204);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+    res.sendStatus(201)
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 module.exports = router;

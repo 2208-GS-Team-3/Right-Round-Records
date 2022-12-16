@@ -3,19 +3,17 @@ import { useSelector } from "react-redux";
 import {
   Button,
   Container,
-  FormControl,
-  Input,
-  InputLabel,
   Typography,
   TextField
 } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import {setEditInProgress} from '../../store/editRecordSlice'
-import { setNewRecordData } from "../../store/recordsSlice";
+import { setNewRecordData, setRecords, setShowAddForm } from "../../store/recordsSlice";
 
 const NewProductForm = () => {
 const newRecordData = useSelector((state) => state.records.newRecordData);
+const genres = useSelector((state) => state.genres.genres);
 const dispatch = useDispatch()
 
 const handleNewRecord = (e) => {
@@ -23,12 +21,11 @@ const handleNewRecord = (e) => {
   const value = target.value;
   const name = target.name;
   dispatch(setNewRecordData({ ...newRecordData, [name]: value }));
-  console.log('newRecordData', {...newRecordData})
 }
 
 const seeAllProducts = () => {
-    dispatch(setEditInProgress(false))
-    }
+    dispatch(setShowAddForm(false))
+}
 
 
   const handleSubmitNewRecord = async (event) => {
@@ -42,15 +39,22 @@ const seeAllProducts = () => {
           authorization: token,
         },
       };
-    const newRecordData = {
-    //   id: Number(updatedRecordInfo.id) || recordToEdit[0].id,
-    //   albumName: updatedRecordInfo.albumName || recordToEdit[0].albumName, 
-    //   artist: updatedRecordInfo.artist || recordToEdit[0].artist,
-    //   price: Number(updatedRecordInfo.price) || recordToEdit[0].price,
-    //   year: Number(updatedRecordInfo.year) || recordToEdit[0].year,
+    const newRecord = {
+      albumName: newRecordData.albumName,
+      artist: newRecordData.artist,
+      price: Number(newRecordData.price),
+      year: Number(newRecordData.year),
+      genre: newRecordData.genre,
+    //   imageUrls: newRecordData.imageUrls,
+    //   tracks: newRecordData.tracks
     }
-    // const newRecord = await axios.post(`/api/records/`, newRecordData, tokenData)
-    // dispatch(addRecord(newRecord.data))
+
+
+    //sending new record to db
+     await axios.post(`/api/records/`, newRecord, tokenData)
+     const allRecords = await axios.get(`/api/records/`, tokenData)
+    dispatch(setRecords(allRecords.data))
+    dispatch(setShowAddForm(false))
   }
     catch(err) {
       console.log(err)
@@ -63,17 +67,18 @@ const seeAllProducts = () => {
       <Typography sx={{ placeSelf: "center" }} variant={"h5"}>
         Add New Product
       </Typography>
+    
     <Container sx={{ display: "flex",  gap: '20px', justifyContent: 'center', alignItems:'center', placeSelf: "center"}}>
 
-      <form>
+      <form style={{ display: "flex",   gap: '20px', flexDirection: 'column', width: '80%', justifyContent: 'center', alignItems:'center', placeSelf: "center"}}>
          
           <TextField
             required
             id="artist"
             name="artist"
             label="Artist Name"
-            fullWidth
-            variant="standard"
+            
+            variant="outlined"
             onChange={handleNewRecord}
           />
             <TextField
@@ -81,8 +86,7 @@ const seeAllProducts = () => {
               id="albumName"
               name="albumName"
               label="Album Name"
-              fullWidth
-              variant="standard"
+              variant="outlined"
               onChange={handleNewRecord}
             />
             <TextField
@@ -90,27 +94,64 @@ const seeAllProducts = () => {
               id="price"
               name="price"
               label="Price"
-              fullWidth
-              variant="standard"
+              variant="outlined"
               onChange={handleNewRecord}
             />
+            <TextField
+          id="select-genre"
+          select
+          label="Genre"
+          SelectProps={{
+              native: true,
+            }}
+            name="genre"
+          helperText="Select a genre"
+          variant="outlined"
+          onChange={handleNewRecord}
+          >
+          {genres.map((genre) => (
+              <option key={genre.id} value={genre.name}>
+              {genre.name}
+            </option>
+          ))}
+        </TextField>
             <TextField
               required
               id="year"
               name="year"
               label="Year"
-              fullWidth
-              variant="standard"
+              variant="outlined"
               onChange={handleNewRecord}
             />
+            {/* ISSUE WITH SEQUELIZE MODEL STORAGE OF IMAGES */}
+            {/* <TextField
+              required
+              id="imageUrls"
+              name="imageUrls"
+              label="Image Url"
+              variant="outlined"
+              onChange={handleNewRecord}
+            /> */}
+        
+        {/* ISSUE WITH SEQUELIZE MODEL STORAGE OF TRACKS */}
+          {/* <TextField
+            required
+            name="tracks"
+            label="Track List"
+            fullWidth
+            id="outlined-multiline-static"
+            variant="outlined"
+            multiline
+        rows={4}
+            onChange={handleNewRecord}
+          /> */}
         </form>
           </Container>
           <Container sx={{ display: "flex",  gap: '20px', justifyContent: 'center', alignItems:'center'}}>
-<Button variant="contained" onClick={handleSubmitNewRecord}>Submit</Button>
-<Button variant="contained" href={"/dashboard"} onClick={seeAllProducts}>Cancel</Button>
-</Container>
+        <Button variant="contained" onClick={handleSubmitNewRecord}>Submit</Button>
+        <Button variant="contained" href={"/dashboard"} onClick={seeAllProducts}>Cancel</Button>
+        </Container>
     </Container>
-
   );
 };
 

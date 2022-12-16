@@ -20,17 +20,17 @@ export const recordsSlice = createSlice({
       });
     },
     setNewRecordData: (state, action) => {
-      state.records = action.payload;
+      state.newRecordData = action.payload;
     },
     setShowAddForm: (state, action) => {
-      state.showForm = true
+      state.showForm = action.payload
+    },
+    addRecord: (state, action) => {
+      console.log(action.payload)
+      state.records.push(action.payload);
     }
-    // addRecord: (state, action) => {
-    //   console.log(action.payload)
-    //   state.records.push(action.payload);
-    // }
   },
 });
 
-export const { setRecords, deleteRecord, setNewRecordData, setShowAddForm } = recordsSlice.actions;
+export const { setRecords, deleteRecord, setNewRecordData, setShowAddForm, addRecord } = recordsSlice.actions;
 export default recordsSlice.reducer;
