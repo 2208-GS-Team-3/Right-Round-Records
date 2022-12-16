@@ -55,14 +55,14 @@ const SingleRecord = () => {
     <Container
       maxWidth="md"
       style={{
-        border: "5px solid red",
+        border: "2px solid black",
+        borderRadius: '5px',
         display: "flex",
         padding: "50px",
       }}
     >
       <Container
         style={{
-          border: "2px solid blue",
           padding: "20px",
           display: "flex",
           flexDirection: "column",
@@ -106,11 +106,11 @@ const SingleRecord = () => {
         </Container>
       </Container>
 
-      <Container>
+      <Container style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
         {/* record info container */}
         <Container
           style={{
-            border: "3px solid red",
+            border: "3px solid green",
             padding: "30px",
             margin: "30px",
           }}
