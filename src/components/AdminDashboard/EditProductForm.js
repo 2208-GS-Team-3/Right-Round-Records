@@ -30,29 +30,34 @@ const handleRecordStateChange = (e) => {
 
 
 const handleDeleteRecord = async (event) => {
-  try {
-    event.preventDefault();
-     // get token of logged in user
-     const token = window.localStorage.getItem("token");
-     // data to send to backend
-     const tokenData = {
-       headers: {
-         authorization: token,
-       },
-     };
-    await axios.delete(`/api/records/${recordToEdit[0].id}`, tokenData);
-    //update front end and redux store
-    dispatch(
-      deleteRecord({
-        id: recordToEdit[0].id,
-      })
-    );
-    const allNewRecords = await axios.get("/api/records");
-    dispatch(setRecords(allNewRecords.data));
-    dispatch(setEditInProgress(false))
-  } catch (err) {
-    console.error(err);
-  }
+  const response = confirm('are you sure you want to delete this record?')
+  if (response === true) {
+    try {
+      event.preventDefault();
+       // get token of logged in user
+       const token = window.localStorage.getItem("token");
+       // data to send to backend
+       const tokenData = {
+         headers: {
+           authorization: token,
+         },
+       };
+      await axios.delete(`/api/records/${recordToEdit[0].id}`, tokenData);
+      //update front end and redux store
+      dispatch(
+        deleteRecord({
+          id: recordToEdit[0].id,
+        })
+      );
+      const allNewRecords = await axios.get("/api/records");
+      dispatch(setRecords(allNewRecords.data));
+      dispatch(setEditInProgress(false))
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    return;
+  } 
 };
 
   const handleUpdate = async (event) => {
