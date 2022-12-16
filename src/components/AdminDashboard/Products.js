@@ -35,7 +35,6 @@ const displayInput = (event) => {
     const filteredRecord = records.filter((record) => record.id === Number(event.target.value))
     dispatch(setRecordToEdit(filteredRecord))
 }
-
   return (
     <React.Fragment>
       <Title>Products</Title>

@@ -42,14 +42,26 @@ router.get("/:id", async (req, res, next) => {
 // update review and/or new contect on single record page
 router.put("/:id", async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { artist, year, price, genres, styles, reviews } = req.boby;
+    const { id, albumName, artist, year, price, trackList } = req.body;
 
-    const recordToUpdate = await Record.findByPk(id);
+    const recordToUpdate = await Record.findByPk(req.body.id);
+
     await recordToUpdate.update({
-      artist, year, price, genres, styles, reviews
+      artist, year, price, albumName
     });
     res.send(recordToUpdate);
+  }
+  catch (err) {
+    next(err);
+  }
+})
+
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const recordToDestroy = await Record.findByPk(id);
+    await recordToDestroy.destroy()
+    res.sendStatus(204);
   }
   catch (err) {
     next(err);

@@ -10,38 +10,76 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import axios from "axios";
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-
-
+import { useDispatch } from "react-redux";
+import {setRecordToEdit, setUpdatedRecordInfo} from '../../store/editRecordSlice'
+import { deleteRecord, setRecords } from "../../store/recordsSlice";
 const EditProductForm = () => {
 
 const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
+const updatedRecordInfo = useSelector((state) => state.recordToEdit.updatedRecordInfo);
+const dispatch = useDispatch()
 
-  // const fetchRecordToEdit = async () => {
-  //   try {
-  //     const record = await axios.get(`/api/records/${recordToEdit.id}`);
-  //     console.log(record)
-  //     dispatch(setRecordToEdit(record.data));
-  //   } catch (err) {
-  //       console.log(err)
-  //   }
-  // };
+const handleRecordStateChange = (e) => {
+  const target = e.target;
+  const value = target.value;
+  const name = target.name;
+  dispatch(setUpdatedRecordInfo({ ...updatedRecordInfo, [name]: value }));
+}
 
-  // useEffect(() => {
-  //   fetchRecordToEdit();
-  // }, []);
 
+const handleDeleteRecord = async (event) => {
+  try {
+    event.preventDefault();
+     // get token of logged in user
+     const token = window.localStorage.getItem("token");
+     // data to send to backend
+     const tokenData = {
+       headers: {
+         authorization: token,
+       },
+     };
+    await axios.delete(`/api/records/${recordToEdit[0].id}`, tokenData);
+    //update front end and redux store
+    dispatch(
+      deleteRecord({
+        id: recordToEdit[0].id,
+      })
+    );
+    const allNewRecords = await axios.get("/api/records");
+    dispatch(setRecords(allNewRecords.data));
+    dispatch(setRecordToEdit(null));
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   const handleUpdate = async (event) => {
-    event.preventDefault();
-    console.log("do something");
-    //hit put route and send updated price information
+    try {
+      event.preventDefault();
+      // get token of logged in user
+      const token = window.localStorage.getItem("token");
+      // data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+    const newData = {
+      id: Number(updatedRecordInfo.id) || recordToEdit[0].id,
+      albumName: updatedRecordInfo.albumName || recordToEdit[0].albumName, 
+      artist: updatedRecordInfo.artist || recordToEdit[0].artist,
+      price: Number(updatedRecordInfo.price) || recordToEdit[0].price,
+      year: Number(updatedRecordInfo.year) || recordToEdit[0].year,
+    }
+    await axios.put(`/api/records/${recordToEdit[0].id}`, newData, tokenData)
+  }
+    catch(err) {
+      console.log(err)
+    }
   };
 
- 
 
   return (      
 
@@ -70,35 +108,36 @@ const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
       <form>
           <FormControl >
             <InputLabel htmlFor="username-input">Product Id</InputLabel>
-            <Input defaultValue={recordToEdit[0].id} sx={{ margin: '20px'}}
+            <Input name="id" defaultValue={recordToEdit[0].id} sx={{ margin: '20px'}} onChange={handleRecordStateChange}
             />
           </FormControl><br></br>
           <FormControl>
             <InputLabel htmlFor="username-input">Album Name</InputLabel>
-            <Input defaultValue={recordToEdit[0].albumName} sx={{ margin: '20px'}}
+            <Input name="albumName" defaultValue={recordToEdit[0].albumName} sx={{ margin: '20px'}} onChange={handleRecordStateChange}
             />
           </FormControl><br></br>
           <FormControl>
             <InputLabel htmlFor="username-input">Artist Name</InputLabel>
-            <Input defaultValue={recordToEdit[0].artist} sx={{ margin: '20px'}}
+            <Input name="artist" defaultValue={recordToEdit[0].artist} sx={{ margin: '20px'}} onChange={handleRecordStateChange}
             />
           </FormControl><br></br>
           <FormControl>
             <InputLabel htmlFor="username-input">Price</InputLabel>
-            <Input defaultValue={recordToEdit[0].price} sx={{ margin: '20px'}}
+            <Input name="price" defaultValue={recordToEdit[0].price} sx={{ margin: '20px'}} onChange={handleRecordStateChange}
             />
           </FormControl><br></br>
           <FormControl>
             <InputLabel htmlFor="username-input">Year</InputLabel>
-            <Input defaultValue={recordToEdit[0].year} sx={{ margin: '20px'}}
+            <Input name="year" defaultValue={recordToEdit[0].year} sx={{ margin: '20px'}} onChange={handleRecordStateChange}
             />
           </FormControl><br></br>
         </form>
           </Container>
           <Container sx={{ display: "flex",  gap: '20px', justifyContent: 'center', alignItems:'center'}}>
-<Button variant="outlined">Save Changes</Button>
-<Button variant="outlined" href={"/dashboard"}>Cancel</Button>
-<Button variant="outlined" style={{color: 'red', border: '1px solid red'}}>Delete product</Button>
+<Button variant="outlined" onClick={handleUpdate}>Save Changes</Button>
+<Button variant="outlined" href={"/dashboard"}>Dashboard</Button>
+
+<Button variant="outlined" style={{color: 'red', border: '1px solid red'}} onClick={handleDeleteRecord}>Delete product</Button>
 </Container>
     </Container>
 
