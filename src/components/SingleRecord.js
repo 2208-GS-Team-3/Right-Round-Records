@@ -123,7 +123,7 @@ const SingleRecord = () => {
             <b>Year:</b> {selectedRecord.year}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <b>Price:</b> {price}
+            <b>Price:</b> {selectedRecord.price}
           </Typography>
 
           {/* genres, styles on right */}
