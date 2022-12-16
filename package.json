@@ -4,8 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    // "build": "npm i & npm run webpackbuild",
-    // "webpackbuild": "webpack",
     "build": "webpack",
     "build:dev": "npm run build -- --watch --mode=development",
     "lint:src": "eslint src/**",
