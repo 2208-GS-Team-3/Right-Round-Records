@@ -12,11 +12,13 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+
 
 const EditProductForm = () => {
 
 const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
-  console.log()
 
   // const fetchRecordToEdit = async () => {
   //   try {
@@ -49,6 +51,21 @@ const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
       <Typography sx={{ placeSelf: "center" }} variant={"h5"}>
         Change Product Information
       </Typography>
+<Container sx={{ display: "flex",  gap: '20px', justifyContent: 'center', alignItems:'center', placeSelf: "center"}}
+>
+
+<Box
+      sx={{
+        display: 'flex',
+        '& > :not(style)': {
+          m: 1,
+          width: 300,
+          height: 300,
+        },
+      }}
+    >
+      <img src={recordToEdit[0]?.imageUrls[0]?.uri ?? `static/RRR Record.png`}/>
+    </Box>
 
       <form>
           <FormControl >
@@ -76,20 +93,13 @@ const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
             <Input defaultValue={recordToEdit[0].year} sx={{ margin: '20px'}}
             />
           </FormControl><br></br>
-          {/* <FormControl>
-            <InputLabel htmlFor="username-input">Track List</InputLabel>
-            <Input defaultValue={recordToEdit[0].tracks}
-            />
-          </FormControl> */}
-          {/* <FormControl>
-            <InputLabel htmlFor="username-input">Image Url</InputLabel>
-            <Input defaultValue={recordToEdit[0].}
-            />
-          </FormControl> */}
         </form>
-<Button>Save Changes</Button>
-<Button>Cancel</Button>
-<Button>Back to Dashboard</Button>
+          </Container>
+          <Container sx={{ display: "flex",  gap: '20px', justifyContent: 'center', alignItems:'center'}}>
+<Button variant="outlined">Save Changes</Button>
+<Button variant="outlined" href={"/dashboard"}>Cancel</Button>
+<Button variant="outlined" style={{color: 'red', border: '1px solid red'}}>Delete product</Button>
+</Container>
     </Container>
 
   );

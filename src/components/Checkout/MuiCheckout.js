@@ -22,19 +22,6 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { resetCart } from "../../store/cartSlice";
 
-function RRRecords() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        RRRecords
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 const steps = ["Shipping address", "Payment details", "Review your order"];
 
 function getStepContent(step) {
