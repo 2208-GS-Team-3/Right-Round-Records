@@ -35,7 +35,7 @@ export const cartSlice = createSlice({
         (record) => record.id !== action.payload.recordId
       );
       console.log(action.payload);
-      //new cart is filtered for the removed record
+      // new cart is filtered for the removed record
       state.cartRecords = removeRecord;
     },
     resetCart: (state) => {

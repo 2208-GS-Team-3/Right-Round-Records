@@ -52,6 +52,9 @@ function RRRAppBar() {
   const navDashboard = () => {
     navigate("/dashboard");
   };
+  const navUserOrders = () => {
+    navigate("/orders");
+  };
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -63,6 +66,7 @@ function RRRAppBar() {
     e.preventDefault();
     if (e.target.innerHTML === "Logout" || e.target.id === "Logout") logout();
     if (e.target.innerHTML === "Login" || e.target.id === "Login") login();
+    if (e.target.innerHTML === "Orders" || e.target.id === "Orders") navUserOrders();
     if (e.target.innerHTML === "Dashboard" || e.target.id === "Dashboard")
       navDashboard();
     setAnchorElUser(null);

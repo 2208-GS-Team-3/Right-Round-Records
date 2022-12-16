@@ -57,7 +57,6 @@ const PaymentForm = () => {
     }
   };
 
-  console.log(cardValidity);
 
   return (
     <>

@@ -1,9 +1,6 @@
-const user = require("disconnect/lib/user");
 const express = require("express");
 const { Record, User, Cart, CartRecords, Style, Genre } = require("../db");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
-const JWT = process.env.JWT;
 
 // //localhost:3000/api/cart/
 // //display users cart
@@ -34,15 +31,15 @@ router.put("/", async (req, res, next) => {
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
 
-    //coming from 'recordData' object in 'handleRemoveFromCart'
-    const { recordId, quantity, status } = req.body;
+    // coming from 'recordData' object in 'handleRemoveFromCart'
+    const { quantity } = req.body;
 
     const cart = await Cart.findOne({
       where: { userId: user.id },
       include: [User, { model: Record, include: [Genre, Style] }],
     });
 
-    //-----------------------------------------
+    // -----------------------------------------
 
     const cartRecordToUpdate = await CartRecords.findOne({
       where: { recordId: req.body.recordId },
@@ -56,13 +53,13 @@ router.put("/", async (req, res, next) => {
       await cartRecordToUpdate.update({ quantity });
     }
 
-    //if quantity is 0, destroy the cartRecord for that record
+    // if quantity is 0, destroy the cartRecord for that record
     if (!req.body.quantity) {
-      //destroy the record from the cart!
+      // destroy the record from the cart!
       await cartRecordToUpdate.destroy();
     }
 
-    //find updated cart
+    // find updated cart
     const updatedCart = await Cart.findOne({
       where: { userId: user.id },
       include: [User, { model: Record, include: [Genre, Style] }],

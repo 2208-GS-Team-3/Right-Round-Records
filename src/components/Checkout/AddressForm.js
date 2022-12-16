@@ -31,36 +31,7 @@ const AddressForm = () => {
     }
   };
 
-  // const handleShippingAddress = async (event) => {
-  //   event.preventDefault();
-  //   const token = window.localStorage.getItem("token");
-  //   //data to send to backend
-  //   const tokenData = {
-  //     headers: {
-  //       authorization: token,
-  //     },
-  //   };
-
-  //   if (!billingIsSame) {
-  //     const shippingData = {
-  //       cartId: cartInfo.id,
-  //       shippingAddress: `${firstName} ${lastName}, ${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
-  //       status: "cart",
-  //     };
-  //     await axios.put(`/api/orders`, shippingData, tokenData);
-  //   } else {
-  //     const shippingData = {
-  //       cartId: cartInfo.id,
-  //       shippingAddress: `${firstName} ${lastName}, ${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
-  //       billingAddress: `${firstName} ${lastName}, ${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
-  //       status: "cart",
-  //     };
-  //     await axios.put(`/api/orders`, shippingData, tokenData);
-  //   }
-
-  //   //get the order back bc we'll need the info for the checkout page to display shipping data
-  //   const updatedOrder = await axios.get(`/api/orders`, tokenData);
-  // };
+ 
 
   return (
     <React.Fragment>

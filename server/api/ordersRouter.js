@@ -1,4 +1,3 @@
-const { current } = require("@reduxjs/toolkit");
 const express = require("express");
 const { Record, User, Cart, Style, Genre, Order } = require("../db");
 const router = express.Router();
@@ -42,7 +41,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.put("/", async (req, res, next) => {
   try {
-    //get user info
+    // get user info
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
     const {
@@ -103,7 +102,6 @@ router.put("/", async (req, res, next) => {
       const newCart = await Cart.create();
       newCart.setUser(user);
       //send back order
-      console.log(finalOrderDetails);
       res.send(finalOrderDetails);
     }
   } catch (err) {

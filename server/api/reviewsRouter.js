@@ -8,8 +8,6 @@ const {
   Order,
   Genre,
   Style,
-  Cart,
-  CartRecords,
 } = require("../db");
 
 router.get("/", async (req, res, next) => {
@@ -25,20 +23,19 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-//update review and/or new contect on single record page
+// update review and/or new contect on single record page
 router.put("/", async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
 
-    const { recordId, comment, reviewRating } = req.body;
-    //find users orders. have they ordered this album? if so, they can review
+    // find users orders. have they ordered this album? if so, they can review
     // const order = await Order.findOne({
     //     where: { userId: user.id },
     //     include: [User, { model: Record, include: [Genre, Style] }],
     //   });
 
-    //create review
+    // create review
     const newReview = await Review.create({
       date: Date.now(),
       comment: req.body.comment,
@@ -47,13 +44,13 @@ router.put("/", async (req, res, next) => {
       userId: user.id,
     });
 
-    //find the reccord the review is for
+    // find the reccord the review is for
     const record = await Record.findOne({
       where: { id: req.body.recordId },
       include: [Review],
     });
 
-    //associate record & user with the review
+    // associate record & user with the review
     await record.addReview(newReview);
     await user.addReview(newReview);
 

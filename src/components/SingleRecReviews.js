@@ -17,7 +17,7 @@ const SingleRecReviews = () => {
   );
 
   return (
-    <Container maxWidth="100vw" style={{ border: "1px solid red" }}>
+    <Container maxWidth="100vw">
       {/* if there are reviews, display them */}
       {selectedRecord.reviews.length > 0 ? (
         <Review />

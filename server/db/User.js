@@ -3,7 +3,6 @@ const { STRING, UUID, UUIDV4, VIRTUAL, DATE } = db.Sequelize;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { BOOLEAN } = require("sequelize");
-const user = require("disconnect/lib/user");
 const JWT = process.env.JWT;
 
 const User = db.define("user", {
@@ -20,23 +19,22 @@ const User = db.define("user", {
       notEmpty: true,
     },
     set(usernameInput) {
-      this.setDataValue('username', usernameInput.toLowerCase());
+      this.setDataValue("username", usernameInput.toLowerCase());
     },
     get() {
-       const username = this.getDataValue('username')
-       const usernameArr = username.split('')
-       usernameArr[0] = usernameArr[0].toUpperCase()
-       return usernameArr.join('')
-    }
+      const username = this.getDataValue("username");
+      const usernameArr = username.split("");
+      usernameArr[0] = usernameArr[0].toUpperCase();
+      return usernameArr.join("");
+    },
   },
   password: {
     type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
-    }
+    },
   },
-  //new code starts here
   firstName: {
     type: STRING,
     allowNull: false,
@@ -57,7 +55,9 @@ const User = db.define("user", {
       notEmpty: true,
     },
     get() {
-      return `${this.getDataValue('firstName')} ${this.getDataValue('lastName')}`;
+      return `${this.getDataValue("firstName")} ${this.getDataValue(
+        "lastName"
+      )}`;
     },
   },
   creditCardNum: {
@@ -107,7 +107,6 @@ const User = db.define("user", {
     type: BOOLEAN,
     defaultValue: false,
   },
-  //new code ends
 });
 
 User.addHook("beforeSave", async (user) => {
@@ -123,8 +122,10 @@ User.findByToken = async function (token) {
     const user = await this.findByPk(id);
     if (user) {
       return user;
+    } else {
+      const error = new Error("user not found");
+      throw error;
     }
-    throw "user not found";
   } catch (ex) {
     console.log(ex);
     const error = new Error("bad credentials");

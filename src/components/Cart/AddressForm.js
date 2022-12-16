@@ -12,7 +12,7 @@ import axios from "axios";
 const AddressForm = () => {
   const cartInfo = useSelector((state) => state.cart.cartInfo);
 
-  //route to update shipping info for order here
+  // route to update shipping info for order here
   const [add1, setAdd1] = useState("");
   const [add2, setAdd2] = useState("");
   const [city, setCity] = useState("");
@@ -23,7 +23,7 @@ const AddressForm = () => {
   const handleShippingAddress = async (event) => {
     event.preventDefault();
     const token = window.localStorage.getItem("token");
-    //data to send to backend
+    // data to send to backend
     const tokenData = {
       headers: {
         authorization: token,
@@ -35,10 +35,11 @@ const AddressForm = () => {
       status: "cart",
     };
 
-    //update shipping info, order created but still 'cart' status
+    // update shipping info, order created but still 'cart' status
     await axios.put(`/api/orders`, shippingData, tokenData);
 
-    //get the order back bc we'll need the info for the checkout page to display shipping data
+    // get the order back bc we'll need the info for the checkout page to display shipping data
+    // eslint-disable-next-line no-unused-vars
     const updatedOrder = await axios.get(`/api/orders`, tokenData);
   };
 

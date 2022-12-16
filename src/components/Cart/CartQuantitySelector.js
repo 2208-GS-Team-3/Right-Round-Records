@@ -1,23 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import {
   updateCart,
   removeFromCart,
   setCartInfo,
   setCartRecords,
 } from "../../store/cartSlice";
-import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 
 const CartQuantitySelector = ({ record }) => {
   const dispatch = useDispatch();
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-
-  const [recordQuantity, setRecordQuantity] = useState(
-    record?.cartRecord?.quantity
-  );
 
   const currentRecordInCart = recordsInCart?.filter(
     (cartItem) => cartItem.id === record.id
@@ -25,26 +20,25 @@ const CartQuantitySelector = ({ record }) => {
 
   const updateQuantity = async (event) => {
     event.preventDefault();
-    setRecordQuantity(event.target.value);
-    //get token of logged in user
+    // get token of logged in user
     const token = window.localStorage.getItem("token");
-    //data to send to backend
+    // data to send to backend
     const tokenData = {
       headers: {
         authorization: token,
       },
     };
 
-    //updated info coming in
+    // updated info coming in
     const recordToUpdate = {
       recordId: record.id,
       quantity: event.target.value,
       // send quantity to be updated as well
     };
-    //update backend
+    // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
 
-    //need an 'update cart' button to update UI if user wants to remove item
+    // need an 'update cart' button to update UI if user wants to remove item
     // this removes data from cart in redux store
     if (recordToUpdate?.quantity === 0) {
       dispatch(removeFromCart(recordToUpdate));
@@ -57,7 +51,7 @@ const CartQuantitySelector = ({ record }) => {
     dispatch(setCartInfo(updatedCart.data));
   };
 
-  //deletes on front end
+  // deletes on front end
   const removeRecordFromCart = async (event) => {
     const token = window.localStorage.getItem("token");
     const tokenData = {
@@ -71,7 +65,7 @@ const CartQuantitySelector = ({ record }) => {
       // send quantity to be updated as well
     };
     console.log(recordToUpdate);
-    //update backend
+    // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
     dispatch(removeFromCart(recordToUpdate));
   };

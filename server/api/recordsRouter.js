@@ -7,7 +7,6 @@ const {
   Genre,
   Style,
   Cart,
-  CartRecords,
 } = require("../db");
 
 // //localhost:3000/api/records/
@@ -25,7 +24,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-//localhost:3000/api/records/:id
+// localhost:3000/api/records/:id
 // ist of all records
 router.get("/:id", async (req, res, next) => {
   try {
@@ -40,7 +39,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-//update review and/or new contect on single record page
+// update review and/or new contect on single record page
 router.put("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
