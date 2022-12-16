@@ -10,7 +10,6 @@ import {
 import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
 const RecordCard = ({ record }) => {
-  const price = "$" + (record.price / 100).toFixed(2);
   const singleRecordPageUrl = `/records/${record.id}`;
 
 
@@ -36,7 +35,7 @@ const RecordCard = ({ record }) => {
           </span>
           <br></br>
           <span>
-            <b>Price:</b> {price}
+            <b>Price:</b> {record.price}
           </span>
           <br></br>
           <span>
