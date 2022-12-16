@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import SingleRecReviews from "./SingleRecReviews";
 import Rating from "@mui/material/Rating";
-import EditRecordForm from "./AdminDashboard/EditRecords";
 import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
 const SingleRecord = () => {
@@ -158,7 +157,7 @@ const SingleRecord = () => {
 
         {/* navigation container */}
         <Container style={{ border: "2px solid green", display: "flex" }}>
-          {/* <EditRecordForm /> */}
+          
         </Container>
       </Container>
     </Container>
