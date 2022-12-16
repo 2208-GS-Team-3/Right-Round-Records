@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import SingleRecReviews from "./SingleRecReviews";
 import Rating from "@mui/material/Rating";
+import EditRecordForm from "./AdminDashboard/EditRecords";
+import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
 const SingleRecord = () => {
   const { selectedRecord, loadingRecord } = useSelector((state) => {
@@ -30,7 +32,6 @@ const SingleRecord = () => {
       const response = await axios.get(`/api/records/${id}`);
       dispatch(setRecord(response.data));
     } catch (err) {}
-    // dispatch(setLoadingRecord(false));
   };
   // ------------------------------------------------
 
@@ -53,93 +54,113 @@ const SingleRecord = () => {
 
   return (
     <Container
-      maxWidth="sm"
+      maxWidth="md"
       style={{
+        border: "5px solid red",
         display: "flex",
-        justifyContent: "center",
+        padding: "50px",
       }}
     >
-      <Box>
-        <img
-          height="300"
-          src={selectedRecord.imageUrls[0].uri}
-          alt="record album"
-        />
+      <Container
+        style={{
+          border: "2px solid blue",
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyItems: "center",
+        }}
+      >
         <Typography gutterBottom variant="h5" component="div">
           <h3>{selectedRecord.albumName}</h3>
         </Typography>
-        <Container>
-          {/* rating container */}
-          <Container>
-            {selectedRecord.reviews.length > 0 && (
-              <>
-                <Typography component="div" variant="h6">
-                  <b>Average Rating</b>
-                </Typography>
-                <Rating name="read-only" value={Number(avgRating)} readOnly />
-              </>
-            )}
-          </Container>
-
-          {/* record info container */}
-          <Container
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            {/* artist, year, price on left */}
-            <Container>
-              <Typography variant="body2" color="text.secondary">
-                <b>Artist:</b> {selectedRecord.artist}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                <b>Year:</b> {selectedRecord.year}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                <b>Price:</b> {price}
-              </Typography>
-            </Container>
-
-            {/* genres, styles on right */}
-            <Container>
-              <Typography variant="body2" color="text.secondary">
-                <b>Genre(s):</b>
-                {selectedRecord.genres.map((genre, index) => (
-                  <li key={index}>{genre.name} </li>
-                ))}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                <b>Style(s):</b>
-                {selectedRecord.styles.map((style, index) => (
-                  <li key={index}>{style.name} </li>
-                ))}
-              </Typography>
-            </Container>
-          </Container>
-          {/* end of record info */}
-
-          {/* Review information */}
-          <Container style={{ display: "flex" }}>
-            {showReviews ? (
-              <>
-                <Button onClick={displayAllReviews}>Hide reviews</Button>
-                <SingleRecReviews selectedRecord={selectedRecord} />
-              </>
-            ) : (
-              <Button onClick={displayAllReviews}>See all reviews</Button>
-            )}
-          </Container>
-
-          {/* navigation container */}
-          <Container>
-            <Button size="small" href={"/"}>
-              Back
-            </Button>
-            <Button size="small">Add to cart</Button>
-          </Container>
+        <Typography component="div" variant="h6">
+          <b>Average Rating({selectedRecord.reviews.length})</b>
+        </Typography>
+        {selectedRecord.reviews.length > 0 ? (
+          <Rating
+            name="read-only"
+            value={Number(avgRating)}
+            readOnly
+            style={{ margin: "30px" }}
+          />
+        ) : (
+          <p style={{ color: "red" }}>This record has not been reviewed.</p>
+        )}
+        <img
+          height="auto"
+          width="300"
+          src={selectedRecord.imageUrls[0].uri}
+          alt="record album"
+        />
+        <Container
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
+        >
+          <Button size="small" href={"/"}>
+            Back
+          </Button>
+          <CartQuantitySelector record={selectedRecord} />
         </Container>
-      </Box>
+      </Container>
+
+      <Container>
+        {/* record info container */}
+        <Container
+          style={{
+            border: "3px solid red",
+            padding: "30px",
+            margin: "30px",
+          }}
+        >
+          {/* artist, year, price on left */}
+          <Typography variant="body2" color="text.secondary">
+            <b>Artist:</b> {selectedRecord.artist}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <b>Year:</b> {selectedRecord.year}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <b>Price:</b> {price}
+          </Typography>
+
+          {/* genres, styles on right */}
+
+          <Typography variant="body2" color="text.secondary">
+            <b>Genre(s):</b>
+            {selectedRecord.genres.map((genre, index) => (
+              <li key={index}>{genre.name} </li>
+            ))}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <b>Style(s):</b>
+            {selectedRecord.styles.map((style, index) => (
+              <li key={index}>{style.name} </li>
+            ))}
+          </Typography>
+        </Container>
+        {/* end of record info */}
+
+        {/* Review information */}
+        <Container style={{ border: "2px solid red", display: "flex" }}>
+          {showReviews ? (
+            <>
+              <Button onClick={displayAllReviews}>Hide reviews</Button>
+              <SingleRecReviews selectedRecord={selectedRecord} />
+            </>
+          ) : (
+            <Button onClick={displayAllReviews}>See all reviews</Button>
+          )}
+        </Container>
+
+        {/* navigation container */}
+        <Container style={{ border: "2px solid green", display: "flex" }}>
+          {/* <EditRecordForm /> */}
+        </Container>
+      </Container>
     </Container>
   );
 };

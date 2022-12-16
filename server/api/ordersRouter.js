@@ -1,12 +1,5 @@
 const express = require("express");
-const {
-  Record,
-  User,
-  Cart,
-  Style,
-  Genre,
-  Order,
-} = require("../db");
+const { Record, User, Cart, Style, Genre, Order } = require("../db");
 const router = express.Router();
 
 // //localhost:3000/api/orders/
@@ -18,7 +11,7 @@ router.get("/", async (req, res, next) => {
 
     const orders = await Order.findAll({
       order: [["id", "DESC"]],
-      where: { userId: user.id },
+      where: { userId: user.id, status: "placed" },
       include: [User, { model: Record, include: [Genre, Style] }],
     });
 
@@ -51,86 +44,65 @@ router.put("/", async (req, res, next) => {
     // get user info
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
-    const { shippingAddress, totalCost } = req.body;
-    const randomTrackingNum = Math.floor(Math.random() * 1000000);
+    const {
+      cartId,
+      shippingAddress,
+      billingAddress,
+      totalCost,
+      creditCardName,
+      creditCardNum,
+      ccSecurity,
+      expiryDate,
+    } = req.body;
 
-    // users cart
-    const cart = await Cart.findOne({
-      where: { id: req.body.cartId },
-      include: [User, { model: Record, include: [Genre, Style] }],
-    });
-
-    // users current order. does it exist?
-    const orderExists = await Order.findOne({
-      where: { status: "cart", userId: user.id },
-    });
-
-    // if user does not have an order with status of cart
-    if (!orderExists) {
-      // create the order
-      const orderInCart = await Order.create({
-        datePlaced: Date.now(),
-        status: "cart",
-        shippingAddress: shippingAddress || user.address,
-        totalCost,
+    if (req.body.status === "placed") {
+      // get users cart
+      const cart = await Cart.findOne({
+        where: { id: req.body.cartId },
+        include: [{ model: Record, include: [Genre, Style] }],
       });
 
-      // associate order with records
-      cart.records.forEach((record) => orderInCart.addRecords([record]));
+      //users current order
+      const currentOrder = await Order.create({
+        where: { status: "cart", userId: user.id },
+      });
 
-      // associate new order with user
-      user.addOrder(orderInCart);
+      await user.addOrder(currentOrder);
 
-      // orderInCart.addRecordss();
-      res.send(orderInCart);
-    }
+      const mappedRecordsForAssociations = [];
+      const mappedRecords = cart.records.forEach((record) =>
+        mappedRecordsForAssociations.push(record)
+      );
 
-    if (orderExists) {
-      if (req.body.status === "cart") {
-        const updatedOrder = await orderExists.update({
-          datePlaced: Date.now(),
-          status: "cart",
-          trackingNumber: randomTrackingNum,
-          shippingAddress: shippingAddress || user.address,
-          totalCost,
-        });
+      //update the order status to placed
+      const updatedOrder = await currentOrder.update({
+        datePlaced: Date.now(),
+        status: "placed",
+        shippingAddress: shippingAddress,
+        billingAddress: billingAddress,
+        creditCardName: creditCardName,
+        creditCardNum: creditCardNum,
+        ccSecurity: ccSecurity,
+        expiryDate: expiryDate,
+        totalCost: totalCost,
+      });
 
-        // associate order with records
-        cart.records.forEach((record) => updatedOrder.addRecords([record]));
+      mappedRecordsForAssociations.forEach((record) =>
+        currentOrder.addRecords([record])
+      );
 
-        res.send(updatedOrder);
-      }
+      const finalOrderDetails = await Order.findOne({
+        where: { id: updatedOrder.id },
+        include: [{ model: Record, include: [Genre, Style] }],
+      });
 
-      // if the order gets placed, find the cart with all of the records
-      if (req.body.status === "placed") {
-        // identify the users cart
-
-        // update the order status to placed
-        await orderExists.update({
-          datePlaced: Date.now(),
-          status: "placed",
-          trackingNumber: randomTrackingNum,
-          shippingAddress: shippingAddress || user.address,
-          totalCost,
-        });
-
-        // associate order with records
-        cart.records.forEach((record) => orderExists.addRecords(record));
-
-        // send back order with all info to UI
-        const orderWithRecords = await Order.findByPk(orderExists.id, {
-          include: [User, { model: Record, include: [Genre, Style] }],
-        });
-
-        // once order is placed, destroy cart
-        await cart.destroy();
-
-        // then give user a new cart!
-        const newCart = await Cart.create();
-        newCart.setUser(user);
-
-        res.send(orderWithRecords);
-      }
+      //logic to clear out and renew cart
+      await cart.destroy();
+      //then give user a new cart!
+      const newCart = await Cart.create();
+      newCart.setUser(user);
+      //send back order
+      res.send(finalOrderDetails);
     }
   } catch (err) {
     console.error(err);

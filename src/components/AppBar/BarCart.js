@@ -73,7 +73,7 @@ const BarCart = () => {
                         <Avatar
                           key={`ImageFor${record.albumName}`}
                           src={
-                            // record?.imageUrls[0]?.uri150 ??
+                            record?.imageUrls[0]?.uri150 ??
                             "static/RRR Record.png"
                           }
                         />

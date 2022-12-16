@@ -57,6 +57,10 @@ export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [currentOrder, setCurrentOrder] = useState([]);
   const [loading, setLoading] = useState(false);
+  const creditCard = useSelector((state) => state.checkoutData.creditCard);
+  const billing = useSelector((state) => state.checkoutData.billing);
+  const shipping = useSelector((state) => state.checkoutData.shipping);
+  const totalCost = useSelector((state) => state.checkoutData.totalCost);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const dispatch = useDispatch();
   const params = useParams("");
@@ -71,32 +75,46 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
+  const shippingString = `${shipping.firstName} ${shipping.lastName}, ${shipping.address1}, ${shipping.address2}, ${shipping.city}, ${shipping.state}, ${shipping.country}, ${shipping.zip}`;
+  const billingString = `${billing.firstName} ${billing.lastName}, ${billing.address1}, ${billing.address2}, ${billing.city}, ${billing.state}, ${billing.country}, ${billing.zip}`;
+
   const completeCheckout = async (event) => {
     event.preventDefault();
     try {
-      // get token of logged in user
+      //get token of logged in user
       const token = window.localStorage.getItem("token");
 
-      // data to send to backend
+      //data to send to backend
       const tokenData = {
         headers: {
           authorization: token,
         },
       };
-      // send cart to orders!
-      const cartData = {
+      //send orderData to ordersRouter
+      const orderData = {
         cartId: cartInfo.id,
         status: "placed",
+        shippingAddress: shippingString,
+        billingAddress: billingString,
+        creditCardName: `${creditCard.creditCardName}`,
+        creditCardNum: `${creditCard.creditCardNum}`,
+        ccSecurity: `${creditCard.ccSecurity}`,
+        expiryDate: `${creditCard.expiryDate}`,
+        totalCost: totalCost,
       };
 
-      // change order status to placed
-      await axios.put(`/api/orders`, cartData, tokenData);
+      //change order status to placed
+      console.log("hello");
+      await axios.put(`/api/orders`, orderData, tokenData);
 
-      // newOrders will include all record/order associations
+      //newOrders will include all record/order associations
       const newOrders = await axios.get(`/api/orders`, tokenData);
+      console.log({ newOrders });
+
       dispatch(setOrders(newOrders.data));
 
-      // hit cart route & update cart to be empty
+      //hit cart route & update cart to be empty
+      // const emptiedCart = await axios.get(`/api/cart`, tokenData);
       dispatch(resetCart(cartInfo));
       dispatch(resetCart(recordsInCart));
       handleNext();
@@ -109,7 +127,7 @@ export default function Checkout() {
     setLoading(true);
     try {
       const token = window.localStorage.getItem("token");
-      // data to send to backend
+      //data to send to backend
       const tokenData = {
         headers: {
           authorization: token,
@@ -117,7 +135,6 @@ export default function Checkout() {
       };
       const order = await axios.get(`/api/orders/${orderId}`, tokenData);
       setCurrentOrder(order.data);
-      setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -125,8 +142,6 @@ export default function Checkout() {
 
   useEffect(() => {
     getCurrentOrder();
-    console.log(loading)
-    console.log(currentOrder)
   }, []);
 
   return (

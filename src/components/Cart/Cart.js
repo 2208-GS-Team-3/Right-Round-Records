@@ -14,17 +14,17 @@ import {
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
 import MuiCheckout from "../Checkout/MuiCheckout";
-import axios from "axios";
-
+import { setTotalCost } from "../../store/checkoutSlice";
+import { useDispatch } from "react-redux";
 const Cart = () => {
   const [purchaseItems, setPurchaseItems] = useState([]);
   const [checkOut, setCheckOut] = useState(false);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-  const cartInfo = useSelector((state) => state.cart.cartInfo);
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
     0
   );
+  const dispatch = useDispatch();
 
   const orderSubTotal =
     recordsInCart.reduce(
@@ -39,21 +39,7 @@ const Cart = () => {
   const startCheckout = async () => {
     try {
       setCheckOut((currValue) => !currValue);
-      const token = window.localStorage.getItem("token");
-      // data to send to backend
-      const tokenData = {
-        headers: {
-          authorization: token,
-        },
-      };
-
-      const dataToSend = {
-        cartId: cartInfo.id,
-        status: "cart",
-        totalCost: finalOrderAmount,
-      };
-
-      await axios.put("/api/orders", dataToSend, tokenData);
+      dispatch(setTotalCost(finalOrderAmount));
     } catch (err) {
       console.log(err);
     }
@@ -77,7 +63,6 @@ const Cart = () => {
 
   return (
     <Box key={`wholeCart`} sx={{ display: "grid", gridAutoFlow: "row" }}>
-      {/* {checkOut && <CheckoutPage />} */}
       {checkOut && <MuiCheckout />}
       {!checkOut && (
         <>

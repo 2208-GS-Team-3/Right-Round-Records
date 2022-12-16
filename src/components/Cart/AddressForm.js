@@ -6,39 +6,68 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import BillingAddress from "./BillingAddress";
-import { setShipping, setBilling } from "../../store/checkoutSlice";
-import { useDispatch } from "react-redux";
+import { Button } from "@mui/material";
+import axios from "axios";
 
 const AddressForm = () => {
-  const shipping = useSelector((state) => state.checkoutData.shipping);
-  const billing = useSelector((state) => state.checkoutData.billing);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
-  const [billingIsSame, setBillingIsSame] = useState("yes");
-  const dispatch = useDispatch();
 
-  const handleCheckoutStateChange = (e) => {
-    const target = e.target;
-    const value = target.value;
-    const name = target.name;
-    dispatch(setShipping({ ...shipping, [name]: value }));
-    if (e.target.value === "yes") {
-      dispatch(setBilling({ ...shipping }));
-      setBillingIsSame(true);
-    } else {
-      dispatch(setBilling({ ...billing }));
-      setBillingIsSame(false);
-    }
+  // route to update shipping info for order here
+  const [add1, setAdd1] = useState("");
+  const [add2, setAdd2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [country, setCountry] = useState("");
+
+  const handleShippingAddress = async (event) => {
+    event.preventDefault();
+    const token = window.localStorage.getItem("token");
+    // data to send to backend
+    const tokenData = {
+      headers: {
+        authorization: token,
+      },
+    };
+    const shippingData = {
+      cartId: cartInfo.id,
+      shippingAddress: `${add1}, ${add2}, ${city}, ${state}, ${zipcode}, ${country}`,
+      status: "cart",
+    };
+
+    // update shipping info, order created but still 'cart' status
+    await axios.put(`/api/orders`, shippingData, tokenData);
+
+    // get the order back bc we'll need the info for the checkout page to display shipping data
+    // eslint-disable-next-line no-unused-vars
+    const updatedOrder = await axios.get(`/api/orders`, tokenData);
   };
 
- 
+  const handleAdd1 = (e) => {
+    setAdd1(e.target.value);
+  };
+  const handleAdd2 = (e) => {
+    setAdd2(e.target.value);
+  };
+  const handleCity = (e) => {
+    setCity(e.target.value);
+  };
+  const handleState = (e) => {
+    setState(e.target.value);
+  };
+  const handleZip = (e) => {
+    setZipcode(e.target.value);
+  };
+  const handleCountry = (e) => {
+    setCountry(e.target.value);
+  };
 
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Shipping address:
       </Typography>
-      <form>
+      <form onSubmit={handleShippingAddress}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -50,7 +79,6 @@ const AddressForm = () => {
               fullWidth
               autoComplete="given-name"
               variant="standard"
-              onChange={handleCheckoutStateChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -63,7 +91,6 @@ const AddressForm = () => {
               fullWidth
               autoComplete="family-name"
               variant="standard"
-              onChange={handleCheckoutStateChange}
             />
           </Grid>
           <Grid item xs={12}>
@@ -72,7 +99,7 @@ const AddressForm = () => {
               id="address1"
               name="address1"
               label="Address line 1"
-              onChange={handleCheckoutStateChange}
+              onChange={handleAdd1}
               fullWidth
               autoComplete="shipping address-line1"
               variant="standard"
@@ -84,7 +111,7 @@ const AddressForm = () => {
               name="address2"
               label="Address line 2"
               fullWidth
-              onChange={handleCheckoutStateChange}
+              onChange={handleAdd2}
               autoComplete="shipping address-line2"
               variant="standard"
             />
@@ -98,7 +125,7 @@ const AddressForm = () => {
               fullWidth
               autoComplete="shipping address-level2"
               variant="standard"
-              onChange={handleCheckoutStateChange}
+              onChange={handleCity}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -108,7 +135,7 @@ const AddressForm = () => {
               label="State/Province/Region"
               fullWidth
               variant="standard"
-              onChange={handleCheckoutStateChange}
+              onChange={handleState}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -120,7 +147,7 @@ const AddressForm = () => {
               fullWidth
               autoComplete="shipping postal-code"
               variant="standard"
-              onChange={handleCheckoutStateChange}
+              onChange={handleZip}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -132,26 +159,20 @@ const AddressForm = () => {
               fullWidth
               autoComplete="shipping country"
               variant="standard"
-              onChange={handleCheckoutStateChange}
+              onChange={handleCountry}
             />
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel
               control={
-                <Checkbox
-                  color="secondary"
-                  name="saveAddress"
-                  value="yes"
-                  onClick={handleCheckoutStateChange}
-                />
+                <Checkbox color="secondary" name="saveAddress" value="yes" />
               }
               label="Use this address for payment details"
             />
           </Grid>
         </Grid>
+        <Button type="submit">update</Button>
       </form>
-      {/* if billing is not the same, show the form */}
-      {!billingIsSame && <BillingAddress />}
     </React.Fragment>
   );
 };

@@ -2,41 +2,49 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import BillingAddress from "./BillingAddress";
-import { setShipping, setBilling } from "../../store/checkoutSlice";
+import { Button } from "@mui/material";
+import axios from "axios";
 import { useDispatch } from "react-redux";
+import { setBilling } from "../../store/checkoutSlice";
 
-const AddressForm = () => {
-  const shipping = useSelector((state) => state.checkoutData.shipping);
+const BillingAddress = () => {
   const billing = useSelector((state) => state.checkoutData.billing);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
-  const [billingIsSame, setBillingIsSame] = useState("yes");
   const dispatch = useDispatch();
 
   const handleCheckoutStateChange = (e) => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
-    dispatch(setShipping({ ...shipping, [name]: value }));
-    if (e.target.value === "yes") {
-      dispatch(setBilling({ ...shipping }));
-      setBillingIsSame(true);
-    } else {
-      dispatch(setBilling({ ...billing }));
-      setBillingIsSame(false);
-    }
+    dispatch(setBilling({ ...billing, [name]: value }));
   };
+  // const handleBillingAddress = async (event) => {
+  //   event.preventDefault();
+  //   const token = window.localStorage.getItem("token");
+  //   //data to send to backend
+  //   const tokenData = {
+  //     headers: {
+  //       authorization: token,
+  //     },
+  //   };
+  //   const billingData = {
+  //     cartId: cartInfo.id,
+  //     billingAddress: `${billingFN} ${billingLN}, ${billingAdd1}, ${billingAdd2}, ${billingCity}, ${billingState}, ${billingZip}, ${billingCountry}`,
+  //     status: "cart",
+  //   };
 
- 
+  //   //update shipping info, order created but still 'cart' status
+  //   await axios.put(`/api/orders`, billingData, tokenData);
+
+  //   //get the order back bc we'll need the info for the checkout page to display shipping data
+  //   const updatedOrder = await axios.get(`/api/orders`, tokenData);
+  // };
 
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Shipping address:
+        Billing address:
       </Typography>
       <form>
         <Grid container spacing={3}>
@@ -135,25 +143,11 @@ const AddressForm = () => {
               onChange={handleCheckoutStateChange}
             />
           </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="secondary"
-                  name="saveAddress"
-                  value="yes"
-                  onClick={handleCheckoutStateChange}
-                />
-              }
-              label="Use this address for payment details"
-            />
-          </Grid>
+          <Grid item xs={12}></Grid>
         </Grid>
       </form>
-      {/* if billing is not the same, show the form */}
-      {!billingIsSame && <BillingAddress />}
     </React.Fragment>
   );
 };
 
-export default AddressForm;
+export default BillingAddress;
