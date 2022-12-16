@@ -60,8 +60,7 @@ const OrderCard = ({ order }) => {
                 <Typography variant="body2" color="text.secondary">
                     <b>Artist:</b> {record.artist}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-=                    <b>Year:</b> {record.year}
+                <Typography variant="body2" color="text.secondary">                   <b>Year:</b> {record.year}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     <b>Price:</b> {record.price}

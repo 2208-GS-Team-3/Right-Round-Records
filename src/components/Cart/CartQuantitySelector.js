@@ -64,22 +64,20 @@ const CartQuantitySelector = ({ record }) => {
       quantity: null,
       // send quantity to be updated as well
     };
-    console.log(recordToUpdate);
     // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
     dispatch(removeFromCart(recordToUpdate));
   };
 
   return (
-    <div>
+    <>
       {currentRecordInCart ? (
-        <>
-          <FormControl size="small" fullWidth>
+              <div style={{display: 'flex', flexDirection: 'column'}}>
+          <FormControl size="small" >
             <InputLabel htmlFor="quantitySelector">Quantity</InputLabel>
             <Select
               defaultValue={currentRecordInCart?.cartRecord?.quantity}
               label="Quantity"
-              autoWidth
               id="quantitySelector"
               onChange={updateQuantity}
             >
@@ -95,25 +93,24 @@ const CartQuantitySelector = ({ record }) => {
             </Select>
           </FormControl>
           <Button
-            fullWidth={true}
             variant="contained"
             onClick={removeRecordFromCart}
             value={null}
+            style={{backgroundColor: 'red'}}
           >
-            Remove from Cart
-          </Button>
-        </>
+            Remove
+          </Button> </div>
       ) : (
         <Button
-          fullWidth={true}
-          variant="contained"
-          onClick={updateQuantity}
-          value={1}
+        fullWidth={true}
+        variant="contained"
+        onClick={updateQuantity}
+        value={1}
         >
           Add to Cart
         </Button>
       )}
-    </div>
+      </>
   );
 };
 export default CartQuantitySelector;
