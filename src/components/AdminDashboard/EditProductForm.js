@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { Form } from "react-router-dom";
 import {
   Button,
   Container,
   FormControl,
-  FormHelperText,
   Input,
   InputLabel,
   Typography,
@@ -88,6 +86,7 @@ const handleDeleteRecord = async (event) => {
 const seeAllProducts = () => {
 dispatch(setEditInProgress(false))
 }
+
   return (      
 
 <Container

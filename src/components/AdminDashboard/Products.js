@@ -13,8 +13,7 @@ import TextField from "@mui/material/TextField";
 import EditProductForm from './EditProductForm';
 import {setRecordToEdit, setEditInProgress} from '../../store/editRecordSlice'
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect } from 'react';
-import axios from 'axios';
+import Container from '@mui/material/Container';
 
 export default function Products() {
 const records = useSelector((state) => state.records.records);
@@ -37,7 +36,8 @@ const displayInput = (event) => {
 }
   return (
     <React.Fragment>
-      <Title>Products</Title>
+      {!editInProgress && ( <><Title>Products</Title>
+      <Container style={{display: 'flex', justifyContent: "space-evenly", margin: '30px'}}>
       <TextField
       id="search-bar"
       className="text"
@@ -46,9 +46,13 @@ const displayInput = (event) => {
       variant="outlined"
       placeholder="Search..."
       size="small"
+      style={{width: '400px'}}
     />
+<Button variant="contained" style={{width: '400px'}}>Add product</Button>
+</Container>
+
       <div style={{overflowX: 'auto', height: '550px'}}>
-      {!editInProgress && (<Table size="small">
+       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Product #</TableCell>
@@ -72,10 +76,10 @@ const displayInput = (event) => {
             </TableRow>
           ))}
         </TableBody>
-      </Table>)}
+      </Table>
+      </div></>)}
 
       {editInProgress && <EditProductForm/>}
-      </div>
     </React.Fragment>
   );
 }
