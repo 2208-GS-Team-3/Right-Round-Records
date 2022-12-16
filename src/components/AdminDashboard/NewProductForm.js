@@ -109,8 +109,9 @@ const seeAllProducts = () => {
           variant="outlined"
           onChange={handleNewRecord}
           >
+            {/* cant figure out why still getting key prop error here */}
           {genres.map((genre) => (
-              <option key={genre.id} value={genre.name}>
+              <option value={genre.name} key={genre.id} >
               {genre.name}
             </option>
           ))}
