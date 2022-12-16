@@ -11,13 +11,14 @@ import { Button } from '@mui/material';
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import EditProductForm from './EditProductForm';
-import {setRecordToEdit} from '../../store/editRecordSlice'
+import {setRecordToEdit, setEditInProgress} from '../../store/editRecordSlice'
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import axios from 'axios';
 
 export default function Products() {
 const records = useSelector((state) => state.records.records);
+const editInProgress = useSelector((state) => state.recordToEdit.editInProgress);
 const [editInfo, setEditInfo] = useState(false)
 const dispatch = useDispatch()
 const navigate = useNavigate();
@@ -29,9 +30,8 @@ const handleSearch = (event) => {
     console.log('not searching...')
 }
 
-
 const displayInput = (event) => {
-    setEditInfo((val) => !val)
+    dispatch(setEditInProgress(true))
     const filteredRecord = records.filter((record) => record.id === Number(event.target.value))
     dispatch(setRecordToEdit(filteredRecord))
 }
@@ -48,7 +48,7 @@ const displayInput = (event) => {
       size="small"
     />
       <div style={{overflowX: 'auto', height: '550px'}}>
-      {!editInfo && (<Table size="small">
+      {!editInProgress && (<Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Product #</TableCell>
@@ -74,7 +74,7 @@ const displayInput = (event) => {
         </TableBody>
       </Table>)}
 
-      {editInfo && <EditProductForm/>}
+      {editInProgress && <EditProductForm/>}
       </div>
     </React.Fragment>
   );

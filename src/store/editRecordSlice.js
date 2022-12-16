@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   recordToEdit: [],
-  updatedRecordInfo: {}
+  updatedRecordInfo: {},
+  editInProgress: false
 };
 
 export const editRecordSlice = createSlice({
@@ -15,10 +16,13 @@ export const editRecordSlice = createSlice({
     setUpdatedRecordInfo: (state, action) => {
       state.updatedRecordInfo = action.payload;
     },
+    setEditInProgress: (state, action) => {
+      state.editInProgress = action.payload;
+    }
   },
 });
 
 export const {
-    setRecordToEdit, setUpdatedRecordInfo
+    setRecordToEdit, setUpdatedRecordInfo, setEditInProgress
 } = editRecordSlice.actions;
 export default editRecordSlice.reducer;

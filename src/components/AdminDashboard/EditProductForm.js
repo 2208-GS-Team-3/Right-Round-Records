@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import Box from '@mui/material/Box';
 import { useDispatch } from "react-redux";
-import {setRecordToEdit, setUpdatedRecordInfo} from '../../store/editRecordSlice'
+import {setEditInProgress, setRecordToEdit, setUpdatedRecordInfo} from '../../store/editRecordSlice'
 import { deleteRecord, setRecords } from "../../store/recordsSlice";
 const EditProductForm = () => {
 
@@ -49,7 +49,7 @@ const handleDeleteRecord = async (event) => {
     );
     const allNewRecords = await axios.get("/api/records");
     dispatch(setRecords(allNewRecords.data));
-    dispatch(setRecordToEdit(null));
+    dispatch(setEditInProgress(false))
   } catch (err) {
     console.error(err);
   }
@@ -80,7 +80,9 @@ const handleDeleteRecord = async (event) => {
     }
   };
 
-
+const seeAllProducts = () => {
+dispatch(setEditInProgress(false))
+}
   return (      
 
 <Container
@@ -135,7 +137,7 @@ const handleDeleteRecord = async (event) => {
           </Container>
           <Container sx={{ display: "flex",  gap: '20px', justifyContent: 'center', alignItems:'center'}}>
 <Button variant="outlined" onClick={handleUpdate}>Save Changes</Button>
-<Button variant="outlined" href={"/dashboard"}>Dashboard</Button>
+<Button variant="outlined" href={"/dashboard"} onClick={seeAllProducts}>Dashboard</Button>
 
 <Button variant="outlined" style={{color: 'red', border: '1px solid red'}} onClick={handleDeleteRecord}>Delete product</Button>
 </Container>
