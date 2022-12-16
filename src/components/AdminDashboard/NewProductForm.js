@@ -7,23 +7,23 @@ import {
   Input,
   InputLabel,
   Typography,
+  TextField
 } from "@mui/material";
 import axios from "axios";
-import Box from '@mui/material/Box';
 import { useDispatch } from "react-redux";
-import {setEditInProgress, setUpdatedRecordInfo} from '../../store/editRecordSlice'
-import { setNewRecordData, addRecord } from "../../store/recordsSlice";
+import {setEditInProgress} from '../../store/editRecordSlice'
+import { setNewRecordData } from "../../store/recordsSlice";
 
 const NewProductForm = () => {
 const newRecordData = useSelector((state) => state.records.newRecordData);
 const dispatch = useDispatch()
-console.log(newRecordData)
 
-const handleNewRecordData = (e) => {
+const handleNewRecord = (e) => {
   const target = e.target;
   const value = target.value;
   const name = target.name;
   dispatch(setNewRecordData({ ...newRecordData, [name]: value }));
+  console.log('newRecordData', {...newRecordData})
 }
 
 const seeAllProducts = () => {
@@ -66,26 +66,43 @@ const seeAllProducts = () => {
     <Container sx={{ display: "flex",  gap: '20px', justifyContent: 'center', alignItems:'center', placeSelf: "center"}}>
 
       <form>
-          <FormControl>
-            <InputLabel htmlFor="username-input">Album Name</InputLabel>
-            <Input name="albumName" sx={{ margin: '20px'}} onChange={handleNewRecordData}
+         
+          <TextField
+            required
+            id="artist"
+            name="artist"
+            label="Artist Name"
+            fullWidth
+            variant="standard"
+            onChange={handleNewRecord}
+          />
+            <TextField
+              required
+              id="albumName"
+              name="albumName"
+              label="Album Name"
+              fullWidth
+              variant="standard"
+              onChange={handleNewRecord}
             />
-          </FormControl><br></br>
-          <FormControl>
-            <InputLabel htmlFor="username-input">Artist Name</InputLabel>
-            <Input name="artist" sx={{ margin: '20px'}} onChange={handleNewRecordData}
+            <TextField
+              required
+              id="price"
+              name="price"
+              label="Price"
+              fullWidth
+              variant="standard"
+              onChange={handleNewRecord}
             />
-          </FormControl><br></br>
-          <FormControl>
-            <InputLabel htmlFor="username-input">Price</InputLabel>
-            <Input name="price" sx={{ margin: '20px'}} onChange={handleNewRecordData}
+            <TextField
+              required
+              id="year"
+              name="year"
+              label="Year"
+              fullWidth
+              variant="standard"
+              onChange={handleNewRecord}
             />
-          </FormControl><br></br>
-          <FormControl>
-            <InputLabel htmlFor="username-input">Year</InputLabel>
-            <Input name="year" sx={{ margin: '20px'}} onChange={handleNewRecordData}
-            />
-          </FormControl><br></br>
         </form>
           </Container>
           <Container sx={{ display: "flex",  gap: '20px', justifyContent: 'center', alignItems:'center'}}>
