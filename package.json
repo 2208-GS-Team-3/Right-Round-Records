@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "npm ci & webpack",
     "build:dev": "npm run build -- --watch --mode=development",
     "lint:src": "eslint src/**",
     "test": "JWT=shhhhh mocha",
