@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   records: [],
+  newRecordData: {},
+  showForm: false
+  
 };
 
 export const recordsSlice = createSlice({
@@ -16,8 +19,18 @@ export const recordsSlice = createSlice({
         return record.id !== action.payload.id;
       });
     },
+    setNewRecordData: (state, action) => {
+      state.records = action.payload;
+    },
+    setShowAddForm: (state, action) => {
+      state.showForm = true
+    }
+    // addRecord: (state, action) => {
+    //   console.log(action.payload)
+    //   state.records.push(action.payload);
+    // }
   },
 });
 
-export const { setRecords, deleteRecord } = recordsSlice.actions;
+export const { setRecords, deleteRecord, setNewRecordData, setShowAddForm } = recordsSlice.actions;
 export default recordsSlice.reducer;

@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 import Box from '@mui/material/Box';
 import { useDispatch } from "react-redux";
-import {setEditInProgress, setRecordToEdit, setUpdatedRecordInfo} from '../../store/editRecordSlice'
+import {setEditInProgress, setUpdatedRecordInfo} from '../../store/editRecordSlice'
 import { deleteRecord, setRecords } from "../../store/recordsSlice";
 const EditProductForm = () => {
 
