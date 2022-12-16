@@ -6,6 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { Container } from "@mui/material";
 
 const ReviewPayment = () => {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
@@ -15,6 +16,15 @@ const ReviewPayment = () => {
   const finalOrderAmount = useSelector((state) => state.checkoutData.totalCost);
 
   const params = useParams("");
+  const orderSubTotal = recordsInCart.reduce(
+    (totalCost, currentItem) => totalCost + currentItem.rawPrice,
+    0
+  );
+  const tax = orderSubTotal * 0.08;
+
+
+  const last4Digits = creditCard.creditCardNum.substring(12)
+
 
   return (
     <React.Fragment>
@@ -28,44 +38,59 @@ const ReviewPayment = () => {
               primary={`${record.albumName}(${record.cartRecord.quantity})`}
               secondary={record.artist}
             />
-            <Typography variant="body2">{`$${(record.price / 100).toFixed(
-              2
-            )}`}</Typography>
+            <Typography variant="body2">${(record.rawPrice * record.cartRecord.quantity).toFixed(2)}</Typography>
           </ListItem>
         ))}
-
+<Container style={{border: '1px solid gray', borderRadius: '5px'}}>
         <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {finalOrderAmount.toFixed(2)}
+          <ListItemText primary="Subtotal" />
+          <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
+           ${orderSubTotal}
           </Typography>
         </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Taxes" />
+          <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
+           ${tax.toFixed(2)}
+          </Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Total" />
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'blue' }}>
+           ${finalOrderAmount.toFixed(2)}
+          </Typography>
+        </ListItem>
+        </Container>
       </List>
+
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Shipping
           </Typography>
           <Typography gutterBottom>
-            Ship to: {shipping.firstName} {shipping.lastName}
+            <b>Ship to:</b> {shipping.firstName} {shipping.lastName}
           </Typography>
           <Typography gutterBottom>
-            Address: {shipping.address1}, {shipping.address2}, {shipping.city},{" "}
+            <b>Address: </b>{shipping.address1}, {shipping.address2}, {shipping.city},{" "}
             {shipping.state}, {shipping.zip}, {shipping.country}
           </Typography>
         </Grid>
+
         <Grid item container direction="column" xs={12} sm={6}>
+          {/* <Grid container> */}
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Billing Information
           </Typography>
-          <Grid container>
             <Typography gutterBottom>
-              Name: {billing.firstName} {billing.lastName}
-              Billing Address: {billing.address1}, {billing.address2},{" "}
-              {billing.city}, {billing.state}, {billing.zip}, {billing.country}
+            <b>Name:</b> {billing.firstName} {billing.lastName}
             </Typography>
-            <Typography gutterBottom>Last 4 digits of CC*: `HERE`</Typography>
-          </Grid>
+            <Typography gutterBottom>
+              <b>Billing Address: </b>{billing.address1}, {billing.address2},{" "}
+              {billing.city}, {billing.state}, {billing.zip}, {billing.country}
+          </Typography>
+            <Typography gutterBottom><b>Last 4 digits of CC:</b> {last4Digits}</Typography>
+          {/* </Grid> */}
         </Grid>
       </Grid>
     </React.Fragment>

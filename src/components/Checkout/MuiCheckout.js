@@ -91,7 +91,7 @@ export default function Checkout() {
       };
 
       //change order status to placed
-      console.log("hello");
+      
       await axios.put(`/api/orders`, orderData, tokenData);
 
       //newOrders will include all record/order associations
@@ -204,7 +204,6 @@ export default function Checkout() {
             </React.Fragment>
           )}
         </Paper>
-        <RRRecords />
       </Container>
     </ThemeProvider>
   );

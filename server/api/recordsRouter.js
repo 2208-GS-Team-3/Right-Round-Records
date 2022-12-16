@@ -88,7 +88,6 @@ price,
 year
 });
 
-console.log(newRecord)
 
 // set genre depending on info coming in
 // add genre to record, add record to genre

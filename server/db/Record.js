@@ -42,6 +42,13 @@ const Record = db.define("record", {
       return `$${(rawPrice / 100).toFixed(2)}`
     }
   },
+  rawPrice: {
+    type: Sequelize.VIRTUAL,
+    get() {
+      const rawPrice = this.getDataValue('price')
+      return Number((rawPrice / 100).toFixed(2))
+    }
+  },
   description: {
     type: Sequelize.TEXT,
   },

@@ -26,13 +26,10 @@ const Cart = () => {
   );
   const dispatch = useDispatch();
 
-  const orderSubTotal =
-    recordsInCart.reduce(
-      (currentTotal, itemValue) =>
-        currentTotal + itemValue.price * itemValue.cartRecord.quantity,
+  const orderSubTotal = recordsInCart.reduce(
+      (totalCost, currentItem) => totalCost + currentItem.rawPrice,
       0
-    ) / 100;
-
+    );
   const tax = orderSubTotal * 0.08;
   const finalOrderAmount = tax + orderSubTotal;
 
@@ -140,7 +137,7 @@ const Cart = () => {
                               {record.albumName}
                             </ListItem>
                             <ListItem key={`priceFor${record.price}`}>
-                              ${(record.price / 100).toFixed(2)}
+                              {record.price}
                             </ListItem>
                           </List>
                         </Container>
@@ -178,15 +175,7 @@ const Cart = () => {
                   numberOfRecords === 1 ? "" : "s"
                 }):`}</Typography>
                 <Typography variant="h6" key={`subtotalPrice`}>
-                  $
-                  {(
-                    purchaseItems?.reduce(
-                      (currentTotal, itemValue) =>
-                        currentTotal +
-                        itemValue.price * itemValue.cartRecord.quantity,
-                      0
-                    ) / 100
-                  ).toFixed(2)}
+                  ${orderSubTotal}
                 </Typography>
               </div>
               <Button

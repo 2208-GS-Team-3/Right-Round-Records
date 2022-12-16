@@ -10,9 +10,7 @@ import {
 } from "@mui/material";
 
 const OrderCard = ({ order }) => {
-  const totalPrice = (total) => {
-    return (total / 100).toFixed(2);
-  };
+
 
   return (
     <Container
@@ -39,7 +37,7 @@ const OrderCard = ({ order }) => {
         <b>Tracking Number:</b> {order.trackingNumber}
       </Typography>
       <Typography variant="h6" gutterBottom>
-        <b>Order total: {`$${totalPrice(order.totalCost)}`}</b>
+        <b>Order total: {order.totalCost}</b>
       </Typography>
       <Typography variant="h6" gutterBottom>
         <b>Records purchased:</b>
@@ -60,18 +58,13 @@ const OrderCard = ({ order }) => {
                   <h3>{record.albumName}</h3>
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <span>
                     <b>Artist:</b> {record.artist}
-                  </span>
-                  <br></br>
-                  <span>
-                    <b>Year:</b> {record.year}
-                  </span>
-                  <br></br>
-                  <span>
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+=                    <b>Year:</b> {record.year}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
                     <b>Price:</b> {record.price}
-                  </span>
-                  <br></br>
                 </Typography>
               </CardContent>
               <CardActions>
