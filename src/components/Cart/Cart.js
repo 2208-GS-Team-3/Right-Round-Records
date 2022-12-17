@@ -14,14 +14,13 @@ import {
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
 import MuiCheckout from "../Checkout/MuiCheckout";
-import { setTotalCost } from "../../store/checkoutSlice";
+import { setSubtotal } from "../../store/checkoutSlice";
 import { useDispatch } from "react-redux";
-import { calculateSubtotal } from "../../store/cartSlice";
 const Cart = () => {
   const [purchaseItems, setPurchaseItems] = useState([]);
   const [checkOut, setCheckOut] = useState(false);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-  const subtotal = useSelector((state) => state.cart.subtotal);
+  const subtotal = useSelector((state) => state.cart.checkoutData);
   const [loading, setLoading] = useState(false)
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
@@ -36,11 +35,12 @@ const Cart = () => {
 
   const tax = orderSubTotal * 0.08;
   const finalOrderAmount = tax + orderSubTotal;
+  
 
   const startCheckout = async () => {
     try {
       setCheckOut((currValue) => !currValue);
-      dispatch(setTotalCost(finalOrderAmount));
+      dispatch(setSubtotal(orderSubTotal));
     } catch (err) {
       console.log(err);
     }

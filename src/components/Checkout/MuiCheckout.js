@@ -43,7 +43,7 @@ export default function Checkout() {
   const creditCard = useSelector((state) => state.checkoutData.creditCard);
   const billing = useSelector((state) => state.checkoutData.billing);
   const shipping = useSelector((state) => state.checkoutData.shipping);
-  const totalCost = useSelector((state) => state.checkoutData.totalCost);
+  const subtotal = useSelector((state) => state.checkoutData.subtotal);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const dispatch = useDispatch();
   const params = useParams("");
@@ -83,7 +83,7 @@ export default function Checkout() {
         creditCardNum: `${creditCard.creditCardNum}`,
         ccSecurity: `${creditCard.ccSecurity}`,
         expiryDate: `${creditCard.expiryDate}`,
-        totalCost: totalCost,
+        totalCost: subtotal,
       };
 
       //change order status to placed

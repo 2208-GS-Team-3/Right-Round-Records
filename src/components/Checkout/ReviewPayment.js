@@ -10,21 +10,21 @@ import { Container } from "@mui/material";
 
 const ReviewPayment = () => {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-  const subtotal = useSelector((state) => state.cart.subtotal);
   const creditCard = useSelector((state) => state.checkoutData.creditCard);
   const billing = useSelector((state) => state.checkoutData.billing);
   const shipping = useSelector((state) => state.checkoutData.shipping);
-  const finalOrderAmount = useSelector((state) => state.checkoutData.totalCost);
+  const subtotal = useSelector((state) => state.checkoutData.subtotal);
   const params = useParams("");
 
   const orderSubTotal = recordsInCart.reduce(
-    (totalCost, currentItem) => totalCost + (currentItem.rawPrice * currentItem.cartRecord.quantity),
+    (total, currentItem) => total + (currentItem.rawPrice * currentItem.cartRecord.quantity),
     0
   );
   const tax = orderSubTotal * 0.08;
+  const finalOrderAmount = tax + subtotal
   const last4Digits = creditCard.creditCardNum.substring(12)
 
-
+console.log('review payment subtotal',{subtotal})
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

@@ -122,8 +122,6 @@ router.put("/", async (req, res, next) => {
         include: [{model: Cart, include: [Record]}, Record],
       });
 
-      console.log(finalOrderDetails)
-
       //instead of destroying the cart (bc it needs to stay associated with order)
       //make a new cart and set the user
       const newCart = await Cart.create();
