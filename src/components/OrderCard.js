@@ -11,7 +11,10 @@ import {
 
 const OrderCard = ({ order }) => {
 console.log(order)
-  return (
+
+const dateFormatted = order.datePlaced.slice(0, 10)
+
+return (
     <Container
       maxWidth="200vw"
       style={{
@@ -28,7 +31,7 @@ console.log(order)
         {order.id}{" "}
       </Typography>
       <Typography variant="h6" gutterBottom>
-        <b>Date Placed:</b> {order.datePlaced}
+        <b>Date Placed:</b> {dateFormatted}
       </Typography>
       <Typography variant="h6" gutterBottom>
         <b>Shipping Address:</b> {order.shippingAddress}

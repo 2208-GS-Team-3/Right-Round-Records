@@ -6,7 +6,6 @@ import Container from "@mui/material/Container";
 const AllOrders = () => {
   const orders = useSelector((state) => state.orders.orders);
 
-  console.log(orders)
   return (
     <Container>
       <h1>Orders</h1>
