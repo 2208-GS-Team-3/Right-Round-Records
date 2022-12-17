@@ -10,9 +10,10 @@ const recordArray = require("./DataStorage");
 
 const seed = async () => {
   await db.sync({ force: true });
-
+try {
   // --------------USERS--------------
-  const [kolby, olivia, lily, jack] = await Promise.all([
+  console.log('adding users')
+  const [kolby, olivia, lily, jack, joe] = await Promise.all([
     User.create({
       username: "Kolby",
       password: "123",
@@ -57,7 +58,7 @@ const seed = async () => {
       email: "jacksemail@gmail.com",
       address: "42-12 28th St., APT 32I, Long Island City, NY 11101",
       birthday: "September 22, 1996",
-      isAdmin: true,
+      isAdmin: false,
     }),
     User.create({
       username: "Joe",
@@ -73,6 +74,7 @@ const seed = async () => {
   ]);
 
   // --------------RECORDS--------------
+  console.log('adding records')
 
   // were not pushing into recordData
   const recordData = [];
@@ -87,16 +89,12 @@ const seed = async () => {
         price: record.lowest_price ?? 5.0,
         description: "",
         year: record.year,
-        // below broke everything! now it works!
-        // genres: record.genres,
-        // styles: record.styles,
       });
 
       record.genres?.forEach((genre) => {
         Genre.findOrCreate({
           where: { name: genre },
         });
-        // console.log(tempRec);
         tempRec.addGenres(genre ?? "Undefined");
       });
 
@@ -112,6 +110,7 @@ const seed = async () => {
     }),
   ]);
 
+  console.log('adding reviews')
   // --------------REVIEWS--------------
   const [
     review1,
@@ -177,6 +176,8 @@ const seed = async () => {
     }),
   ]);
 
+  console.log('adding orders')
+
   // ---------------ORDERS-----------------
   const [order1, order2, order3, order4, order5, order6] = await Promise.all([
     Order.create({
@@ -216,11 +217,17 @@ const seed = async () => {
       totalCost: 2345,
     }),
   ]);
+
+  console.log('adding carts')
+
   // ----------  CART--------
-  const [cart1, cart2] = await Promise.all([Cart.create(), Cart.create()]);
+  const [cart1, cart2, cart3, cart4, cart5] = await Promise.all([Cart.create(), Cart.create(), Cart.create(), Cart.create(), Cart.create()]);
 
   cart1.setUser(olivia);
   cart2.setUser(kolby);
+  cart3.setUser(lily);
+  cart4.setUser(jack);
+  cart5.setUser(joe);
 
   // --------------ASSOCIATIONS--------------
 
@@ -236,11 +243,12 @@ const seed = async () => {
   const record10 = await recordData[467];
 
   // orders associated with users -- WORKING
-  lily.addOrder([order4]);
-  olivia.addOrder([order1, order5]);
-  kolby.addOrder([order3, order6]);
-  jack.addOrder([order2]);
-
+  await lily.setOrders([order1]);
+  await olivia.setOrders([order2]);
+  await kolby.setOrders([order3, order4]);
+  await jack.setOrders([order5]);
+  await joe.setOrders([order6]);
+  
   // records associated with orders -- WORKING
   order1.addRecords([record1]);
   order2.addRecords([record5, record9, record3, record7]);
@@ -248,28 +256,35 @@ const seed = async () => {
   order4.addRecords([record10, record2, record8]);
   order5.addRecords([record6, record3, record4]);
   order6.addRecords([record6, record3, record4]);
-
-  cart1.addRecords([record1]);
-  cart2.addRecords([record5, record9, record3, record7]);
+  
+  console.log(recordData[20])
+  await cart1.addRecords([record1]);
+  await cart2.addRecords([record2]);
+  await cart3.addRecords([record5, record10, record2]);
+  await cart4.addRecords([record4, record9, record7]);
+  await cart4.addRecords([record6, record8, record3]);
+  await cart5.addRecords([record6, record8, record3]);
 
   // //reviews added to records -- WORKING
-  record1.addReviews([review2]);
-  record5.addReviews([review4, review5]);
-  record4.addReviews([review6, review7, review8, review1]);
-  record7.addReviews([review9]);
+  await record1.addReviews([review1]);
+  await record5.addReviews([review2, review3]);
+  await record4.addReviews([review4, review5, review6, review7]);
+  await record7.addReviews([review8, review9, review10]);
 
   // //users associated with reviews - WORKING
-  lily.addReviews([review1, review10]);
-  olivia.addReviews([review2]);
-  jack.addReviews([review5, review4, review6, review7]);
-  kolby.addReviews([review8, review9, review3]);
+  await lily.addReviews([review1, review2]);
+  await jack.addReviews([review3]);
+  await joe.addReviews([review4, review5, review6, review7]);
+  await kolby.addReviews([review8, review9, review10]);
 
+  console.log('returning...')
   return {
     users: {
       kolby,
       olivia,
       lily,
       jack,
+      joe
     },
     reviews: {
       review1,
@@ -295,15 +310,20 @@ const seed = async () => {
       record9,
       record10,
     },
-    // genres: { ...genreData },
     orders: {
       order1,
       order2,
       order3,
       order4,
+      order5, 
+      order6,
     },
-    carts: { cart1, cart2 },
+    carts: { cart1, cart2, cart3, cart4, cart5 },
   };
+} catch(err) {
+  console.log('error')
+  console.log(err)
+}
 };
 
 seed();

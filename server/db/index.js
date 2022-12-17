@@ -7,6 +7,7 @@ const Genre = require("./Genre");
 const Style = require("./Style");
 const Cart = require("./Cart");
 const CartRecords = require("./CartRecords");
+const OrderRecords = require("./OrderRecords");
 
 // working on these first
 User.hasMany(Order);
@@ -19,8 +20,8 @@ Cart.belongsTo(User);
 Cart.belongsToMany(Record, { through: CartRecords });
 Record.belongsToMany(Cart, { through: CartRecords });
 
-Order.belongsToMany(Record, { through: "record_order" });
-Record.belongsToMany(Order, { through: "record_order" });
+Order.belongsToMany(Record, { through: OrderRecords});
+Record.belongsToMany(Order, { through: OrderRecords });
 
 Review.belongsTo(User);
 Review.belongsTo(Record);
