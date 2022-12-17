@@ -11,7 +11,9 @@ import { useSelector } from 'react-redux';
 
 export default function Orders() {
 const orders = useSelector((state) => state.orders.adminAllOrders);
- 
+
+
+
   return (
     <React.Fragment>
       <Title>Recent Orders</Title>
@@ -28,8 +30,8 @@ const orders = useSelector((state) => state.orders.adminAllOrders);
         <TableBody>
           {orders.map((order) => (
             <TableRow key={order.id}>
-              <TableCell>{order.datePlaced}</TableCell>
-              <TableCell>{order.firstName} {order.lastName}</TableCell>
+              <TableCell>{order.datePlaced.slice(0, 10)}</TableCell>
+              <TableCell>{order.user.firstName} {order.user.lastName}</TableCell>
               <TableCell>{order.shippingAddress}</TableCell>
               <TableCell>{order.status}</TableCell>
               <TableCell align="right">{order.totalCost}</TableCell>

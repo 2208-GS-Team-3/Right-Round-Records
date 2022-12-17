@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 
 const OrderCard = ({ order }) => {
-console.log(order)
 
 const dateFormatted = order.datePlaced.slice(0, 10)
 
