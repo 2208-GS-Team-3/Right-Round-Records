@@ -257,7 +257,7 @@ try {
   order5.addRecords([record6, record3, record4]);
   order6.addRecords([record6, record3, record4]);
   
-  console.log(recordData[20])
+
   await cart1.addRecords([record1]);
   await cart2.addRecords([record2]);
   await cart3.addRecords([record5, record10, record2]);
