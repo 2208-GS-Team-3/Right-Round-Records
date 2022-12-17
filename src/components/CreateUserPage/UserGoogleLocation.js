@@ -27,17 +27,22 @@ function loadScript(src, position, id) {
 const autocompleteService = { current: null };
 
 export default function GoogleLocation() {
-  const [value, setValue] = React.useState(null);
+  const currentUser = useSelector((state) => state.user.user)
+  const [value, setValue] = React.useState("");
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
   const userToCreate = useSelector((state) => state.userToCreate.userToCreate)
   const dispatch = useDispatch()
 
+  React.useEffect(() => {
+  setValue(currentUser?.address)
+  }, [currentUser])
+  
+
   const handleUserStateChange = (value) => {
     const name = "address";
     dispatch(setUserToCreate({ ...userToCreate, [name]: value}));
-    console.log(userToCreate);
   };
 
   if (typeof window !== "undefined" && !loaded.current) {
@@ -109,7 +114,7 @@ export default function GoogleLocation() {
       autoComplete
       includeInputInList
       filterSelectedOptions
-      value={value}
+      value={value  || ""}
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);

@@ -28,7 +28,7 @@
 
 TIER 1: MVP SHOPPING EXPERIENCE
 AS A CUSTOMER/VISITOR, I WANT TO BE ABLE TO:
-[ ] - access a deployed version of the website so I can browse and purchase products.
+[x] - access a deployed version of the website so I can browse and purchase products.
 [x] - view all available products so I can pick from a variety.
 [x] - view the details for an individual product (including product descriptions, photos and optionally, reviews), so that I can determine whether that particular item fits my needs
 [x] - add a product to my cart so I can collect my desired products in one place.
@@ -50,8 +50,8 @@ AS A LOGGED-IN CUSTOMER, I WANT TO BE ABLE TO:
 AS AN ADMINISTRATOR, I WANT TO BE ABLE TO:
 [x] - have validated data to ensure reliability.
 [x] - i.e. each customer that creates an account should only be able to do so once with a single email address.
-[] - have full rights to make backend requests to add, edit, and remove products.
-[] - No one else should have access to view user information.
+[x] - have full rights to make backend requests to add, edit, and remove products.
+[x] - No one else should have access to view user information.
 
 AS AN ENGINEER, I WANT TO:
 [x] - have a well-seeded database so that I am able to simulate a number of different scenarios for the user stories below.

@@ -12,7 +12,7 @@ const seed = async () => {
   await db.sync({ force: true });
 
   // --------------USERS--------------
-  const [kolby, olivia, lily, jack] = await Promise.all([
+  const [kolby, olivia, lily, jack, joe] = await Promise.all([
     User.create({
       username: "Kolby",
       password: "123",

@@ -29,7 +29,7 @@ router.get("/testAuth", authenticateUser, (req, res, next) => {
   if (req.user.isAdmin === false) return res.sendStatus(404);
   const userInfo = req.user;
   console.log(userInfo.username);
-  res.send(userInfo);
+  res.status(200).send(userInfo);
 });
 
 module.exports = router;
