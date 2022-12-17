@@ -8,6 +8,13 @@ import {
   Typography,
   Container,
 } from "@mui/material";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 const OrderCard = ({ order }) => {
 
@@ -22,24 +29,13 @@ return (
         margin: "30px",
         padding: "30px",
       }}
+      component={Paper}
       key={order.id}
     >
       <h3></h3>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h6" gutterBottom>
         <b>Order #:</b>
         {order.id}{" "}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        <b>Date Placed:</b> {dateFormatted}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        <b>Shipping Address:</b> {order.shippingAddress}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        <b>Tracking Number:</b> {order.trackingNumber}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        <b>Order total: {order.totalCost}</b>
       </Typography>
       <Typography variant="h6" gutterBottom>
         <b>Records purchased:</b>
@@ -55,7 +51,7 @@ return (
                 alt="record album"
               />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="body2" component="div">
                   <h3>{record.albumName}</h3>
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -85,6 +81,38 @@ return (
           );
         })}
       </Container>
+
+      <TableContainer component={Paper} style={{display: 'flex', alignItems: 'center'}}>
+      <Table sx={{ maxWidth: 500 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Order Date</TableCell>
+            <TableCell align="right">{order.datePlaced}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Shipping Address</TableCell>
+            <TableCell align="right">{order.shippingAddress}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Tracking Number</TableCell>
+            <TableCell align="right">{order.trackingNumber}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Order Total</TableCell>
+            <TableCell align="right">{order.totalCost}</TableCell>
+          </TableRow>
+          <TableRow 
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableCell>Tracking Number</TableCell>
+            <TableCell align="right">{order.shippingAddress}</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        
+        </TableBody>
+      </Table>
+    </TableContainer>
+      
     </Container>
   );
 };
