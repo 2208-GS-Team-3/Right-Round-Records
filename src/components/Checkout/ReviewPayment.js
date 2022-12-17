@@ -24,7 +24,6 @@ const ReviewPayment = () => {
   const finalOrderAmount = tax + subtotal
   const last4Digits = creditCard.creditCardNum.substring(12)
 
-console.log('review payment subtotal',{subtotal})
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

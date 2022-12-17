@@ -119,11 +119,12 @@ router.put("/", async (req, res, next) => {
 
       const finalOrderDetails = await Order.findOne({
         where: { id: updatedOrder.id },
-        include: [{model: Cart, include: [Record]}, Record],
+        include: [Record],
       });
 
       //instead of destroying the cart (bc it needs to stay associated with order)
       //make a new cart and set the user
+      cart.update({userId: null})
       const newCart = await Cart.create();
       await newCart.setUser(user);
       //send back order

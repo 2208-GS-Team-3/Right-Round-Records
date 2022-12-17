@@ -18,7 +18,6 @@ export default function Deposits() {
   let name = month[date.getMonth()];
 
 
-  // console.log(currentDate)
   return (
     <React.Fragment>
       <Title>Annual Revenue</Title>

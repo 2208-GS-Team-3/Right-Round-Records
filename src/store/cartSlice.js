@@ -20,9 +20,7 @@ export const cartSlice = createSlice({
       const recordInCart = state.cartInfo.records.find(
         (record) => record.id === action.payload.id
       );
-      // if record already in cart, add another, otherwise, add the record and give it a quantity of 1
       if (recordInCart) {
-        // console.log(recordInCart.cartRecord.quantity++);
         recordInCart.cartRecord.quantity = action.payload;
       } 
     },
@@ -35,13 +33,8 @@ export const cartSlice = createSlice({
     },
     resetCart: (state) => {
       state.cartRecords = [];
+      state.cartInfo.records = [];
     },
-    calculateSubtotal: (state, action) => {
-      state.subtotal = action.payload.reduce(
-        (totalCost, currentItem) => totalCost + (currentItem.rawPrice * currentItem.cartRecord.quantity),
-        0
-      )
-    }
   },
 });
 
@@ -51,6 +44,5 @@ export const {
   setCartRecords,
   setCartInfo,
   resetCart,
-  calculateSubtotal
 } = cartSlice.actions;
 export default cartSlice.reducer;

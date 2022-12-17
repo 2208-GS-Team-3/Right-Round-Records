@@ -26,7 +26,7 @@ const dispatch = useDispatch()
 
 
 const handleSearch = (event) => {
-    console.log('not searching...')
+    console.log('not searching yet...')
 }
 
 const displayEdit = (event) => {

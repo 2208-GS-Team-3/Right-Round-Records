@@ -24,7 +24,7 @@ return (
     <Container
       maxWidth="200vw"
       style={{
-        border: "1px solid black",
+        border: "1px solid gray",
         borderRadius: "5px",
         margin: "30px",
         padding: "30px",
@@ -34,13 +34,16 @@ return (
     >
       <h3></h3>
       <Typography variant="h6" gutterBottom>
-        <b>Order #:</b>
+        <b>Order Details</b>
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        <b>Order #</b>
         {order.id}{" "}
       </Typography>
       <Typography variant="h6" gutterBottom>
         <b>Records purchased:</b>
       </Typography>
-      <Container style={{ display: "flex", gap: "50px" }} maxWidth="75%">
+      <Container style={{ display: "flex", gap: "50px", justifyContent: 'center' }} maxWidth="75%">
         {order.records.map((record) => {
           return (
             <Card sx={{ maxWidth: 500 }} key={record.id}>
@@ -82,7 +85,7 @@ return (
         })}
       </Container>
 
-      <TableContainer component={Paper} style={{display: 'flex', alignItems: 'center'}}>
+      <TableContainer component={Paper}  style={{display: 'flex',  justifyContent: 'center', alignItems: 'center', padding: '20px'}}>
       <Table sx={{ maxWidth: 500 }} aria-label="simple table">
         <TableHead>
           <TableRow>

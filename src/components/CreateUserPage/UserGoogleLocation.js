@@ -37,7 +37,6 @@ export default function GoogleLocation() {
   const handleUserStateChange = (value) => {
     const name = "address";
     dispatch(setUserToCreate({ ...userToCreate, [name]: value}));
-    console.log(userToCreate);
   };
 
   if (typeof window !== "undefined" && !loaded.current) {

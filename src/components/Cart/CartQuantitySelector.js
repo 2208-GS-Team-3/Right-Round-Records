@@ -7,7 +7,6 @@ import {
   removeFromCart,
   setCartInfo,
   setCartRecords,
-  calculateSubtotal
 } from "../../store/cartSlice";
 import Button from "@mui/material/Button";
 
@@ -50,7 +49,6 @@ const CartQuantitySelector = ({ record }) => {
     const updatedCart = await axios.get(`/api/cart`, tokenData);
     dispatch(setCartRecords(updatedCart.data.records));
     dispatch(setCartInfo(updatedCart.data));
-    dispatch(calculateSubtotal(updatedCart.data.records))
 
   
   };
@@ -72,7 +70,6 @@ const CartQuantitySelector = ({ record }) => {
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
     const updatedCart = await axios.get(`/api/cart`, tokenData);
     dispatch(removeFromCart(recordToUpdate));
-    dispatch(calculateSubtotal(updatedCart.data.records))
   };
 
   return (

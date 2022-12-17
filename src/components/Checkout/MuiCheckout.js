@@ -92,7 +92,6 @@ export default function Checkout() {
 
       //newOrders will include all record/order associations
       const newOrders = await axios.get(`/api/orders`, tokenData);
-
       dispatch(setOrders(newOrders.data));
 
       //hit cart route & update cart to be empty

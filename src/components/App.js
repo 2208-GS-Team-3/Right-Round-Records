@@ -54,7 +54,6 @@ const App = () => {
     
       dispatch(setOrders(usersOrders.data));
     } catch (err) {
-      console.log("ERROR");
       console.log(err);
     }
   };
@@ -79,7 +78,6 @@ const App = () => {
       dispatch(setCartInfo(cart.data));
       dispatch(setCartRecords(cart.data.records));
     } catch (err) {
-      console.log("ERROR");
       console.log(err);
     }
   };
