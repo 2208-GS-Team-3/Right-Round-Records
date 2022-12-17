@@ -1,5 +1,6 @@
+const { current } = require("@reduxjs/toolkit");
 const express = require("express");
-const { Record, User, Cart, Style, Genre, Order } = require("../db");
+const { Record, User, Cart, Style, Genre, Order, OrderRecords, CartRecords } = require("../db");
 const router = express.Router();
 
 // //localhost:3000/api/orders/
@@ -13,7 +14,7 @@ router.get("/", async (req, res, next) => {
     if (user.isAdmin) {
       const everyonesOrders = await Order.findAll({
         order: [["id", "DESC"]],
-        include: [{model: User, attributes: ["firstName", "lastName"]}, { model: Record }],
+        include: [Record, Cart, {model: User, attributes: ["firstName", "lastName"]}],
         attributes: ['shippingAddress', 'status', 'totalCost', 'datePlaced']
       });
       res.send(everyonesOrders);
@@ -55,6 +56,7 @@ router.put("/", async (req, res, next) => {
       creditCardNum,
       ccSecurity,
       expiryDate,
+      records
     } = req.body;
 
     if (req.body.status === "placed") {
@@ -64,17 +66,42 @@ router.put("/", async (req, res, next) => {
         include: [{ model: Record, include: [Genre, Style] }],
       });
 
+      
       //users current order
       const currentOrder = await Order.create({
         where: { status: "cart", userId: user.id },
       });
 
+      
+
+
+
       await user.addOrder(currentOrder);
 
-      const mappedRecordsForAssociations = [];
-      const mappedRecords = cart.records.forEach((record) =>
-        mappedRecordsForAssociations.push(record)
+      //associate the order with the cart
+      await currentOrder.setCart(cart)
+      await cart.setOrder(currentOrder)
+
+      const recordsArray = [];
+
+      cart.records.forEach((record) =>
+        recordsArray.push(record)
       );
+
+      await currentOrder.addRecords(recordsArray);
+
+
+      //get all cart records
+      const cartRecords = await CartRecords.findAll({where: {cartId: cart.id}})
+      //for each cartrecord,
+
+      
+      //loop through all order records && update quantity to be the same as cart record quantity
+      const mappedRecords = cartRecords.map(async (cartrecord) => {
+        const findAndUpdateOrderRecord = OrderRecords.findOne({where: {recordId: cartrecord.recordId, orderId: currentOrder.id}})
+        .then(orderRecord => orderRecord.update({quantity: cartrecord.quantity}))
+        return findAndUpdateOrderRecord;
+      });
 
       //update the order status to placed
       const updatedOrder = await currentOrder.update({
@@ -89,20 +116,18 @@ router.put("/", async (req, res, next) => {
         totalCost: totalCost,
       });
 
-      mappedRecordsForAssociations.forEach((record) =>
-        currentOrder.addRecords([record])
-      );
 
       const finalOrderDetails = await Order.findOne({
         where: { id: updatedOrder.id },
-        include: [{ model: Record, include: [Genre, Style] }],
+        include: [{model: Cart, include: [Record]}, Record],
       });
 
-      //logic to clear out and renew cart
-      await cart.destroy();
-      //then give user a new cart!
+      console.log(finalOrderDetails)
+
+      //instead of destroying the cart (bc it needs to stay associated with order)
+      //make a new cart and set the user
       const newCart = await Cart.create();
-      newCart.setUser(user);
+      await newCart.setUser(user);
       //send back order
       res.send(finalOrderDetails);
     }

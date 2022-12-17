@@ -11,7 +11,7 @@ router.get("/", async (req, res, next) => {
 
     const cart = await Cart.findOne({
       where: { userId: user.id },
-      include: [User, { model: Record, include: [Genre, Style] }],
+      include: [{model: User, attributes: ["username"]}, { model: Record, include: [Genre, Style] }],
     });
 
     if (!cart) {
@@ -42,13 +42,13 @@ router.put("/", async (req, res, next) => {
     // -----------------------------------------
 
     const cartRecordToUpdate = await CartRecords.findOne({
-      where: { recordId: req.body.recordId },
+      where: { cartId: cart.id, recordId: req.body.recordId },
     });
 
     if (req.body.quantity >= 1) {
       await cart.addRecord(req.body.recordId);
       const cartRecordToUpdate = await CartRecords.findOne({
-        where: { recordId: req.body.recordId },
+        where: { cartId: cart.id, recordId: req.body.recordId },
       });
       await cartRecordToUpdate.update({ quantity });
     }
@@ -62,7 +62,7 @@ router.put("/", async (req, res, next) => {
     // find updated cart
     const updatedCart = await Cart.findOne({
       where: { userId: user.id },
-      include: [User, { model: Record, include: [Genre, Style] }],
+      include: [User, { model: Record }],
     });
     // send back the updated cart!
     res.send(updatedCart);

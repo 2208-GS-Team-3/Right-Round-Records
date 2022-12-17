@@ -23,6 +23,10 @@ Record.belongsToMany(Cart, { through: CartRecords });
 Order.belongsToMany(Record, { through: OrderRecords});
 Record.belongsToMany(Order, { through: OrderRecords });
 
+//needed to make this association to transfer cart to order
+Order.hasOne(Cart)
+Cart.hasOne(Order)
+
 Review.belongsTo(User);
 Review.belongsTo(Record);
 
@@ -45,4 +49,5 @@ module.exports = {
   Style,
   Cart,
   CartRecords,
+  OrderRecords
 };

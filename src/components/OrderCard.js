@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 const OrderCard = ({ order }) => {
-
+console.log(order)
   return (
     <Container
       maxWidth="200vw"
@@ -63,6 +63,9 @@ const OrderCard = ({ order }) => {
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     <b>Price:</b> {record.price}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    <b>Quantity:</b> {record.orderRecord.quantity}
                 </Typography>
               </CardContent>
               <CardActions>

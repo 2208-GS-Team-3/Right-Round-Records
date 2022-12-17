@@ -7,6 +7,7 @@ import {
   removeFromCart,
   setCartInfo,
   setCartRecords,
+  calculateSubtotal
 } from "../../store/cartSlice";
 import Button from "@mui/material/Button";
 
@@ -37,18 +38,21 @@ const CartQuantitySelector = ({ record }) => {
     };
     // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
-
+    
     // need an 'update cart' button to update UI if user wants to remove item
     // this removes data from cart in redux store
-    if (recordToUpdate?.quantity === 0) {
+    if (recordToUpdate.quantity === 0) {
       dispatch(removeFromCart(recordToUpdate));
-    } else if (recordToUpdate?.quantity >= 1) {
+    } else if (recordToUpdate.quantity >= 1) {
       dispatch(updateCart(recordToUpdate));
     }
 
     const updatedCart = await axios.get(`/api/cart`, tokenData);
     dispatch(setCartRecords(updatedCart.data.records));
     dispatch(setCartInfo(updatedCart.data));
+    dispatch(calculateSubtotal(updatedCart.data.records))
+
+  
   };
 
   // deletes on front end
@@ -66,7 +70,9 @@ const CartQuantitySelector = ({ record }) => {
     };
     // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
+    const updatedCart = await axios.get(`/api/cart`, tokenData);
     dispatch(removeFromCart(recordToUpdate));
+    dispatch(calculateSubtotal(updatedCart.data.records))
   };
 
   return (
