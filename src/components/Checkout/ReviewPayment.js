@@ -13,18 +13,16 @@ const ReviewPayment = () => {
   const creditCard = useSelector((state) => state.checkoutData.creditCard);
   const billing = useSelector((state) => state.checkoutData.billing);
   const shipping = useSelector((state) => state.checkoutData.shipping);
-  const finalOrderAmount = useSelector((state) => state.checkoutData.totalCost);
-
+  const subtotal = useSelector((state) => state.checkoutData.subtotal);
   const params = useParams("");
+
   const orderSubTotal = recordsInCart.reduce(
-    (totalCost, currentItem) => totalCost + currentItem.rawPrice,
+    (total, currentItem) => total + (currentItem.rawPrice * currentItem.cartRecord.quantity),
     0
   );
   const tax = orderSubTotal * 0.08;
-
-
+  const finalOrderAmount = tax + subtotal
   const last4Digits = creditCard.creditCardNum.substring(12)
-
 
   return (
     <React.Fragment>
@@ -45,7 +43,7 @@ const ReviewPayment = () => {
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Subtotal" />
           <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
-           ${orderSubTotal}
+           ${orderSubTotal.toFixed(2)}
           </Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
@@ -89,7 +87,7 @@ const ReviewPayment = () => {
               <b>Billing Address: </b>{billing.address1}, {billing.address2},{" "}
               {billing.city}, {billing.state}, {billing.zip}, {billing.country}
           </Typography>
-            <Typography gutterBottom><b>Last 4 digits of CC:</b> {last4Digits}</Typography>
+            <Typography gutterBottom><b>VISA⠀••••</b> {last4Digits}</Typography>
           {/* </Grid> */}
         </Grid>
       </Grid>

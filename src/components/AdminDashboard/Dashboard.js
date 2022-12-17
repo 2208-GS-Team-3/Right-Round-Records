@@ -17,9 +17,12 @@ import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
 import Products from './Products';
-import { useState } from "react";
 import NewProductForm from './NewProductForm';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setAdminAllOrders } from '../../store/ordersSlice';
 const drawerWidth = 240;
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -51,8 +54,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
+  const dispatch = useDispatch()
+  
   const [open, setOpen] = React.useState(true);
   const showForm = useSelector((state) => state.records.showForm);
+
+ 
 
   const toggleDrawer = () => {
     setOpen(!open);

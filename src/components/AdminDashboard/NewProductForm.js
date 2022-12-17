@@ -45,8 +45,6 @@ const seeAllProducts = () => {
       price: Number(newRecordData.price),
       year: Number(newRecordData.year),
       genre: newRecordData.genre,
-    //   imageUrls: newRecordData.imageUrls,
-    //   tracks: newRecordData.tracks
     }
 
 

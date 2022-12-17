@@ -26,7 +26,6 @@ export const recordsSlice = createSlice({
       state.showForm = action.payload
     },
     addRecord: (state, action) => {
-      console.log(action.payload)
       state.records.push(action.payload);
     }
   },

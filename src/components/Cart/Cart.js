@@ -14,29 +14,33 @@ import {
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
 import MuiCheckout from "../Checkout/MuiCheckout";
-import { setTotalCost } from "../../store/checkoutSlice";
+import { setSubtotal } from "../../store/checkoutSlice";
 import { useDispatch } from "react-redux";
 const Cart = () => {
   const [purchaseItems, setPurchaseItems] = useState([]);
   const [checkOut, setCheckOut] = useState(false);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
+  const subtotal = useSelector((state) => state.cart.checkoutData);
+  const [loading, setLoading] = useState(false)
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
     0
   );
   const dispatch = useDispatch();
-
+  
   const orderSubTotal = recordsInCart.reduce(
-      (totalCost, currentItem) => totalCost + currentItem.rawPrice,
-      0
-    );
+    (totalCost, currentItem) => totalCost + (currentItem.rawPrice * currentItem.cartRecord.quantity),
+    0
+  );
+
   const tax = orderSubTotal * 0.08;
   const finalOrderAmount = tax + orderSubTotal;
+  
 
   const startCheckout = async () => {
     try {
       setCheckOut((currValue) => !currValue);
-      dispatch(setTotalCost(finalOrderAmount));
+      dispatch(setSubtotal(orderSubTotal));
     } catch (err) {
       console.log(err);
     }
@@ -57,6 +61,7 @@ const Cart = () => {
           purchaseItems.filter((item) => item.id !== Number(event.target.id))
         );
   };
+
 
   return (
     <Box key={`wholeCart`} sx={{ display: "grid", gridAutoFlow: "row" }}>
@@ -174,9 +179,13 @@ const Cart = () => {
                 >{`Subtotal (${numberOfRecords} Item${
                   numberOfRecords === 1 ? "" : "s"
                 }):`}</Typography>
-                <Typography variant="h6" key={`subtotalPrice`}>
-                  ${orderSubTotal}
-                </Typography>
+                
+                {!subtotal ? (<Typography variant="h6" key={`subtotalPrice`}>
+                  ${orderSubTotal.toFixed(2)}
+                </Typography>): <Typography variant="h6" key={`subtotalPrice`}>
+                  ${subtotal.toFixed(2)}
+                </Typography>}
+                
               </div>
               <Button
                 variant="contained"

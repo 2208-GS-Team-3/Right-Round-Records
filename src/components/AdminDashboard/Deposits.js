@@ -2,23 +2,33 @@ import * as React from 'react';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Title from './Title';
+import { useSelector } from 'react-redux';
 
-function preventDefault(event) {
-  event.preventDefault();
-}
 
 export default function Deposits() {
+  const orders = useSelector((state) => state.orders.adminAllOrders);
+
+  const totalRevenue = orders.reduce(
+    (totalRevenue, currentOrderRevenue) => totalRevenue + (Number(currentOrderRevenue.totalCost.slice(1))),
+    0
+  )
+  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  const date = new Date();
+  let name = month[date.getMonth()];
+
+
   return (
     <React.Fragment>
-      <Title>Recent Deposits</Title>
+      <Title>Annual Revenue</Title>
       <Typography component="p" variant="h4">
-        $3,024.00
+        ${totalRevenue.toFixed(2)}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        on 15 March, 2019
+        on {date.getDate()} {name}, {date.getFullYear()}
       </Typography>
       <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
+        <Link color="primary" href="#">
           View balance
         </Link>
       </div>

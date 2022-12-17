@@ -6,7 +6,8 @@ import {
   CardMedia,
   Button,
   Typography,
-  Container
+  Container,
+  ListItem
 } from "@mui/material";
 import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
@@ -41,7 +42,7 @@ const RecordCard = ({ record }) => {
         <Typography variant="body2" color="text.secondary">
             <b>Genre(s):</b>{" "}
             {record.genres?.map((genre, index) => (
-              <li key={index}>{genre.name} </li>
+              <ListItem key={index}>{genre.name} </ListItem>
             ))}
             </Typography>
             </Container>

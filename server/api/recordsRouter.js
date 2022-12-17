@@ -9,8 +9,7 @@ const {
   Cart,
 } = require("../db");
 
-// //localhost:3000/api/records/
-// //list of all records
+// all records
 router.get("/", async (req, res, next) => {
   try {
     const records = await Record.findAll({
@@ -24,13 +23,12 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// localhost:3000/api/records/:id
-// ist of all records
+// single record
 router.get("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     const record = await Record.findByPk(id, {
-      include: [Review, Order, Style, Genre, Cart],
+      include: [Review, Style, Genre],
     });
     res.send(record);
   } catch (err) {
@@ -39,13 +37,11 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// update review and/or new contect on single record page
+// update record on admin side
 router.put("/:id", async (req, res, next) => {
   try {
     const { id, albumName, artist, year, price, trackList } = req.body;
-
     const recordToUpdate = await Record.findByPk(req.body.id);
-
     await recordToUpdate.update({
       artist, year, price, albumName
     });
@@ -56,6 +52,7 @@ router.put("/:id", async (req, res, next) => {
   }
 })
 
+//delete record on admin side
 router.delete("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -68,29 +65,33 @@ router.delete("/:id", async (req, res, next) => {
   }
 })
 
+//create new record admin side
 router.post("/", async (req, res, next) => {
   try {
-const { albumName,
-  artist,
-  tracks,
-  imageUrls,
-  price,
-  year,
-  genre } = req.body;
 
+    const { albumName,
+      artist,
+      tracks,
+      imageUrls,
+      price,
+      year,
+      genre } = req.body;
 
-  const newRecord = await Record.create({
-albumName,
-artist,
-// tracks,
-// imageUrls,
-price,
-year
-});
-
-
-// set genre depending on info coming in
-// add genre to record, add record to genre
+      const foundGenre = await Genre.findOne({
+        where: { name: genre },
+      });
+      
+      const newRecord = await Record.create({
+        albumName,
+        artist,
+        // tracks,
+        // imageUrls,
+        price,
+        year
+      });
+      
+      // set genre depending on info coming in
+      newRecord.addGenres(genre ?? "Undefined");
 
     res.sendStatus(201)
   } catch (err) {

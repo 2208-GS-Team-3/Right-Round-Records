@@ -10,7 +10,6 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AddressForm from "./AddressForm";
@@ -18,7 +17,6 @@ import PaymentForm from "./PaymentForm";
 import ReviewPayment from "./ReviewPayment";
 import { useSelector, useDispatch } from "react-redux";
 import { setOrders } from "../../store/ordersSlice";
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { resetCart } from "../../store/cartSlice";
 
@@ -42,12 +40,10 @@ const theme = createTheme();
 // moves us from one component to the next in the checkout process
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [currentOrder, setCurrentOrder] = useState([]);
-  const [loading, setLoading] = useState(false);
   const creditCard = useSelector((state) => state.checkoutData.creditCard);
   const billing = useSelector((state) => state.checkoutData.billing);
   const shipping = useSelector((state) => state.checkoutData.shipping);
-  const totalCost = useSelector((state) => state.checkoutData.totalCost);
+  const subtotal = useSelector((state) => state.checkoutData.subtotal);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const dispatch = useDispatch();
   const params = useParams("");
@@ -87,7 +83,7 @@ export default function Checkout() {
         creditCardNum: `${creditCard.creditCardNum}`,
         ccSecurity: `${creditCard.ccSecurity}`,
         expiryDate: `${creditCard.expiryDate}`,
-        totalCost: totalCost,
+        totalCost: subtotal,
       };
 
       //change order status to placed
@@ -96,8 +92,6 @@ export default function Checkout() {
 
       //newOrders will include all record/order associations
       const newOrders = await axios.get(`/api/orders`, tokenData);
-      console.log({ newOrders });
-
       dispatch(setOrders(newOrders.data));
 
       //hit cart route & update cart to be empty
@@ -110,26 +104,6 @@ export default function Checkout() {
     }
   };
 
-  const getCurrentOrder = async () => {
-    setLoading(true);
-    try {
-      const token = window.localStorage.getItem("token");
-      //data to send to backend
-      const tokenData = {
-        headers: {
-          authorization: token,
-        },
-      };
-      const order = await axios.get(`/api/orders/${orderId}`, tokenData);
-      setCurrentOrder(order.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getCurrentOrder();
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>

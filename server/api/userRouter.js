@@ -1,6 +1,26 @@
 const express = require("express");
-const { User, Cart } = require("../db");
+const { User, Cart, Order, Record, Genre, Style } = require("../db");
 const router = express.Router();
+
+router.get("/", async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
+
+    // moved users orders to the user router so that admin can have full access to all orders on the order router
+    const orders = await Order.findAll({
+      where: { userId: user.id },
+      include: [Record],
+      attributes: {exclude: ['creditCardNum', 'creditCardName', 'expiryDate', 'ccSecurity']}
+    });
+
+    res.send(orders);
+  } catch (err) {
+    res.sendStatus(404);
+    next(err);
+  }
+});
+
 
 router.post("/", async (req, res, next) => {
   try {
