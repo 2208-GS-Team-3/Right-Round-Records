@@ -27,12 +27,11 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const orderSubTotal = recordsInCart.reduce(
-      (totalCost, currentItem) => totalCost + currentItem.rawPrice,
+      (totalCost, currentItem) => totalCost + (currentItem.rawPrice * currentItem.cartRecord.quantity),
       0
     );
   const tax = orderSubTotal * 0.08;
   const finalOrderAmount = tax + orderSubTotal;
-
   const startCheckout = async () => {
     try {
       setCheckOut((currValue) => !currValue);
@@ -175,7 +174,7 @@ const Cart = () => {
                   numberOfRecords === 1 ? "" : "s"
                 }):`}</Typography>
                 <Typography variant="h6" key={`subtotalPrice`}>
-                  ${orderSubTotal}
+                  ${orderSubTotal.toFixed(2)}
                 </Typography>
               </div>
               <Button

@@ -9,13 +9,15 @@ router.get("/", async (req, res, next) => {
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
 
-    const orders = await Order.findAll({
-      order: [["id", "DESC"]],
-      where: { userId: user.id, status: "placed" },
-      include: [User, { model: Record, include: [Genre, Style] }],
-    });
-
-    res.send(orders);
+    //if user is admin, send all orders
+    if (user.isAdmin) {
+      const everyonesOrders = await Order.findAll({
+        order: [["id", "DESC"]],
+        include: [{model: User, attributes: ["firstName", "lastName"]}, { model: Record }],
+        attributes: ['shippingAddress', 'status', 'totalCost', 'datePlaced']
+      });
+      res.send(everyonesOrders);
+    }
   } catch (err) {
     res.sendStatus(404);
     next(err);

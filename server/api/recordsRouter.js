@@ -28,7 +28,7 @@ router.get("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     const record = await Record.findByPk(id, {
-      include: [Review, Order, Style, Genre, Cart],
+      include: [Review, Style, Genre],
     });
     res.send(record);
   } catch (err) {
@@ -90,10 +90,8 @@ router.post("/", async (req, res, next) => {
         year
       });
       
+      // set genre depending on info coming in
       newRecord.addGenres(genre ?? "Undefined");
-      foundGenre.addRecords(newRecord)
-// set genre depending on info coming in
-// add genre to record, add record to genre
 
     res.sendStatus(201)
   } catch (err) {

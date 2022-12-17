@@ -10,7 +10,7 @@ import { setOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
 import { setReviews } from "../store/reviewsSlice";
 import { setCartInfo, setCartRecords } from "../store/cartSlice";
-
+import { setAdminAllOrders } from "../store/ordersSlice";
 const App = () => {
   const dispatch = useDispatch();
 
@@ -22,6 +22,21 @@ const App = () => {
     const genres = await axios.get("/api/genres");
     dispatch(setGenres(genres.data));
   };
+
+  const getAllOrders = async () => {
+     // get token of logged in user
+     const token = window.localStorage.getItem("token");
+     // data to send to backend
+     const tokenData = {
+       headers: {
+         authorization: token,
+       },
+     };
+    const orders = await axios.get("/api/orders", tokenData);
+    dispatch(setAdminAllOrders(orders.data));
+  };
+
+  
 
   // all orders currently available.
   const getUsersOrders = async () => {
@@ -35,8 +50,9 @@ const App = () => {
         },
       };
       // check order api, send tokenData to only get current users orders
-      const orders = await axios.get(`/api/orders`, tokenData);
-      dispatch(setOrders(orders.data));
+      const usersOrders = await axios.get(`/api/user`, tokenData);
+    
+      dispatch(setOrders(usersOrders.data));
     } catch (err) {
       console.log("ERROR");
       console.log(err);
@@ -87,6 +103,7 @@ const App = () => {
     getUsersOrders();
     getGenres();
     getCart();
+    getAllOrders()
   }, []);
 
   return (

@@ -11,7 +11,6 @@ import {
 
 const OrderCard = ({ order }) => {
 
-
   return (
     <Container
       maxWidth="200vw"
@@ -21,6 +20,7 @@ const OrderCard = ({ order }) => {
         margin: "30px",
         padding: "30px",
       }}
+      key={order.id}
     >
       <h3></h3>
       <Typography variant="h4" gutterBottom>
@@ -42,7 +42,6 @@ const OrderCard = ({ order }) => {
       <Typography variant="h6" gutterBottom>
         <b>Records purchased:</b>
       </Typography>
-      {/* order.records.map here */}
       <Container style={{ display: "flex", gap: "50px" }} maxWidth="75%">
         {order.records.map((record) => {
           return (

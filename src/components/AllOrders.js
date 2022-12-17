@@ -11,9 +11,7 @@ const AllOrders = () => {
       <Container>
         {orders.map((order) => {
           return (
-            <div id="order_card" key={order.id}>
-              <OrderCard order={order} />
-            </div>
+              <OrderCard order={order} key={order.id}/>
           );
         })}
       </Container>

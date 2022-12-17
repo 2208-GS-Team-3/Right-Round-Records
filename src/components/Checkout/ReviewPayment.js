@@ -45,7 +45,7 @@ const ReviewPayment = () => {
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Subtotal" />
           <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
-           ${orderSubTotal}
+           ${orderSubTotal.toFixed(2)}
           </Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
@@ -89,7 +89,7 @@ const ReviewPayment = () => {
               <b>Billing Address: </b>{billing.address1}, {billing.address2},{" "}
               {billing.city}, {billing.state}, {billing.zip}, {billing.country}
           </Typography>
-            <Typography gutterBottom><b>Last 4 digits of CC:</b> {last4Digits}</Typography>
+            <Typography gutterBottom><b>VISA⠀••••</b> {last4Digits}</Typography>
           {/* </Grid> */}
         </Grid>
       </Grid>
