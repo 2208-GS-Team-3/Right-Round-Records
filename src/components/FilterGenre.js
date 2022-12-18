@@ -4,25 +4,22 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { setFilteredRecords, setGenreFilter } from "../store/recordsSlice";
+import { useDispatch } from "react-redux";
 
 const FilterGenre = () => {
   const genres = useSelector((state) => state.genres.genres);
-  const [genreFilter, setGenreFilter] = useState('');
+  const genreFilter = useSelector((state) => state.records.genreFilter);
+  const records = useSelector((state) => state.records.records);
+  const dispatch = useDispatch();
 
-  // let recordsToDisplay = records.filter(function (record) {
-  //   if (genreFilter !== "all") {
-  //     //   console.log(record.genre);
-  //     //   return record.genres.includes(genreFilter);
-  //   } else {
-  //     return records;
-  //   }
-  // });
-  //   console.log(recordsToDisplay);
-
-  const changeGenre = (e) => {
-    e.preventDefault();
-    setGenreFilter(e.target.value);
+  const handleGenreFilter = (event) => {
+    dispatch(setGenreFilter(event.target.value));
+    dispatch(setFilteredRecords(records));
   };
+
+  const genreArray = ["all"];
+  genres.map((genre) => genreArray.push(genre.name));
 
   return (
     <>
@@ -31,13 +28,13 @@ const FilterGenre = () => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={genreFilter}
           label="genrefilter"
-          onChange={changeGenre}
+          value={genreFilter}
+          onChange={handleGenreFilter}
         >
-          {genres.map((genre) => (
-            <MenuItem value={genre} key={genre.id}>
-              {genre.name}
+          {genreArray.map((genre) => (
+            <MenuItem value={genre} key={genre}>
+              {genre}
             </MenuItem>
           ))}
         </Select>
