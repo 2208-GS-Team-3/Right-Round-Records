@@ -62,8 +62,9 @@ router.put("/", async (req, res, next) => {
     // find updated cart
     const updatedCart = await Cart.findOne({
       where: { userId: user.id },
-      include: [User, { model: Record }],
+      include: [{model: User, attributes: ['firstName', 'lastName']}, { model: Record }],
     });
+    console.log(updatedCart)
     // send back the updated cart!
     res.send(updatedCart);
   } catch (err) {
