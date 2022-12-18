@@ -1,21 +1,19 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TextField from "@mui/material/TextField";
+import { Button } from "@mui/material";
+import Container from "@mui/material/Container";
 import Title from "./Title";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@mui/material";
-import TextField from "@mui/material/TextField";
 import EditProductForm from "./EditProductForm";
 import {
   setRecordToEdit,
   setEditInProgress,
 } from "../../store/editRecordSlice";
-import { useParams } from "react-router-dom";
-import Container from "@mui/material/Container";
 import { setShowAddForm } from "../../store/recordsSlice";
 import { useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -33,8 +31,6 @@ export default function Products() {
     setShowProducts(!showProducts);
   };
   const dispatch = useDispatch();
-  const params = useParams();
-  const recordId = params.id;
 
   const handleSearch = (event) => {
     console.log("not searching yet...");
