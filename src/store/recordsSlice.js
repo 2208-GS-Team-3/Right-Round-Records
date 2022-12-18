@@ -5,7 +5,7 @@ const initialState = {
   newRecordData: {},
   showForm: false,
   filteredRecords: [],
-  genreFilter: "all",
+  genreFilter: "All Records",
 };
 
 export const recordsSlice = createSlice({
@@ -30,7 +30,7 @@ export const recordsSlice = createSlice({
       state.records.push(action.payload);
     },
     setFilteredRecords: (state, action) => {
-      if (state.genreFilter !== "all") {
+      if (state.genreFilter !== "All Records") {
         state.filteredRecords = action.payload.filter(
           (record) => record?.genres[0]?.name === state.genreFilter
         );

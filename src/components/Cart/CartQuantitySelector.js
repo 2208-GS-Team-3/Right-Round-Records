@@ -38,7 +38,6 @@ const CartQuantitySelector = ({ record }) => {
     };
     // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
-    console.log(recordToUpdate);
 
     const updatedCart = await axios.get(`/api/cart`, tokenData);
     dispatch(setCartRecords(updatedCart.data.records));

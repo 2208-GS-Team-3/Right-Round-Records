@@ -18,7 +18,7 @@ const FilterGenre = () => {
     dispatch(setFilteredRecords(records));
   };
 
-  const genreArray = ["all"];
+  const genreArray = ["All Records"];
   genres.map((genre) => genreArray.push(genre.name));
 
   return (

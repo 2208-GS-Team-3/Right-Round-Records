@@ -9,18 +9,6 @@ const AllRecords = () => {
   const genreFilter = useSelector((state) => state.records.genreFilter);
   const filteredRecords = useSelector((state) => state.records.filteredRecords);
 
-  console.log(filteredRecords);
-
-  // const filterRecordsByGenre = (arrOfRecords) => {
-  //   if (genreFilter !== "all") {
-  //     return arrOfRecords.filter(
-  //       (record) => record?.genres[0]?.name === genreFilter
-  //     );
-  //   }
-  // // };
-
-  // console.log(filterRecordsByGenre(records));
-
   return (
     <Container
       fixed
@@ -32,9 +20,13 @@ const AllRecords = () => {
         alignItems: "center",
       }}
     >
-      <h1>Records</h1>
-      <FilterGenre />
-      {genreFilter === "all" && (
+      {genreFilter === "All Records" && (
+        <>
+          <h1> All Records</h1>
+          <FilterGenre />
+        </>
+      )}
+      {genreFilter === "All Records" && (
         <Container
           maxWidth="100vw"
           sx={{
@@ -53,7 +45,13 @@ const AllRecords = () => {
           })}
         </Container>
       )}
-      {genreFilter !== "all" && (
+      {genreFilter !== "All Records" && (
+        <>
+          <h1> Records: {genreFilter} </h1>
+          <FilterGenre />
+        </>
+      )}{" "}
+      {genreFilter !== "All Records" && (
         <Container
           maxWidth="100vw"
           sx={{
