@@ -16,7 +16,7 @@ const Review = () => {
       {selectedRecord.reviews.map((review, index) => (
         <CardContent key={index}>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Anonymous
+            Posted by: {review?.user?.username}
           </Typography>
 
           <Typography component="legend">

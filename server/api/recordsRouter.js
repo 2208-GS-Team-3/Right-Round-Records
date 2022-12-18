@@ -9,8 +9,7 @@ const {
   Cart,
 } = require("../db");
 
-// //localhost:3000/api/records/
-// //list of all records
+// all records
 router.get("/", async (req, res, next) => {
   try {
     const records = await Record.findAll({
@@ -24,13 +23,12 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// localhost:3000/api/records/:id
-// ist of all records
+// single record
 router.get("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     const record = await Record.findByPk(id, {
-      include: [Review, Order, Style, Genre, Cart],
+      include: [Review, Style, Genre],
     });
     res.send(record);
   } catch (err) {
@@ -39,15 +37,13 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// update review and/or new contect on single record page
+// update record on admin side
 router.put("/:id", async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { artist, year, price, genres, styles, reviews } = req.boby;
-
-    const recordToUpdate = await Record.findByPk(id);
+    const { id, albumName, artist, year, price, trackList } = req.body;
+    const recordToUpdate = await Record.findByPk(req.body.id);
     await recordToUpdate.update({
-      artist, year, price, genres, styles, reviews
+      artist, year, price, albumName
     });
     res.send(recordToUpdate);
   }
@@ -56,87 +52,52 @@ router.put("/:id", async (req, res, next) => {
   }
 })
 
-// router.post("/", async (req, res, next) => {
-//   try {
-// const { albumName,
-//   artists,
-//   tracks,
-//   imageUrls,
-//   condition,
-//   price,
-//   description,
-//   year } = req.body;
+//delete record on admin side
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const recordToDestroy = await Record.findByPk(id);
+    await recordToDestroy.destroy()
+    res.sendStatus(204);
+  }
+  catch (err) {
+    next(err);
+  }
+})
 
-// await Record.create({
-// albumName,
-// artists,
-// tracks,
-// imageUrls,
-// condition,
-// price,
-// description,
-// year,
-// quantity
-// });
+//create new record admin side
+router.post("/", async (req, res, next) => {
+  try {
 
-//     res.sendStatus(201)
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+    const { albumName,
+      artist,
+      tracks,
+      imageUrls,
+      price,
+      year,
+      genre } = req.body;
 
-// // PUT /api/record/:id
-// router.put("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
+      const foundGenre = await Genre.findOne({
+        where: { name: genre },
+      });
+      
+      const newRecord = await Record.create({
+        albumName,
+        artist,
+        // tracks,
+        // imageUrls,
+        price,
+        year
+      });
+      
+      // set genre depending on info coming in
+      newRecord.addGenres(genre ?? "Undefined");
 
-//     const { // albumName,
-// artists,
-// tracks,
-// imageUrls,
-// condition,
-// price,
-// description,
-// year,
-// quantity } = req.body;
-//     const record = await Record.findByPk(id);
-
-//     const updatedRecord = await record.update({
-//       // albumName,
-// artists,
-// tracks,
-// imageUrls,
-// condition,
-// price,
-// description,
-// year,
-// quantity
-//     });
-
-//     const recordWithGenres = await Record.findByPk(id, {
-//       include: [Genre],
-//     });
-//     //send updated record along with updated genre info
-//     res.send(recordWithGenres);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
-
-// // DELETE /api/records/:id
-// router.delete("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const record = await Record.findByPk(id);
-//     // if (!record) return res.sendStatus(404)
-//     await record.destroy();
-//     res.sendStatus(204);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+    res.sendStatus(201)
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 module.exports = router;

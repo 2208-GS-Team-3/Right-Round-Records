@@ -20,7 +20,7 @@ const Home = () => {
         <img id="front-page-logo" src="static/RRR Logo.png" />
       </Container>
       <TopRecords />
-        </Box>
+    </Box>
   );
 };
 

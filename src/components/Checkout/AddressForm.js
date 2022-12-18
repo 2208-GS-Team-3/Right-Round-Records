@@ -46,7 +46,6 @@ const AddressForm = () => {
               id="firstName"
               name="firstName"
               label="First name"
-              defaultValue={cartInfo.user.firstName}
               fullWidth
               autoComplete="given-name"
               variant="standard"
@@ -59,7 +58,6 @@ const AddressForm = () => {
               id="lastName"
               name="lastName"
               label="Last name"
-              defaultValue={cartInfo.user.lastName}
               fullWidth
               autoComplete="family-name"
               variant="standard"

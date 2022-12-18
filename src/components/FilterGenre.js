@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 
 const FilterGenre = () => {
   const genres = useSelector((state) => state.genres.genres);
-  const [genreFilter, setGenreFilter] = useState("all");
+  const [genreFilter, setGenreFilter] = useState('');
 
   // let recordsToDisplay = records.filter(function (record) {
   //   if (genreFilter !== "all") {
