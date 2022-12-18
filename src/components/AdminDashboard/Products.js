@@ -17,6 +17,9 @@ import {
 import { useParams } from "react-router-dom";
 import Container from "@mui/material/Container";
 import { setShowAddForm } from "../../store/recordsSlice";
+import { useState } from "react";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 
 export default function Products() {
   const records = useSelector((state) => state.records.records);
@@ -24,6 +27,11 @@ export default function Products() {
     (state) => state.recordToEdit.editInProgress
   );
 
+  const [showProducts, setShowProducts] = useState(true);
+
+  const toggleProducts = () => {
+    setShowProducts(!showProducts);
+  };
   const dispatch = useDispatch();
   const params = useParams();
   const recordId = params.id;
@@ -48,7 +56,6 @@ export default function Products() {
     <React.Fragment>
       {!editInProgress && (
         <>
-          <Title>Products</Title>
           <Container
             style={{
               display: "flex",
@@ -56,23 +63,45 @@ export default function Products() {
               margin: "30px",
             }}
           >
-            <TextField
-              id="search-bar"
-              className="text"
-              onChange={handleSearch}
-              label="Search by artist or album name"
-              variant="outlined"
-              placeholder="Search..."
-              size="small"
-              style={{ width: "400px" }}
-            />
-            <Button
-              variant="contained"
-              style={{ width: "400px" }}
-              onClick={showForm}
-            >
-              Add product
-            </Button>
+            <Title>Products</Title>
+            {!showProducts ? (
+              <Button
+                variant="contained"
+                size="small"
+                style={{ width: "30px" }}
+                onClick={toggleProducts}
+              >
+                <ArrowLeftIcon />
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                size="small"
+                style={{ width: "30px" }}
+                onClick={toggleProducts}
+              >
+                <ArrowDropDownIcon />
+              </Button>
+            )}
+            <Container>
+              <TextField
+                id="search-bar"
+                className="text"
+                onChange={handleSearch}
+                label="Search by artist or album name"
+                variant="outlined"
+                placeholder="Search..."
+                size="small"
+                style={{ width: "400px" }}
+              />
+              <Button
+                variant="contained"
+                style={{ width: "400px" }}
+                onClick={showForm}
+              >
+                Add product
+              </Button>
+            </Container>
           </Container>
 
           <div style={{ overflowX: "auto", height: "400px" }}>
