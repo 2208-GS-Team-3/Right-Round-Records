@@ -56,7 +56,6 @@ const CreateReviewForm = ({ selectedRecord }) => {
   };
 
   const collectComment = (event) => {
-    console.log(event.target.value);
     setReviewComment(event.target.value);
   };
 

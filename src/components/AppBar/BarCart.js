@@ -85,7 +85,7 @@ const BarCart = () => {
                             {record.albumName}
                           </ListItem>
                           <ListItem key={`${record.albumName + record.price}`}>
-                            {(record.price / 100).toFixed(2)}
+                            {record.price}
                           </ListItem>
                         </List>
                       </Container>

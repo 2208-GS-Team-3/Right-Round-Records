@@ -1,5 +1,6 @@
+const { current } = require("@reduxjs/toolkit");
 const express = require("express");
-const { Record, User, Cart, Style, Genre, Order } = require("../db");
+const { Record, User, Cart, Style, Genre, Order, OrderRecords, CartRecords } = require("../db");
 const router = express.Router();
 
 // //localhost:3000/api/orders/
@@ -9,13 +10,15 @@ router.get("/", async (req, res, next) => {
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
 
-    const orders = await Order.findAll({
-      order: [["id", "DESC"]],
-      where: { userId: user.id, status: "placed" },
-      include: [User, { model: Record, include: [Genre, Style] }],
-    });
-
-    res.send(orders);
+    //if user is admin, send all orders
+    if (user.isAdmin) {
+      const everyonesOrders = await Order.findAll({
+        order: [["id", "DESC"]],
+        include: [Record, Cart, {model: User, attributes: ["firstName", "lastName"]}],
+        attributes: ['shippingAddress', 'status', 'totalCost', 'datePlaced']
+      });
+      res.send(everyonesOrders);
+    }
   } catch (err) {
     res.sendStatus(404);
     next(err);
@@ -62,17 +65,36 @@ router.put("/", async (req, res, next) => {
         include: [{ model: Record, include: [Genre, Style] }],
       });
 
-      //users current order
+      //get users current order
       const currentOrder = await Order.create({
         where: { status: "cart", userId: user.id },
       });
 
+      //add the order to the user
       await user.addOrder(currentOrder);
 
-      const mappedRecordsForAssociations = [];
-      const mappedRecords = cart.records.forEach((record) =>
-        mappedRecordsForAssociations.push(record)
+      //associate the order with the cart (for transfer of record quantity)
+      await currentOrder.setCart(cart)
+      await cart.setOrder(currentOrder)
+
+      // associates records to order
+      const recordsArray = [];
+      cart.records.forEach((record) =>
+        recordsArray.push(record)
       );
+      await currentOrder.addRecords(recordsArray);
+
+
+      //get all cart records (this includes quantity)
+      const cartRecords = await CartRecords.findAll({where: {cartId: cart.id}})
+      //for each cartrecord
+      //loop through all order records && update quantity to be the same as cart record quantity
+      // this is where we transfer cart records to order records with the quantity field
+      const mappedRecords = cartRecords.map(async (cartrecord) => {
+        const findAndUpdateOrderRecord = OrderRecords.findOne({where: {recordId: cartrecord.recordId, orderId: currentOrder.id}})
+        .then(orderRecord => orderRecord.update({quantity: cartrecord.quantity}))
+        return findAndUpdateOrderRecord;
+      });
 
       //update the order status to placed
       const updatedOrder = await currentOrder.update({
@@ -87,20 +109,17 @@ router.put("/", async (req, res, next) => {
         totalCost: totalCost,
       });
 
-      mappedRecordsForAssociations.forEach((record) =>
-        currentOrder.addRecords([record])
-      );
-
       const finalOrderDetails = await Order.findOne({
         where: { id: updatedOrder.id },
-        include: [{ model: Record, include: [Genre, Style] }],
+        include: [Record],
       });
 
-      //logic to clear out and renew cart
-      await cart.destroy();
-      //then give user a new cart!
+      //instead of destroying the cart (bc it needs to stay associated with order)
+      //make a new cart and set the user
+    
+      cart.update({userId: null})//not sure if this line is working. whats best way to disassociate user without deleting cart?
       const newCart = await Cart.create();
-      newCart.setUser(user);
+      await newCart.setUser(user);
       //send back order
       res.send(finalOrderDetails);
     }

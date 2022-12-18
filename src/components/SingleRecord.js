@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import SingleRecReviews from "./SingleRecReviews";
 import Rating from "@mui/material/Rating";
-import EditRecordForm from "./AdminDashboard/EditRecords";
 import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
 const SingleRecord = () => {
@@ -56,14 +55,14 @@ const SingleRecord = () => {
     <Container
       maxWidth="md"
       style={{
-        border: "5px solid red",
+        border: "2px solid black",
+        borderRadius: '5px',
         display: "flex",
         padding: "50px",
       }}
     >
       <Container
         style={{
-          border: "2px solid blue",
           padding: "20px",
           display: "flex",
           flexDirection: "column",
@@ -107,11 +106,11 @@ const SingleRecord = () => {
         </Container>
       </Container>
 
-      <Container>
+      <Container style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
         {/* record info container */}
         <Container
           style={{
-            border: "3px solid red",
+            border: "3px solid green",
             padding: "30px",
             margin: "30px",
           }}
@@ -124,7 +123,7 @@ const SingleRecord = () => {
             <b>Year:</b> {selectedRecord.year}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <b>Price:</b> {price}
+            <b>Price:</b> {selectedRecord.price}
           </Typography>
 
           {/* genres, styles on right */}
@@ -158,7 +157,7 @@ const SingleRecord = () => {
 
         {/* navigation container */}
         <Container style={{ border: "2px solid green", display: "flex" }}>
-          {/* <EditRecordForm /> */}
+          
         </Container>
       </Container>
     </Container>

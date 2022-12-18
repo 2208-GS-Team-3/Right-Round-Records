@@ -7,7 +7,6 @@ export const createUserSlice = createSlice({
   initialState,
   reducers: {
     setUserToCreate: (state, action) => {
-      // console.log(Object.keys(action.payload)[0])
       state.userToCreate = action.payload
   },
 }});

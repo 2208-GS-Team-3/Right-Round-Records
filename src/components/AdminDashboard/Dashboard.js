@@ -16,7 +16,13 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
-
+import Products from './Products';
+import NewProductForm from './NewProductForm';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setAdminAllOrders } from '../../store/ordersSlice';
 const drawerWidth = 240;
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -48,10 +54,21 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
+  const dispatch = useDispatch()
+  
   const [open, setOpen] = React.useState(true);
+  const showForm = useSelector((state) => state.records.showForm);
+
+ 
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+const displayNewForm = (event) => {
+    setDisplayNewProductForm((val) => !val)
+}
+
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -122,6 +139,11 @@ function DashboardContent() {
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Orders />
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                {showForm ? <NewProductForm/> : <Products/>}
                 </Paper>
               </Grid>
             </Grid>

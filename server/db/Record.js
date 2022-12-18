@@ -37,6 +37,17 @@ const Record = db.define("record", {
     set(value) {
       this.setDataValue("price", Math.floor(value * 100));
     },
+    get() {
+      const rawPrice = this.getDataValue('price')
+      return `$${(rawPrice / 100).toFixed(2)}`
+    }
+  },
+  rawPrice: {
+    type: Sequelize.VIRTUAL,
+    get() {
+      const rawPrice = this.getDataValue('price')
+      return Number((rawPrice / 100).toFixed(2))
+    }
   },
   description: {
     type: Sequelize.TEXT,

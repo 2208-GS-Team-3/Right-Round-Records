@@ -5,7 +5,7 @@ const initialState = {
   shipping: {},
   billing: {},
   creditCard: {},
-  totalCost: 0,
+  subtotal: 0,
   cardValidity: false,
 };
 
@@ -25,11 +25,11 @@ export const checkoutSlice = createSlice({
     setCreditCard: (state, action) => {
       state.creditCard = action.payload;
     },
-    setTotalCost: (state, action) => {
-      state.totalCost = action.payload;
+    setSubtotal: (state, action) => {
+      state.subtotal = action.payload;
     },
     setCardValidity: (state, action) => {
-      state.totalCost = action.payload;
+      state.cardValidity = action.payload;
     },
   },
 });
@@ -39,7 +39,7 @@ export const {
   setShipping,
   setBilling,
   setCreditCard,
-  setTotalCost,
+  setSubtotal,
   setCardValidity,
 } = checkoutSlice.actions;
 export default checkoutSlice.reducer;
