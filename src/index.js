@@ -14,6 +14,7 @@ import Dashboard from "./components/AdminDashboard/Dashboard";
 import authTest from "./helpers/authTest";
 import Cart from "./components/Cart/Cart";
 import CreateUserPage from "./components/CreateUserPage/CreateUserPage";
+import UserAccountPage from "./components/UserAccountPage/UserDisplay";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +68,11 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         errorElement: <ErrorBoundary />,
         loader: authTest,
+      },
+      {
+        path: "account",
+        element: <UserAccountPage/>,
+        errorElement: <ErrorBoundary />,
       },
     ],
   },

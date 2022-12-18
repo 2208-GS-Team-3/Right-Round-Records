@@ -17,9 +17,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import BarCart from "./BarCart";
 import { Badge } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-const pages = ["Records", "Reviews", "Community"];
-const userSettings = ["Profile", "Account", "Dashboard", "Orders", "Logout"];
-const guestSettings = ["Profile", "Account", "Dashboard", "Login"];
 
 function RRRAppBar() {
   const navigate = useNavigate();
@@ -28,6 +25,9 @@ function RRRAppBar() {
   const currentPage = useLocation();
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const [recordTotal, setRecordTotal] = React.useState(0);
+  const pages = ["Records", "Reviews", "Community"];
+  const userSettings = user.isAdmin ? ["Profile", "Account", "Dashboard", "Orders", "Logout"] : ["Profile", "Account", "Orders", "Logout"];
+  const guestSettings = ["Login"];
 
   useEffect(() => {
     setRecordTotal(
@@ -55,6 +55,9 @@ function RRRAppBar() {
   const navUserOrders = () => {
     navigate("/orders");
   };
+  const navUserAccount = () => {
+    navigate("/account");
+  };
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -67,8 +70,8 @@ function RRRAppBar() {
     if (e.target.innerHTML === "Logout" || e.target.id === "Logout") logout();
     if (e.target.innerHTML === "Login" || e.target.id === "Login") login();
     if (e.target.innerHTML === "Orders" || e.target.id === "Orders") navUserOrders();
-    if (e.target.innerHTML === "Dashboard" || e.target.id === "Dashboard")
-      navDashboard();
+    if (e.target.innerHTML === "Dashboard" || e.target.id === "Dashboard") navDashboard();
+    if (e.target.innerHTML === "Account" || e.target.id === "Account") navUserAccount()
     setAnchorElUser(null);
   };
 

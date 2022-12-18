@@ -12,7 +12,9 @@ const seed = async () => {
   await db.sync({ force: true });
 try {
   // --------------USERS--------------
+
   console.log('adding users')
+
   const [kolby, olivia, lily, jack, joe] = await Promise.all([
     User.create({
       username: "Kolby",
