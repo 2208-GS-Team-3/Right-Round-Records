@@ -87,7 +87,6 @@ export default function Checkout() {
       };
 
       //change order status to placed
-      
       await axios.put(`/api/orders`, orderData, tokenData);
 
       //newOrders will include all record/order associations

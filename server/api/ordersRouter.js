@@ -56,7 +56,6 @@ router.put("/", async (req, res, next) => {
       creditCardNum,
       ccSecurity,
       expiryDate,
-      records
     } = req.body;
 
     if (req.body.status === "placed") {
@@ -66,37 +65,31 @@ router.put("/", async (req, res, next) => {
         include: [{ model: Record, include: [Genre, Style] }],
       });
 
-      
-      //users current order
+      //get users current order
       const currentOrder = await Order.create({
         where: { status: "cart", userId: user.id },
       });
 
-      
-
-
-
+      //add the order to the user
       await user.addOrder(currentOrder);
 
-      //associate the order with the cart
+      //associate the order with the cart (for transfer of record quantity)
       await currentOrder.setCart(cart)
       await cart.setOrder(currentOrder)
 
+      // associates records to order
       const recordsArray = [];
-
       cart.records.forEach((record) =>
         recordsArray.push(record)
       );
-
       await currentOrder.addRecords(recordsArray);
 
 
-      //get all cart records
+      //get all cart records (this includes quantity)
       const cartRecords = await CartRecords.findAll({where: {cartId: cart.id}})
-      //for each cartrecord,
-
-      
+      //for each cartrecord
       //loop through all order records && update quantity to be the same as cart record quantity
+      // this is where we transfer cart records to order records with the quantity field
       const mappedRecords = cartRecords.map(async (cartrecord) => {
         const findAndUpdateOrderRecord = OrderRecords.findOne({where: {recordId: cartrecord.recordId, orderId: currentOrder.id}})
         .then(orderRecord => orderRecord.update({quantity: cartrecord.quantity}))
@@ -116,7 +109,6 @@ router.put("/", async (req, res, next) => {
         totalCost: totalCost,
       });
 
-
       const finalOrderDetails = await Order.findOne({
         where: { id: updatedOrder.id },
         include: [Record],
@@ -124,7 +116,8 @@ router.put("/", async (req, res, next) => {
 
       //instead of destroying the cart (bc it needs to stay associated with order)
       //make a new cart and set the user
-      cart.update({userId: null})
+    
+      cart.update({userId: null})//not sure if this line is working. whats best way to disassociate user without deleting cart?
       const newCart = await Cart.create();
       await newCart.setUser(user);
       //send back order

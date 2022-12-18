@@ -32,23 +32,25 @@ router.put("/", async (req, res, next) => {
     const user = await User.findByToken(token);
 
     // coming from 'recordData' object in 'handleRemoveFromCart'
-    const { quantity } = req.body;
+    const { recordId, quantity } = req.body;
 
     const cart = await Cart.findOne({
       where: { userId: user.id },
-      include: [User, { model: Record, include: [Genre, Style] }],
+      include: [{ model: Record, include: [Genre, Style] }],
     });
 
     // -----------------------------------------
 
     const cartRecordToUpdate = await CartRecords.findOne({
-      where: { recordId: req.body.recordId },
+      where: { cartId: cart.id, recordId: req.body.recordId },
     });
 
+    const recordToAdd = await Record.findOne({where: {id: req.body.recordId}})
+
     if (req.body.quantity >= 1) {
-      await cart.addRecord(req.body.recordId);
+      await cart.addRecord(recordToAdd);
       const cartRecordToUpdate = await CartRecords.findOne({
-        where: { recordId: req.body.recordId },
+        where: { cartId: cart.id, recordId: recordToAdd.id },
       });
       await cartRecordToUpdate.update({ quantity });
     }
@@ -64,6 +66,7 @@ router.put("/", async (req, res, next) => {
       where: { userId: user.id },
       include: [{model: User, attributes: ['firstName', 'lastName']}, { model: Record }],
     });
+  
     // send back the updated cart!
     res.send(updatedCart);
   } catch (err) {

@@ -17,11 +17,11 @@ export const cartSlice = createSlice({
       state.cartInfo = action.payload;
     },
     updateCart: (state, action) => {
-      const recordInCart = state.cartInfo.records.find(
-        (record) => record.id === action.payload.id
+      const recordInCart = state.cartRecords.find(
+        (record) => record.id === action.payload.recordId
       );
       if (recordInCart) {
-        recordInCart.cartRecord.quantity = action.payload;
+        recordInCart.cartRecord.quantity = Number(action.payload.quantity);
       } 
     },
     removeFromCart: (state, action) => {
