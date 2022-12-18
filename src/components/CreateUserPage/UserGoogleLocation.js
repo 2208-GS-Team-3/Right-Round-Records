@@ -27,22 +27,27 @@ function loadScript(src, position, id) {
 const autocompleteService = { current: null };
 
 export default function GoogleLocation() {
-  const currentUser = useSelector((state) => state.user.user)
+  const currentUser = useSelector((state) => state.user.user);
   const [value, setValue] = React.useState("");
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
+  const disabled = React.useRef(false);
   const loaded = React.useRef(false);
-  const userToCreate = useSelector((state) => state.userToCreate.userToCreate)
-  const dispatch = useDispatch()
+  const userToCreate = useSelector((state) => state.userToCreate.userToCreate);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-  setValue(currentUser?.address)
-  }, [currentUser])
-  
+    // disabled.current = (!!currentUser.address);
+    setValue(currentUser?.address);
+  }, [currentUser]);
+
+  const handleDisabled = () => {
+    disabled.current = false
+  };
 
   const handleUserStateChange = (value) => {
     const name = "address";
-    dispatch(setUserToCreate({ ...userToCreate, [name]: value}));
+    dispatch(setUserToCreate({ ...userToCreate, [name]: value }));
   };
 
   if (typeof window !== "undefined" && !loaded.current) {
@@ -104,6 +109,9 @@ export default function GoogleLocation() {
 
   return (
     <Autocomplete
+      key={"addressAutoComplete"}
+      disabled={disabled.current}
+      onClick={handleDisabled}
       id="google-map-autocomplete"
       sx={{ width: 300 }}
       getOptionLabel={(option) =>
@@ -114,11 +122,11 @@ export default function GoogleLocation() {
       autoComplete
       includeInputInList
       filterSelectedOptions
-      value={value  || ""}
+      value={value || ""}
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
-        handleUserStateChange(newValue.description)
+        handleUserStateChange(newValue.description);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);

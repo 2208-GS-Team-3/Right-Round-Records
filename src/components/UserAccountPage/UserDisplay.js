@@ -19,10 +19,17 @@ const UserAccountPage = () => {
   const userToCreate = useSelector((state) => state.userToCreate.userToCreate);
   const currentUser = useSelector((state) => state.user.user);
   const [validity, setValidity] = useState({});
+  const [editing, setEditing] = useState({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const handleEdittable = (e) => {
+    const target = e.target;
+    const value = true;
+    const name = target.name;
+    setEditing({ ...editing, [name]: value });
+  };
   const handleUserStateChange = (e) => {
     const target = e.target;
     const value = target.value;
@@ -99,6 +106,8 @@ const UserAccountPage = () => {
               Your Username
             </InputLabel>
             <Input
+            disabled={!editing?.username}
+            onClick={handleEdittable}
               value={userToCreate?.username || ""}
               name="username"
               id="username-input"
@@ -120,6 +129,8 @@ const UserAccountPage = () => {
               Your Password
             </InputLabel>
             <Input
+                        disabled={!editing?.password}
+                        onClick={handleEdittable}
               defaultValue={"**********"}
               name="password"
               id="password-input"
@@ -136,6 +147,8 @@ const UserAccountPage = () => {
               First Name
             </InputLabel>
             <Input
+                        disabled={!editing?.firstName}
+                        onClick={handleEdittable}
               value={userToCreate?.firstName || ""}
               name="firstName"
               id="firstName-input"
@@ -152,6 +165,8 @@ const UserAccountPage = () => {
               Last Name
             </InputLabel>
             <Input
+                        disabled={!editing?.lastName}
+                        onClick={handleEdittable}
               value={userToCreate?.lastName || ""}
               name="lastName"
               id="lastName-input"
@@ -167,6 +182,8 @@ const UserAccountPage = () => {
               Your Email
             </InputLabel>
             <Input
+                        disabled={!editing?.email}
+                        onClick={handleEdittable}
               value={userToCreate?.email || ""}
               name="email"
               id="email-input"
@@ -188,6 +205,8 @@ const UserAccountPage = () => {
               Your Phone Number
             </InputLabel>
             <Input
+                        disabled={!editing?.phoneNum}
+                        onClick={handleEdittable}
               value={userToCreate?.phoneNum || ""}
               name="phoneNum"
               id="phoneNum-input"
@@ -204,6 +223,8 @@ const UserAccountPage = () => {
               Your Avatar
             </InputLabel>
             <Input
+                        disabled={!editing?.avatarUrl}
+                        onClick={handleEdittable}
               value={userToCreate?.avatarUrl || ""}
               name="avatarUrl"
               id="avatar-input"
@@ -219,6 +240,8 @@ const UserAccountPage = () => {
               Birthday
             </InputLabel>
             <Input
+                        disabled={!editing?.birthday}
+                        onClick={handleEdittable}
               value={userToCreate?.birthday?.split("T")[0] || ""}
               type="date"
               name="birthday"
@@ -232,7 +255,7 @@ const UserAccountPage = () => {
           </FormControl>
 
           <FormControl required>
-            <GoogleLocation />
+            <GoogleLocation key={"GoogleLocation"} />
             <FormHelperText id="address-helper-text">
               Please provide your current address.
             </FormHelperText>
