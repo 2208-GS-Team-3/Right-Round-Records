@@ -55,12 +55,12 @@ export default function Products() {
   return (
     <React.Fragment>
       {!editInProgress && (
-        <>
+        <Container>
           <Container
             style={{
               display: "flex",
-              justifyContent: "space-evenly",
-              margin: "30px",
+              justifyContent: "space-between",
+              padding: "20px",
             }}
           >
             <Title>Products</Title>
@@ -83,77 +83,87 @@ export default function Products() {
                 <ArrowDropDownIcon />
               </Button>
             )}
-            <Container>
-              <TextField
-                id="search-bar"
-                className="text"
-                onChange={handleSearch}
-                label="Search by artist or album name"
-                variant="outlined"
-                placeholder="Search..."
-                size="small"
-                style={{ width: "400px" }}
-              />
-              <Button
-                variant="contained"
-                style={{ width: "400px" }}
-                onClick={showForm}
-              >
-                Add product
-              </Button>
-            </Container>
           </Container>
 
-          <div style={{ overflowX: "auto", height: "400px" }}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{ textAlign: "center" }}>
-                    Product #
-                  </TableCell>
-                  <TableCell style={{ textAlign: "center" }}>
-                    Album Name
-                  </TableCell>
-                  <TableCell style={{ textAlign: "center" }}>Artist</TableCell>
-                  <TableCell style={{ textAlign: "center" }}>Price</TableCell>
-                  <TableCell style={{ textAlign: "center" }}>Year</TableCell>
-                  <TableCell style={{ textAlign: "center" }}>Edit</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {records.map((record) => (
-                  <TableRow key={record.id}>
+          {showProducts && (
+            <Container style={{ overflowX: "auto", height: "400px" }}>
+              <Container
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "20px",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  style={{ width: "400px" }}
+                  onClick={showForm}
+                >
+                  Add product
+                </Button>
+                <TextField
+                  id="search-bar"
+                  className="text"
+                  onChange={handleSearch}
+                  label="Search by artist or album name"
+                  variant="outlined"
+                  placeholder="Search..."
+                  size="small"
+                  style={{ width: "400px" }}
+                />
+              </Container>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
                     <TableCell style={{ textAlign: "center" }}>
-                      {record.id}
+                      Product #
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      {record.albumName}
+                      Album Name
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      {record.artist}
+                      Artist
                     </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {record.price}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {record.year}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      <Button
-                        size="small"
-                        value={record.id}
-                        onClick={displayEdit}
-                        style={{ margin: "0px auto", padding: "0px" }}
-                      >
-                        Edit
-                      </Button>
-                    </TableCell>
+                    <TableCell style={{ textAlign: "center" }}>Price</TableCell>
+                    <TableCell style={{ textAlign: "center" }}>Year</TableCell>
+                    <TableCell style={{ textAlign: "center" }}>Edit</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </>
+                </TableHead>
+                <TableBody>
+                  {records.map((record) => (
+                    <TableRow key={record.id}>
+                      <TableCell style={{ textAlign: "center" }}>
+                        {record.id}
+                      </TableCell>
+                      <TableCell style={{ textAlign: "center" }}>
+                        {record.albumName}
+                      </TableCell>
+                      <TableCell style={{ textAlign: "center" }}>
+                        {record.artist}
+                      </TableCell>
+                      <TableCell style={{ textAlign: "center" }}>
+                        {record.price}
+                      </TableCell>
+                      <TableCell style={{ textAlign: "center" }}>
+                        {record.year}
+                      </TableCell>
+                      <TableCell style={{ textAlign: "center" }}>
+                        <Button
+                          size="small"
+                          value={record.id}
+                          onClick={displayEdit}
+                          style={{ margin: "0px auto", padding: "0px" }}
+                        >
+                          Edit
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Container>
+          )}
+        </Container>
       )}
 
       {editInProgress && <EditProductForm />}
