@@ -10,37 +10,40 @@ import { useSelector } from "react-redux";
 
 export default function Orders() {
   const orders = useSelector((state) => state.orders.adminAllOrders);
-
+  console.log(orders);
   return (
     <React.Fragment>
       <Title>Recent Orders</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {orders.map((order, index) => (
-            <TableRow key={index}>
-              <TableCell>{order.datePlaced.slice(0, 10)}</TableCell>
-              <TableCell>
-                {order.user.firstName} {order.user.lastName}
+      <div style={{ overflowX: "auto", height: "400px" }}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ textAlign: "center" }}>Order Id</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Date</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Name</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Ship To</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Status</TableCell>
+              <TableCell style={{ textAlign: "center" }} align="right">
+                Sale Amount
               </TableCell>
-              <TableCell>{order.shippingAddress}</TableCell>
-              <TableCell>{order.status}</TableCell>
-              <TableCell align="right">{order.totalCost}</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Link color="primary" href="#" sx={{ mt: 3 }}>
-        See more orders
-      </Link>
+          </TableHead>
+          <TableBody>
+            {orders.map((order, index) => (
+              <TableRow key={index}>
+                <TableCell>{order.id}</TableCell>
+                <TableCell>{order.datePlaced.slice(0, 10)}</TableCell>
+                <TableCell>
+                  {order.user.firstName} {order.user.lastName}
+                </TableCell>
+                <TableCell>{order.shippingAddress}</TableCell>
+                <TableCell>{order.status}</TableCell>
+                <TableCell align="right">{order.totalCost}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </React.Fragment>
   );
 }

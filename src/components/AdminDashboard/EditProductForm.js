@@ -15,7 +15,6 @@ import {
   setEditInProgress,
   setUpdatedRecordInfo,
 } from "../../store/editRecordSlice";
-// import { deleteRecord, setRecords } from "../../store/recordsSlice";
 import AlertDialog from "./AlertDialog";
 
 const EditProductForm = () => {
@@ -31,37 +30,6 @@ const EditProductForm = () => {
     const name = target.name;
     dispatch(setUpdatedRecordInfo({ ...updatedRecordInfo, [name]: value }));
   };
-
-  // const handleDeleteRecord = async (event) => {
-  //   const response = confirm("are you sure you want to delete this record?");
-  //   if (response === true) {
-  //     try {
-  //       event.preventDefault();
-  //       // get token of logged in user
-  //       const token = window.localStorage.getItem("token");
-  //       // data to send to backend
-  //       const tokenData = {
-  //         headers: {
-  //           authorization: token,
-  //         },
-  //       };
-  //       await axios.delete(`/api/records/${recordToEdit[0].id}`, tokenData);
-  //       //update front end and redux store
-  //       dispatch(
-  //         deleteRecord({
-  //           id: recordToEdit[0].id,
-  //         })
-  //       );
-  //       const allNewRecords = await axios.get("/api/records");
-  //       dispatch(setRecords(allNewRecords.data));
-  //       dispatch(setEditInProgress(false));
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   } else {
-  //     return;
-  //   }
-  // };
 
   const handleUpdate = async (event) => {
     try {
@@ -189,20 +157,17 @@ const EditProductForm = () => {
           alignItems: "center",
         }}
       >
-        <Button variant="outlined" onClick={handleUpdate}>
+        <Button variant="contained" onClick={handleUpdate}>
           Save Changes
         </Button>
-        <Button variant="outlined" href={"/dashboard"} onClick={seeAllProducts}>
-          Dashboard
+        <Button
+          variant="contained"
+          href={"/dashboard"}
+          onClick={seeAllProducts}
+        >
+          Cancel
         </Button>
         <AlertDialog />
-        {/* <Button
-          variant="outlined"
-          style={{ color: "red", border: "1px solid red" }}
-          onClick={handleDeleteRecord}
-        >
-          Delete product
-        </Button> */}
       </Container>
     </Container>
   );

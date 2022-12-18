@@ -54,7 +54,11 @@ export default function AlertDialog() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button
+        variant="outlined"
+        style={{ color: "white", backgroundColor: "red" }}
+        onClick={handleClickOpen}
+      >
         Delete Product
       </Button>
       <Dialog
@@ -72,10 +76,13 @@ export default function AlertDialog() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Nevermind</Button>
+          <Button variant="contained" onClick={handleClose}>
+            Nevermind
+          </Button>
           <Button
             onClick={handleDeleteRecord}
-            style={{ color: "red" }}
+            style={{ color: "white", backgroundColor: "red" }}
+            variant="contained"
             autoFocus
           >
             DELETE
