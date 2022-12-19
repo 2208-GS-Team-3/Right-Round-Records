@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "@mui/material/Card";
 import {
-  CardActions,
   CardContent,
   CardMedia,
   Button,
@@ -17,7 +16,7 @@ const RecordCard = ({ record }) => {
   return (
     <Card
       sx={{
-        maxWidth: 345,
+        maxWidth: 290,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

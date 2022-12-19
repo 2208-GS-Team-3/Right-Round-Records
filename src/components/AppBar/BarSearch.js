@@ -20,8 +20,9 @@ const BarSearch = () => {
   return (
     <Container>
       <Autocomplete
-        sx={{ width: "20vw"}}
+        sx={{ width: "20vw", borderColor: "white"}}
         freeSolo
+        size="small"
         id="record-search"
         disableClearable
         onChange={handleSearchRecord}
@@ -30,8 +31,9 @@ const BarSearch = () => {
         })}
         renderInput={(params) => (
             <TextField
-            variant="outlined"
-            sx={{color: "white"}}
+            variant="filled"
+
+            sx={{fill: "background", backgroundColor: "white", borderColor: "white", borderBlockColor: "white", color: "white"}}
             {...params}
             label="Search"
             InputProps={{

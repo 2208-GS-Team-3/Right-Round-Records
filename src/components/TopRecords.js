@@ -1,7 +1,7 @@
 import React from "react";
 import RecordCard from "./RecordCard";
 import { useSelector } from "react-redux";
-import { Container } from "@mui/system";
+import { Typography, Container } from "@mui/material";
 
 const TopRecords = () => {
   const records = useSelector((state) => state.records.records);
@@ -23,22 +23,21 @@ const TopRecords = () => {
 
   return (
     <Container
-      maxWidth="xl"
+    maxWidth
       sx={{
         bgcolor: "white",
-        maxHeight: "500vh",
         placeContent: "center",
-        gap: "30px",
+        gap: "10px",
       }}
     >
-      <h1 style={{ color: "black", textAlign: "center" }}>Featured Albums</h1>
+      <Typography variant="h2" component="h1" style={{ color: "black", textAlign: "center" }}>Featured Albums</Typography>
       <Container
-        maxWidth="xl"
+      maxWidth
         sx={{
           display: "flex",
-          maxHeight: "500vh",
+          maxHeight: "30vh",
           placeContent: "center",
-          gap: "30px",
+          gap: "10px",
         }}
       >
         {randomRecords.map((record) => {

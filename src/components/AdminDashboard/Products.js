@@ -5,12 +5,11 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useDispatch, useSelector } from "react-redux";
-import { Autocomplete, Button, Paper } from "@mui/material";
+import { Autocomplete, Button, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { setRecordToEdit } from "../../store/editRecordSlice";
 import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
-import { Typography } from "@mui/material";
 
 export default function Products() {
   const records = useSelector((state) => state.records.records);
@@ -117,7 +116,7 @@ export default function Products() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {records.map((record) => (
+          {searchFilter.map((record) => (
             <TableRow key={record.id}>
               <TableCell>{record.id}</TableCell>
               <TableCell>{record.albumName}</TableCell>

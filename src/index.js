@@ -21,6 +21,7 @@ import Products from "./components/AdminDashboard/Products";
 import EditProductForm from "./components/AdminDashboard/EditProductForm";
 import NewProductForm from "./components/AdminDashboard/NewProductForm";
 import UsersAdminView from "./components/AdminDashboard/UsersAdminView";
+import Review from "./components/Review";
 
 const router = createBrowserRouter([
   {

@@ -25,7 +25,6 @@ function RRRAppBar() {
   const currentPage = useLocation();
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const [recordTotal, setRecordTotal] = React.useState(0);
-  const pages = ["Records", "Reviews", "Community"];
   const userSettings = user.isAdmin
     ? ["Profile", "Account", "Dashboard", "Orders", "Logout"]
     : ["Profile", "Account", "Orders", "Logout"];
@@ -110,20 +109,18 @@ function RRRAppBar() {
               backgroundColor: "white",
             }}
           />
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+          <Box>
               <Link
-                key={page}
-                href={`/${page}`}
+                key={`recordLink`}
+                href={`/records`}
                 sx={{ my: 2, color: "white", display: "block", margin: "10px" }}
               >
-                {page}
+                {"Records"}
               </Link>
-            ))}
           </Box>
-            <BarSearch/>
+          <BarSearch />
           <Box
-            sx={{ mr: 5, display: "flex", placeItems: "center", flexGrow: 0 }}
+            sx={{ mr: 5, display: "flex", placeItems: "center"}}
           >
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
