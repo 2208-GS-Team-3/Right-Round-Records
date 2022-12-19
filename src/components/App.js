@@ -10,9 +10,53 @@ import { setOrders, setAdminAllOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
 import { setReviews } from "../store/reviewsSlice";
 import { setCartInfo, setCartRecords } from "../store/cartSlice";
+import { createTheme, colors, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: ".75rem",
+          color: "black",
+          backgroundColor: "white",
+          "&:hover": {
+            backgroundColor: "black",
+            color: "white",
+          },
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "black",
+          color: "white",
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          // In Chinese and Japanese the characters are usually larger,
+          // so a smaller fontsize may be appropriate.
+          fontSize: "1rem",
+          fontFamily: "Raleway, Arial",
+        },
+      },
+    },
+
+    // typography: {
+    //   button: {
+    //     fontSize: "1rem",
+    //     color: "red",
+    //   },
+    // },
+  },
+});
+
 const App = () => {
   const dispatch = useDispatch();
-
   const getRecords = async () => {
     const records = await axios.get("/api/records");
     dispatch(setRecords(records.data));
@@ -102,11 +146,13 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <CssBaseline />
-      <RRRAppBar />
-      <Outlet />
-    </div>
+    <ThemeProvider theme={theme}>
+      <div>
+        <CssBaseline />
+        <RRRAppBar />
+        <Outlet />
+      </div>
+    </ThemeProvider>
   );
 };
 

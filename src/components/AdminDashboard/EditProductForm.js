@@ -13,7 +13,6 @@ import axios from "axios";
 import Box from "@mui/material/Box";
 import {
   setEditInProgress,
-  setRecordToEdit,
   setUpdatedRecordInfo,
 } from "../../store/editRecordSlice";
 import AlertDialog from "./AlertDialog";

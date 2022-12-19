@@ -43,8 +43,6 @@ const RecordCard = ({ record }) => {
           <Typography variant="body2" color="text.secondary">
             <b>Price:</b> {record.price}
           </Typography>
-        </Container>
-        <Container>
           <Typography variant="body2" color="text.secondary">
             <b>Genre(s):</b>{" "}
             {record.genres?.map((genre, index) => (
@@ -52,18 +50,18 @@ const RecordCard = ({ record }) => {
             ))}
           </Typography>
         </Container>
+        <Container>
+          <Button
+            variant="text"
+            href={singleRecordPageUrl}
+            size="large"
+            style={{ textAlign: "center", color: "gray", margin: "5px" }}
+          >
+            More Details
+          </Button>
+          <CartQuantitySelector record={record} />
+        </Container>
       </CardContent>
-      <CardActions>
-        <Button
-          sx={{ mr: 5 }}
-          variant="text"
-          size="small"
-          href={singleRecordPageUrl}
-        >
-          More Details
-        </Button>
-        <CartQuantitySelector record={record} />
-      </CardActions>
     </Card>
   );
 };

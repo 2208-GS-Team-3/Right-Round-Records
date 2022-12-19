@@ -6,16 +6,26 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Title from "./Title";
+import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import Paper from "@mui/material/Paper";
+import Container from "@mui/material/Container";
 
 export default function Orders() {
   const orders = useSelector((state) => state.orders.adminAllOrders);
 
   return (
-    <Paper>
-      <Title>Recent Orders</Title>
+    <Container
+      style={{
+        padding: "20px",
+        backgroundColor: "white",
+        borderRadius: "5px",
+        justifyContent: "center",
+        textAlign: "center",
+      }}
+    >
+      <Typography variant="h5" component="h5">
+        Recent Orders
+      </Typography>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -43,6 +53,6 @@ export default function Orders() {
       <Link color="primary" href="#" sx={{ mt: 3 }}>
         See more orders
       </Link>
-    </Paper>
+    </Container>
   );
 }

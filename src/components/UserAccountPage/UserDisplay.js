@@ -99,17 +99,26 @@ const UserAccountPage = () => {
   useEffect(() => {
     dispatch(setUserToCreate({ ...currentUser }));
   }, [currentUser]);
-  console.log(currentUser);
-  console.log(userToCreate);
 
   return (
     <Container
-      sx={{ display: "flex", flexDirection: "column", placeSelf: "center" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        placeSelf: "center",
+        padding: "30px",
+        marginTop: "30px",
+        borderRadius: "5px",
+      }}
     >
-      <Typography sx={{ placeSelf: "center" }} variant={"h2"}>
+      <Typography
+        variant="h5"
+        component="h5"
+        sx={{ placeSelf: "center", padding: "30px" }}
+      >
         Your Account Information
       </Typography>
-      <Form className="form">
+      <Form className="form" sx={{ placeSelf: "center", padding: "30px" }}>
         <div className="userForm">
           <FormControl error={validity.username} required>
             <InputLabel shrink htmlFor="username-input">

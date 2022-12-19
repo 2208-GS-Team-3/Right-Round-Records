@@ -4,9 +4,8 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Title from "./Title";
 import { useDispatch, useSelector } from "react-redux";
-import { Autocomplete, Button, Paper } from "@mui/material";
+import { Autocomplete, Button, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
@@ -67,8 +66,19 @@ export default function UsersAdminView() {
   }, []);
 
   return (
-    <Paper>
-      <Title>Users</Title>
+    <Container
+      style={{
+        padding: "20px",
+        backgroundColor: "white",
+        borderRadius: "5px",
+        justifyContent: "center",
+        textAlign: "center",
+      }}
+    >
+      <Typography variant="h5" component="h5">
+        Users
+      </Typography>
+      {/* <Title>Users</Title> */}
       <Container
         style={{
           display: "flex",
@@ -99,7 +109,7 @@ export default function UsersAdminView() {
         />
         <Button
           variant="contained"
-          style={{ width: "400px" }}
+          style={{ width: "400px", backgroundColor: "black", color: "white" }}
           onClick={navUserAdd}
         >
           Add User
@@ -138,6 +148,6 @@ export default function UsersAdminView() {
           </TableBody>
         </Table>
       </div>
-    </Paper>
+    </Container>
   );
 }

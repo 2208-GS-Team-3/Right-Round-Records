@@ -59,7 +59,12 @@ function DashboardContent() {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <Drawer variant="permanent" open={open}>
+        <Drawer
+          variant="permanent"
+          open={open}
+          containerStyle={{ transform: "none" }}
+          style={{ zIndex: 0, position: "sticky" }}
+        >
           <Toolbar
             sx={{
               display: "flex",
@@ -68,7 +73,7 @@ function DashboardContent() {
               px: [1],
             }}
           >
-            <IconButton onClick={toggleDrawer}>
+            <IconButton onClick={toggleDrawer} style={{ position: "sticky" }}>
               {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </IconButton>
           </Toolbar>
