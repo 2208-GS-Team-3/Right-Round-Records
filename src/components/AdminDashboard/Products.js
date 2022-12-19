@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,7 +6,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Paper } from "@mui/material";
+import { Autocomplete, Button, Paper } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { setRecordToEdit } from "../../store/editRecordSlice";
 import { useNavigate } from "react-router-dom";
@@ -14,15 +14,13 @@ import Container from "@mui/material/Container";
 
 export default function Products() {
   const records = useSelector((state) => state.records.records);
+  const [searchRecord, setSearchRecord] = useState();
+  const [searchFilter, setSearchFilter] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const navRecordEdit = (recordId) => navigate(`${recordId}`);
   const navRecordAdd = () => navigate(`add`);
-
-  const handleSearch = (event) => {
-    console.log("not searching yet...");
-  };
 
   const displayEdit = (event) => {
     const filteredRecord = records.filter(
@@ -32,6 +30,28 @@ export default function Products() {
     navRecordEdit(Number(event.target.value));
   };
 
+  const handleSearchRecord = (event) => {
+    setSearchRecord(
+      event.target.innerHTML || event.target.innerText || event.target.value
+    );
+  };
+
+  useEffect(() => {
+    setSearchFilter(
+      records.filter((record) => {
+        return searchRecord
+          ? record.id === Number(searchRecord?.split(".")[0]) ||
+              record.albumName
+                ?.toLowerCase()
+                ?.includes(searchRecord?.toLowerCase()) ||
+              record.albumName?.includes(
+                searchRecord?.split(".")[1]?.toLowerCase()
+              )
+          : record.id !== Number(searchRecord?.split(".")[0]);
+      })
+    );
+  }, [searchRecord, records]);
+
   return (
     <Paper>
       <Title>Products</Title>
@@ -40,21 +60,34 @@ export default function Products() {
           display: "flex",
           justifyContent: "space-evenly",
           margin: "30px",
+          gap: "20vw",
         }}
       >
-        <TextField
-          id="search-bar"
-          className="text"
-          onChange={handleSearch}
-          label="Search by artist or album name"
-          variant="outlined"
-          placeholder="Search..."
-          size="small"
-          style={{ width: "400px" }}
+        <Autocomplete
+          fullWidth
+          freeSolo
+          id="product-search"
+          disableClearable
+          onChange={handleSearchRecord}
+          options={records.map((option) => {
+            return `${option.id}. ${option.albumName}`;
+          })}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search"
+              onChange={handleSearchRecord}
+              InputProps={{
+                ...params.InputProps,
+                type: "search",
+              }}
+            />
+          )}
         />
         <Button
+          fullWidth
+          sx={{ width: "30vw" }}
           variant="contained"
-          style={{ width: "400px" }}
           onClick={navRecordAdd}
         >
           Add product
@@ -74,7 +107,7 @@ export default function Products() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {records.map((record) => (
+            {searchFilter.map((record) => (
               <TableRow key={record.id}>
                 <TableCell>{record.id}</TableCell>
                 <TableCell>{record.albumName}</TableCell>

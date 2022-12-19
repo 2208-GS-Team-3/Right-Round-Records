@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,7 +6,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Paper } from "@mui/material";
+import { Autocomplete, Button, Paper } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
@@ -15,6 +15,8 @@ import axios from "axios";
 
 export default function UsersAdminView() {
   const users = useSelector((state) => state.adminUserList.users);
+  const [searchUser, setSearchUser] = useState();
+  const [searchFilter, setSearchFilter] = useState();
 
   const dispatch = useDispatch();
 
@@ -23,9 +25,26 @@ export default function UsersAdminView() {
   const navUserAdd = () => navigate("./add");
   const navUserEdit = (user) => navigate(`./${user}`);
 
-  const handleSearch = (event) => {
-    console.log("not searching yet...");
+  const handleSearchUser = (event) => {
+    setSearchUser(
+      event.target.innerHTML || event.target.innerText || event.target.value
+    );
   };
+
+  useEffect(() => {
+    setSearchFilter(
+      users.filter((user) => {
+        return searchUser
+          ? user.username?.trim()?.toLowerCase()?.includes(searchUser?.trim()?.toLowerCase()) ||
+              user.userName?.trim()?.includes(
+                searchUser?.trim()?.split("|")[0]?.toLowerCase()
+              ) ||
+              user.email?.toLowerCase()?.includes(searchUser?.trim()?.toLowerCase()) ||
+              user.email?.includes(searchUser?.split("|")[1]?.trim()?.toLowerCase())
+          : user.username !== searchUser;
+      })
+    );
+  }, [searchUser, users]);
 
   const getUsers = async () => {
     try {
@@ -57,15 +76,26 @@ export default function UsersAdminView() {
           margin: "30px",
         }}
       >
-        <TextField
-          id="search-bar"
-          className="text"
-          onChange={handleSearch}
-          label="Search for user"
-          variant="outlined"
-          placeholder="Search..."
-          size="small"
-          style={{ width: "400px" }}
+        <Autocomplete
+          fullWidth
+          freeSolo
+          id="product-search"
+          disableClearable
+          onChange={handleSearchUser}
+          options={users.map((option) => {
+            return `${option.username} | ${option.email}`;
+          })}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search"
+              onChange={handleSearchUser}
+              InputProps={{
+                ...params.InputProps,
+                type: "search",
+              }}
+            />
+          )}
         />
         <Button
           variant="contained"
@@ -90,7 +120,7 @@ export default function UsersAdminView() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
+            {searchFilter?.map((user) => (
               <TableRow key={user.id}>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.firstName}</TableCell>
