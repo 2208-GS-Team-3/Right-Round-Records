@@ -7,6 +7,15 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+
+import { Outlet } from "react-router-dom";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PeopleIcon from "@mui/icons-material/People";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -54,6 +63,7 @@ function DashboardContent() {
   const [open, setOpen] = React.useState(true);
   const showForm = useSelector((state) => state.records.showForm);
 
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -77,9 +87,30 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+            <ListItemButton href="/dashboard">
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+            <ListItemButton href="/dashboard/orders">
+              <ListItemIcon>
+                <ShoppingCartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Orders" />
+            </ListItemButton>
+            <ListItemButton href="/dashboard/users">
+              <ListItemIcon>
+                <PeopleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Users" />
+            </ListItemButton>
+            <ListItemButton href="/dashboard/products">
+              <ListItemIcon>
+                <BarChartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Products" />
+            </ListItemButton>
           </List>
         </Drawer>
         <Box
@@ -95,6 +126,8 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
+
+          <Outlet />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Chart */}
@@ -136,6 +169,7 @@ function DashboardContent() {
               </Grid>
             </Grid>
           </Container>
+
         </Box>
       </Box>
     </ThemeProvider>

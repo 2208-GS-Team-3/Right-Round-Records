@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
   Container,
@@ -9,13 +9,25 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import Box from "@mui/material/Box";
-import { useDispatch } from "react-redux";
-import {
-  setEditInProgress,
-  setUpdatedRecordInfo,
-} from "../../store/editRecordSlice";
+
+import Box from '@mui/material/Box';
+import {setEditInProgress, setUpdatedRecordInfo} from '../../store/editRecordSlice'
+import { deleteRecord, setRecords } from "../../store/recordsSlice";
+const EditProductForm = () => {
+
+const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
+const updatedRecordInfo = useSelector((state) => state.recordToEdit.updatedRecordInfo);
+const dispatch = useDispatch()
+
+const handleRecordStateChange = (e) => {
+  const target = e.target;
+  const value = target.value;
+  const name = target.name;
+  dispatch(setUpdatedRecordInfo({ ...updatedRecordInfo, [name]: value }));
+}
+
 import AlertDialog from "./AlertDialog";
+
 
 const EditProductForm = () => {
   const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
@@ -24,12 +36,45 @@ const EditProductForm = () => {
   );
   const dispatch = useDispatch();
 
+
+const handleDeleteRecord = async (event) => {
+  const response = confirm('are you sure you want to delete this record?')
+  if (response === true) {
+    try {
+      event.preventDefault();
+       // get token of logged in user
+       const token = window.localStorage.getItem("token");
+       // data to send to backend
+       const tokenData = {
+         headers: {
+           authorization: token,
+         },
+       };
+      await axios.delete(`/api/records/${recordToEdit[0].id}`, tokenData);
+      // update front end and redux store
+      dispatch(
+        deleteRecord({
+          id: recordToEdit[0].id,
+        })
+      );
+      const allNewRecords = await axios.get("/api/records");
+      dispatch(setRecords(allNewRecords.data));
+      dispatch(setEditInProgress(false))
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    return;
+  } 
+};
+
   const handleRecordStateChange = (e) => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
     dispatch(setUpdatedRecordInfo({ ...updatedRecordInfo, [name]: value }));
   };
+
 
   const handleUpdate = async (event) => {
     try {

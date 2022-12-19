@@ -25,7 +25,7 @@ try {
       phoneNum: "828-423-2588",
       address: "902 Brisbane ST. NE, Palm Bay, FL, 32907",
       birthday: "January 4, 1991",
-      avatarUrl: "static/KolbyIMG.jpeg",
+      avatarUrl: "/static/KolbyIMG.jpeg",
       isAdmin: true,
     }),
     User.create({
@@ -37,7 +37,7 @@ try {
       email: "ocjarman@gmail.com",
       address: "151 SE 3rd Ave, Delray Beach, FL 33483",
       birthday: "February 16, 1992",
-      avatarUrl: "static/OliviaIMG.jpeg",
+      avatarUrl: "/static/OliviaIMG.jpeg",
       isAdmin: true,
     }),
     User.create({

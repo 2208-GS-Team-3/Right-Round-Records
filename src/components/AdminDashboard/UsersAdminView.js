@@ -8,44 +8,49 @@ import Title from "./Title";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Paper } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import {
-  setRecordToEdit,
-} from "../../store/editRecordSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
-import { setShowAddForm } from "../../store/recordsSlice";
+import { setUserList } from "../../store/adminUserListSlice";
+import axios from "axios";
 
-export default function Products() {
-  const records = useSelector((state) => state.records.records);
+export default function UsersAdminView() {
+  const users = useSelector((state) => state.adminUserList.users);
 
   const dispatch = useDispatch();
-  const params = useParams();
-  const recordId = params.id;
 
   const navigate = useNavigate()
 
-  const NavRecordEdit = (recordId) => navigate(`${recordId}`)
-  const NavRecordAdd = (recordId) => navigate(`add`)
+  const navUserAdd = () => navigate("./add")
+  const navUserEdit = (user) => navigate(`./${user}`)
 
   const handleSearch = (event) => {
     console.log("not searching yet...");
   };
 
-  const displayEdit = (event) => {
-    const filteredRecord = records.filter(
-      (record) => record.id === Number(event.target.value)
-    );
-    dispatch(setRecordToEdit(filteredRecord));
-    NavRecordEdit(Number(event.target.value))
+  const getUsers = async () => {
+    try {
+      const token = window.localStorage.getItem("token");
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+
+      const users = await axios.get(`/api/user/userlist`, tokenData);
+      dispatch(setUserList(users.data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const showForm = () => {
-    dispatch(setShowAddForm(true));
-  };
+  React.useEffect(() => {
+getUsers()
+  }, [])
+  
 
   return (
     <Paper>
-      <Title>Products</Title>
+      <Title>Users</Title>
       <Container
         style={{
           display: "flex",
@@ -57,7 +62,7 @@ export default function Products() {
           id="search-bar"
           className="text"
           onChange={handleSearch}
-          label="Search by artist or album name"
+          label="Search for user"
           variant="outlined"
           placeholder="Search..."
           size="small"
@@ -66,9 +71,9 @@ export default function Products() {
         <Button
           variant="contained"
           style={{ width: "400px" }}
-          onClick={NavRecordAdd}
+          onClick={navUserAdd}
         >
-          Add product
+          Add User
         </Button>
       </Container>
 
@@ -76,24 +81,26 @@ export default function Products() {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell>Product #</TableCell>
-              <TableCell>Album Name</TableCell>
-              <TableCell>Artist</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Year</TableCell>
+              <TableCell>Username</TableCell>
+              <TableCell>First Name</TableCell>
+              <TableCell>Last Name</TableCell>
+              <TableCell>E-mail</TableCell>
+              <TableCell>Phone Number</TableCell>
+              <TableCell>Birth Date</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {records.map((record) => (
-              <TableRow key={record.id}>
-                <TableCell>{record.id}</TableCell>
-                <TableCell>{record.albumName}</TableCell>
-                <TableCell>{record.artist}</TableCell>
-                <TableCell>{record.price}</TableCell>
-                <TableCell>{record.year}</TableCell>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.firstName}</TableCell>
+                <TableCell>{user.lastName}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.phoneNum}</TableCell>
+                <TableCell>{user.birthday.split('T')[0]}</TableCell>
                 <TableCell>
-                  <Button size="small" value={record.id} onClick={displayEdit}>
+                  <Button size="small" value={user.id} onClick={navUserEdit}>
                     Edit
                   </Button>
                 </TableCell>
