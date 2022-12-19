@@ -13,7 +13,6 @@ import axios from "axios";
 import Box from "@mui/material/Box";
 import {
   setEditInProgress,
-  setRecordToEdit,
   setUpdatedRecordInfo,
 } from "../../store/editRecordSlice";
 import { deleteRecord, setRecords } from "../../store/recordsSlice";

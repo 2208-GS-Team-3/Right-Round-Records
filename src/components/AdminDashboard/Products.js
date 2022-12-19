@@ -4,20 +4,19 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Title from "./Title";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Paper } from "@mui/material";
+import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { setRecordToEdit } from "../../store/editRecordSlice";
 import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
+import { Typography } from "@mui/material";
 
 export default function Products() {
   const records = useSelector((state) => state.records.records);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(records);
   const navRecordEdit = (recordId) => navigate(`${recordId}`);
   const navRecordAdd = () => navigate(`add`);
 
@@ -34,13 +33,23 @@ export default function Products() {
   };
 
   return (
-    <Paper>
-      <Title>Products</Title>
+    <Container
+      style={{
+        padding: "20px",
+        backgroundColor: "white",
+        borderRadius: "5px",
+        justifyContent: "center",
+        textAlign: "center",
+      }}
+    >
+      <Typography variant="h5" component="h5">
+        Products
+      </Typography>
       <Container
         style={{
           display: "flex",
           justifyContent: "space-evenly",
-          margin: "30px",
+          margin: "10px",
         }}
       >
         <TextField
@@ -54,44 +63,41 @@ export default function Products() {
           style={{ width: "400px" }}
         />
         <Button
-          variant="contained"
-          style={{ width: "400px" }}
+          style={{ width: "400px", backgroundColor: "black", color: "white" }}
           onClick={navRecordAdd}
         >
           Add product
         </Button>
       </Container>
 
-      <div style={{ overflowX: "auto", height: "550px" }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Product #</TableCell>
-              <TableCell>Album Name</TableCell>
-              <TableCell>Artist</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Year</TableCell>
-              <TableCell></TableCell>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Product #</TableCell>
+            <TableCell>Album Name</TableCell>
+            <TableCell>Artist</TableCell>
+            <TableCell>Price</TableCell>
+            <TableCell>Year</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {records.map((record) => (
+            <TableRow key={record.id}>
+              <TableCell>{record.id}</TableCell>
+              <TableCell>{record.albumName}</TableCell>
+              <TableCell>{record.artist}</TableCell>
+              <TableCell>{record.price}</TableCell>
+              <TableCell>{record.year}</TableCell>
+              <TableCell>
+                <Button size="small" value={record.id} onClick={displayEdit}>
+                  Edit
+                </Button>
+              </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {records.map((record) => (
-              <TableRow key={record.id}>
-                <TableCell>{record.id}</TableCell>
-                <TableCell>{record.albumName}</TableCell>
-                <TableCell>{record.artist}</TableCell>
-                <TableCell>{record.price}</TableCell>
-                <TableCell>{record.year}</TableCell>
-                <TableCell>
-                  <Button size="small" value={record.id} onClick={displayEdit}>
-                    Edit
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </Paper>
+          ))}
+        </TableBody>
+      </Table>
+    </Container>
   );
 }

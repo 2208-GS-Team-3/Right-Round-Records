@@ -8,7 +8,6 @@ import Menu from "@mui/material/Menu";
 import Link from "@mui/material/Link";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -81,18 +80,22 @@ function RRRAppBar() {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position="sticky">
+      <Container
+        maxWidth="xl"
+        sx={{
+          margin: "30px auto",
+        }}
+      >
         <Toolbar disableGutters>
           <Link href="/">
             <Avatar
-
               src="/static/RRR Record.png"
-
               sx={{
                 mr: 2,
                 height: "auto",
                 width: 60,
+                backgroundColor: "white",
               }}
             />
           </Link>
@@ -103,17 +106,18 @@ function RRRAppBar() {
               mr: 2,
               height: "auto",
               width: 100,
+              backgroundColor: "white",
             }}
           />
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
+              <Link
                 key={page}
                 href={`/${page}`}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: "white", display: "block", margin: "10px" }}
               >
                 {page}
-              </Button>
+              </Link>
             ))}
           </Box>
           <Box

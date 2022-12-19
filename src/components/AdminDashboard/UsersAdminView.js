@@ -4,9 +4,8 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Title from "./Title";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Paper } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
@@ -18,10 +17,10 @@ export default function UsersAdminView() {
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const navUserAdd = () => navigate("./add")
-  const navUserEdit = (user) => navigate(`./${user}`)
+  const navUserAdd = () => navigate("./add");
+  const navUserEdit = (user) => navigate(`./${user}`);
 
   const handleSearch = (event) => {
     console.log("not searching yet...");
@@ -44,13 +43,23 @@ export default function UsersAdminView() {
   };
 
   React.useEffect(() => {
-getUsers()
-  }, [])
-  
+    getUsers();
+  }, []);
 
   return (
-    <Paper>
-      <Title>Users</Title>
+    <Container
+      style={{
+        padding: "20px",
+        backgroundColor: "white",
+        borderRadius: "5px",
+        justifyContent: "center",
+        textAlign: "center",
+      }}
+    >
+      <Typography variant="h5" component="h5">
+        Users
+      </Typography>
+      {/* <Title>Users</Title> */}
       <Container
         style={{
           display: "flex",
@@ -70,7 +79,7 @@ getUsers()
         />
         <Button
           variant="contained"
-          style={{ width: "400px" }}
+          style={{ width: "400px", backgroundColor: "black", color: "white" }}
           onClick={navUserAdd}
         >
           Add User
@@ -98,7 +107,7 @@ getUsers()
                 <TableCell>{user.lastName}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.phoneNum}</TableCell>
-                <TableCell>{user.birthday.split('T')[0]}</TableCell>
+                <TableCell>{user.birthday.split("T")[0]}</TableCell>
                 <TableCell>
                   <Button size="small" value={user.id} onClick={navUserEdit}>
                     Edit
@@ -109,6 +118,6 @@ getUsers()
           </TableBody>
         </Table>
       </div>
-    </Paper>
+    </Container>
   );
 }

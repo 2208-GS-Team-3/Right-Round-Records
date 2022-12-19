@@ -48,7 +48,12 @@ const BarCart = () => {
           <ShoppingCartIcon />
         </Badge>
       </IconButton>
-      <Popper {...bindPopper(popupState)} transition>
+      <Popper
+        {...bindPopper(popupState)}
+        transition
+        style={{ zIndex: 10000, margin: "1000px" }}
+        disablePortal
+      >
         {({ TransitionProps }) => (
           // <ClickAwayListener onClickAway={popupState.close}>
           <Fade {...TransitionProps} timeout={350}>
@@ -107,7 +112,6 @@ const BarCart = () => {
               </Button>
             </Paper>
           </Fade>
-          // </ClickAwayListener>
         )}
       </Popper>
     </React.Fragment>
