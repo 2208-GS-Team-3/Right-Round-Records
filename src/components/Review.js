@@ -5,7 +5,6 @@ import Rating from "@mui/material/Rating";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
-
 const Review = () => {
   const selectedRecord = useSelector(
     (state) => state.selectedRecord.selectedRecord
@@ -14,7 +13,14 @@ const Review = () => {
   return (
     <Container maxWidth="100vw">
       {selectedRecord.reviews.map((review, index) => (
-        <CardContent key={index}>
+        <CardContent
+          key={index}
+          style={{
+            border: "1px solid black",
+            borderRadius: "5px",
+            margin: "10px",
+          }}
+        >
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             Posted by: {review?.user?.username}
           </Typography>

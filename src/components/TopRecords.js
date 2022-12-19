@@ -31,7 +31,7 @@ const TopRecords = () => {
         gap: "30px",
       }}
     >
-      <h1 style={{ color: "black", textAlign: "center" }}>Featured</h1>
+      <h1 style={{ color: "black", textAlign: "center" }}>Featured Albums</h1>
       <Container
         maxWidth="xl"
         sx={{

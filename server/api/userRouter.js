@@ -11,7 +11,15 @@ router.get("/", async (req, res, next) => {
     const orders = await Order.findAll({
       where: { userId: user.id },
       include: [Record],
-      attributes: {exclude: ['creditCardNum', 'creditCardName', 'expiryDate', 'ccSecurity']}
+      order: [["id", "DESC"]],
+      attributes: {
+        exclude: [
+          "creditCardNum",
+          "creditCardName",
+          "expiryDate",
+          "ccSecurity",
+        ],
+      },
     });
 
     res.send(orders);
@@ -20,7 +28,6 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-
 
 router.post("/", async (req, res, next) => {
   try {

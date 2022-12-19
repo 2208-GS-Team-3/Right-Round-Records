@@ -18,6 +18,7 @@ const Record = db.define("record", {
   },
   tracks: {
     type: Sequelize.ARRAY(Sequelize.JSON),
+    defaultValue: ["Tracks for this record are not available."],
   },
   imageUrls: {
     type: Sequelize.ARRAY(Sequelize.JSON),
@@ -38,16 +39,16 @@ const Record = db.define("record", {
       this.setDataValue("price", Math.floor(value * 100));
     },
     get() {
-      const rawPrice = this.getDataValue('price')
-      return `$${(rawPrice / 100).toFixed(2)}`
-    }
+      const rawPrice = this.getDataValue("price");
+      return `$${(rawPrice / 100).toFixed(2)}`;
+    },
   },
   rawPrice: {
     type: Sequelize.VIRTUAL,
     get() {
-      const rawPrice = this.getDataValue('price')
-      return Number((rawPrice / 100).toFixed(2))
-    }
+      const rawPrice = this.getDataValue("price");
+      return Number((rawPrice / 100).toFixed(2));
+    },
   },
   description: {
     type: Sequelize.TEXT,
