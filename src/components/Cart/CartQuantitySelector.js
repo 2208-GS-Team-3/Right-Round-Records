@@ -10,6 +10,7 @@ import {
   addToCart,
 } from "../../store/cartSlice";
 import Button from "@mui/material/Button";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const CartQuantitySelector = ({ record }) => {
   const dispatch = useDispatch();
@@ -98,7 +99,7 @@ const CartQuantitySelector = ({ record }) => {
             variant="contained"
             onClick={removeRecordFromCart}
             value={null}
-            style={{ backgroundColor: "red" }}
+            style={{ backgroundColor: "red", color: "white" }}
           >
             Remove
           </Button>{" "}
@@ -110,7 +111,7 @@ const CartQuantitySelector = ({ record }) => {
           onClick={updateQuantity}
           value={1}
         >
-          Add to Cart
+          BUY RECORD
         </Button>
       )}
     </>

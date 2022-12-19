@@ -41,13 +41,17 @@ const UserAccountPage = () => {
     if (!Object.values(validity).includes(true)) {
       try {
         event.preventDefault();
-      const token = window.localStorage.getItem("token");
-      const tokenData = {
-        headers: {
-          authorization: token,
-        },
-      };
-        const { data: created } = await axios.put("/api/user", userToCreate , tokenData);
+        const token = window.localStorage.getItem("token");
+        const tokenData = {
+          headers: {
+            authorization: token,
+          },
+        };
+        const { data: created } = await axios.put(
+          "/api/user",
+          userToCreate,
+          tokenData
+        );
         dispatch(setUser(created));
         navigate("/");
       } catch (error) {
@@ -95,25 +99,34 @@ const UserAccountPage = () => {
   useEffect(() => {
     dispatch(setUserToCreate({ ...currentUser }));
   }, [currentUser]);
-  console.log(currentUser);
-  console.log(userToCreate);
 
   return (
     <Container
-      sx={{ display: "flex", flexDirection: "column", placeSelf: "center" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        placeSelf: "center",
+        padding: "30px",
+        marginTop: "30px",
+        borderRadius: "5px",
+      }}
     >
-      <Typography sx={{ placeSelf: "center" }} variant={"h2"}>
+      <Typography
+        variant="h5"
+        component="h5"
+        sx={{ placeSelf: "center", padding: "30px" }}
+      >
         Your Account Information
       </Typography>
-      <Form className="form">
+      <Form className="form" sx={{ placeSelf: "center", padding: "30px" }}>
         <div className="userForm">
           <FormControl error={validity.username} required>
             <InputLabel shrink htmlFor="username-input">
               Your Username
             </InputLabel>
             <Input
-            disabled={!editing?.username}
-            onClick={handleEdittable}
+              disabled={!editing?.username}
+              onClick={handleEdittable}
               value={userToCreate?.username || ""}
               name="username"
               id="username-input"
@@ -135,8 +148,8 @@ const UserAccountPage = () => {
               Your Password
             </InputLabel>
             <Input
-                        disabled={!editing?.password}
-                        onClick={handleEdittable}
+              disabled={!editing?.password}
+              onClick={handleEdittable}
               defaultValue={"**********"}
               name="password"
               id="password-input"
@@ -153,8 +166,8 @@ const UserAccountPage = () => {
               First Name
             </InputLabel>
             <Input
-                        disabled={!editing?.firstName}
-                        onClick={handleEdittable}
+              disabled={!editing?.firstName}
+              onClick={handleEdittable}
               value={userToCreate?.firstName || ""}
               name="firstName"
               id="firstName-input"
@@ -171,8 +184,8 @@ const UserAccountPage = () => {
               Last Name
             </InputLabel>
             <Input
-                        disabled={!editing?.lastName}
-                        onClick={handleEdittable}
+              disabled={!editing?.lastName}
+              onClick={handleEdittable}
               value={userToCreate?.lastName || ""}
               name="lastName"
               id="lastName-input"
@@ -188,8 +201,8 @@ const UserAccountPage = () => {
               Your Email
             </InputLabel>
             <Input
-                        disabled={!editing?.email}
-                        onClick={handleEdittable}
+              disabled={!editing?.email}
+              onClick={handleEdittable}
               value={userToCreate?.email || ""}
               name="email"
               id="email-input"
@@ -211,8 +224,8 @@ const UserAccountPage = () => {
               Your Phone Number
             </InputLabel>
             <Input
-                        disabled={!editing?.phoneNum}
-                        onClick={handleEdittable}
+              disabled={!editing?.phoneNum}
+              onClick={handleEdittable}
               value={userToCreate?.phoneNum || ""}
               name="phoneNum"
               id="phoneNum-input"
@@ -229,8 +242,8 @@ const UserAccountPage = () => {
               Your Avatar
             </InputLabel>
             <Input
-                        disabled={!editing?.avatarUrl}
-                        onClick={handleEdittable}
+              disabled={!editing?.avatarUrl}
+              onClick={handleEdittable}
               value={userToCreate?.avatarUrl || ""}
               name="avatarUrl"
               id="avatar-input"
@@ -246,8 +259,8 @@ const UserAccountPage = () => {
               Birthday
             </InputLabel>
             <Input
-                        disabled={!editing?.birthday}
-                        onClick={handleEdittable}
+              disabled={!editing?.birthday}
+              onClick={handleEdittable}
               value={userToCreate?.birthday?.split("T")[0] || ""}
               type="date"
               name="birthday"
