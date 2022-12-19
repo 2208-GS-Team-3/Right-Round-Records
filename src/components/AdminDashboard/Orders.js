@@ -26,7 +26,6 @@ export default function Orders() {
       <Typography variant="h5" component="h5">
         Recent Orders
       </Typography>
-
       <Table size="small">
         <TableHead>
           <TableRow>

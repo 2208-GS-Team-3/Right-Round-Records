@@ -6,7 +6,6 @@ const Genre = db.define("genre", {
     type: Sequelize.STRING,
     primaryKey: true,
   },
-
 });
 
 module.exports = Genre;

@@ -15,7 +15,7 @@ const authTest = async () => {
     if (res.status !== 200) {
       throw redirect("/login");
     }
-    return true
+    return true;
   } catch (error) {
     throw redirect("/login");
   }

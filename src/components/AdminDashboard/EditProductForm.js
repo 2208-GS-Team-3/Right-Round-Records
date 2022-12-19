@@ -15,7 +15,6 @@ import {
   setEditInProgress,
   setUpdatedRecordInfo,
 } from "../../store/editRecordSlice";
-import { deleteRecord, setRecords } from "../../store/recordsSlice";
 import AlertDialog from "./AlertDialog";
 import { useNavigate } from "react-router-dom";
 
@@ -68,8 +67,6 @@ const EditProductForm = () => {
     }
   };
 
-  console.log({ updatedRecordInfo });
-
   const handleUpdate = async (event) => {
     try {
       event.preventDefault();
@@ -82,7 +79,6 @@ const EditProductForm = () => {
         },
       };
 
-      console.log({ updatedRecordInfo });
       const newData = {
         id: Number(updatedRecordInfo.id) || recordToEdit[0].id,
         albumName: updatedRecordInfo.albumName || recordToEdit[0].albumName,
@@ -90,8 +86,6 @@ const EditProductForm = () => {
         price: Number(updatedRecordInfo.price) || Number(recordToEdit[0].price),
         year: Number(updatedRecordInfo.year) || Number(recordToEdit[0].year),
       };
-
-      console.log({ newData });
 
       await axios.put(`/api/records/${recordToEdit[0].id}`, newData, tokenData);
       const allUpdatedRecords = await axios.get(`/api/records/`);
@@ -141,7 +135,7 @@ const EditProductForm = () => {
           }}
         >
           <img
-            src={recordToEdit[0]?.imageUrls[0]?.uri ?? `static/RRR Record.png`}
+            src={recordToEdit[0]?.imageUrls[0]?.uri ?? `/static/RRR Record.png`}
           />
         </Box>
 

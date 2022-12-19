@@ -42,7 +42,7 @@ export default function GoogleLocation() {
   }, [currentUser]);
 
   const handleDisabled = () => {
-    disabled.current = false
+    disabled.current = false;
   };
 
   const handleUserStateChange = (value) => {

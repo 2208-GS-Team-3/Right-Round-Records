@@ -38,10 +38,9 @@ router.get("/:id", async (req, res, next) => {
 // update record on admin side
 router.put("/:id", async (req, res, next) => {
   try {
-    const { id, albumName, artist, year, price } = req.body;
+    const { id, albumName, artist, year, rawPrice } = req.body;
 
-    const recordToUpdate = await Record.findOne({ where: { id: req.body.id } });
-    console.log({ price });
+    const recordToUpdate = await Record.findByPk(id);
     const updatedRecord = await recordToUpdate.update({
       artist,
       year,
@@ -65,18 +64,17 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
-//create new record admin side
+// create new record admin side
 router.post("/", async (req, res, next) => {
   try {
     const { albumName, artist, price, year, genre } = req.body;
 
-    console.log("body", req.body);
     const foundGenre = await Genre.findOne({
-      where: { name: req.body.genre },
+      where: { name: genre },
     });
 
     const newRecordData = await Record.create({
-      albumName: req.body.albumName,
+      albumName,
       artist,
       price,
       year,

@@ -8,10 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { deleteRecord, setRecords } from "../../store/recordsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import {
-  setEditInProgress,
-  setUpdatedRecordInfo,
-} from "../../store/editRecordSlice";
+import { setEditInProgress } from "../../store/editRecordSlice";
 
 export default function AlertDialog() {
   const [open, setOpen] = React.useState(false);

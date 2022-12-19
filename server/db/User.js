@@ -102,6 +102,7 @@ const User = db.define("user", {
   avatarUrl: {
     type: STRING,
     allowNull: true,
+    defaultValue: "/static/RRR Record.png",
   },
   isAdmin: {
     type: BOOLEAN,

@@ -18,8 +18,6 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-import { useSelector } from "react-redux";
-
 const drawerWidth = 240;
 
 const Drawer = styled(MuiDrawer, {
@@ -52,7 +50,6 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
-  const showForm = useSelector((state) => state.records.showForm);
 
   const toggleDrawer = () => {
     setOpen(!open);
