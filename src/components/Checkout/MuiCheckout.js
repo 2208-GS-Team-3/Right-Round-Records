@@ -17,7 +17,6 @@ import PaymentForm from "./PaymentForm";
 import ReviewPayment from "./ReviewPayment";
 import { useSelector, useDispatch } from "react-redux";
 import { setOrders } from "../../store/ordersSlice";
-import { useParams } from "react-router-dom";
 import { resetCart } from "../../store/cartSlice";
 
 const steps = ["Shipping address", "Payment details", "Review your order"];
@@ -46,9 +45,7 @@ export default function Checkout() {
   const subtotal = useSelector((state) => state.checkoutData.subtotal);
   const cartInfo = useSelector((state) => state.cart.cartInfo);
   const dispatch = useDispatch();
-  const params = useParams("");
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
-  const orderId = params.id;
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -64,16 +61,16 @@ export default function Checkout() {
   const completeCheckout = async (event) => {
     event.preventDefault();
     try {
-      //get token of logged in user
+      // get token of logged in user
       const token = window.localStorage.getItem("token");
 
-      //data to send to backend
+      // data to send to backend
       const tokenData = {
         headers: {
           authorization: token,
         },
       };
-      //send orderData to ordersRouter
+      // send orderData to ordersRouter
       const orderData = {
         cartId: cartInfo.id,
         status: "placed",
@@ -86,14 +83,14 @@ export default function Checkout() {
         totalCost: subtotal,
       };
 
-      //change order status to placed
+      // change order status to placed
       await axios.put(`/api/orders`, orderData, tokenData);
 
-      //newOrders will include all record/order associations
+      // newOrders will include all record/order associations
       const newOrders = await axios.get(`/api/orders`, tokenData);
       dispatch(setOrders(newOrders.data));
 
-      //hit cart route & update cart to be empty
+      // hit cart route & update cart to be empty
       // const emptiedCart = await axios.get(`/api/cart`, tokenData);
       dispatch(resetCart(cartInfo));
       dispatch(resetCart(recordsInCart));
@@ -102,7 +99,6 @@ export default function Checkout() {
       console.log(err);
     }
   };
-
 
   return (
     <ThemeProvider theme={theme}>

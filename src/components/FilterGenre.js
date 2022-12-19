@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { setFilteredRecords, setGenreFilter } from "../store/recordsSlice";
-import { useDispatch } from "react-redux";
 
 const FilterGenre = () => {
   const genres = useSelector((state) => state.genres.genres);

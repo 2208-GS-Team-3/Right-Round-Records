@@ -1,4 +1,3 @@
-const { current } = require("@reduxjs/toolkit");
 const express = require("express");
 const {
   Record,
@@ -79,19 +78,19 @@ router.put("/", async (req, res, next) => {
     if (req.body.status === "placed") {
       // get users cart
       const cart = await Cart.findOne({
-        where: { id: req.body.cartId },
+        where: { id: cartId },
         include: [{ model: Record, include: [Genre, Style] }],
       });
 
-      //get users current order
+      // get users current order
       const currentOrder = await Order.create({
         where: { status: "cart", userId: user.id },
       });
 
-      //add the order to the user
+      // add the order to the user
       await user.addOrder(currentOrder);
 
-      //associate the order with the cart (for transfer of record quantity)
+      // associate the order with the cart (for transfer of record quantity)
       await currentOrder.setCart(cart);
       await cart.setOrder(currentOrder);
 
@@ -100,14 +99,14 @@ router.put("/", async (req, res, next) => {
       cart.records.forEach((record) => recordsArray.push(record));
       await currentOrder.addRecords(recordsArray);
 
-      //get all cart records (this includes quantity)
+      // get all cart records (this includes quantity)
       const cartRecords = await CartRecords.findAll({
         where: { cartId: cart.id },
       });
-      //for each cartrecord
-      //loop through all order records && update quantity to be the same as cart record quantity
+      // for each cartrecord
+      // loop through all order records && update quantity to be the same as cart record quantity
       // this is where we transfer cart records to order records with the quantity field
-      const mappedRecords = cartRecords.map(async (cartrecord) => {
+      cartRecords.map(async (cartrecord) => {
         const findAndUpdateOrderRecord = OrderRecords.findOne({
           where: { recordId: cartrecord.recordId, orderId: currentOrder.id },
         }).then((orderRecord) =>
@@ -116,17 +115,17 @@ router.put("/", async (req, res, next) => {
         return findAndUpdateOrderRecord;
       });
 
-      //update the order status to placed
+      // update the order status to placed
       const updatedOrder = await currentOrder.update({
         datePlaced: Date.now(),
         status: "placed",
-        shippingAddress: shippingAddress,
-        billingAddress: billingAddress,
-        creditCardName: creditCardName,
-        creditCardNum: creditCardNum,
-        ccSecurity: ccSecurity,
-        expiryDate: expiryDate,
-        totalCost: totalCost,
+        shippingAddress,
+        billingAddress,
+        creditCardName,
+        creditCardNum,
+        ccSecurity,
+        expiryDate,
+        totalCost,
       });
 
       const finalOrderDetails = await Order.findOne({
@@ -134,13 +133,13 @@ router.put("/", async (req, res, next) => {
         include: [Record],
       });
 
-      //instead of destroying the cart (bc it needs to stay associated with order)
-      //make a new cart and set the user
+      // instead of destroying the cart (bc it needs to stay associated with order)
+      // make a new cart and set the user
 
-      cart.update({ userId: null }); //not sure if this line is working. whats best way to disassociate user without deleting cart?
+      cart.update({ userId: null }); // not sure if this line is working. whats best way to disassociate user without deleting cart?
       const newCart = await Cart.create();
       await newCart.setUser(user);
-      //send back order
+      // send back order
       res.send(finalOrderDetails);
     }
   } catch (err) {

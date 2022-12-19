@@ -23,7 +23,7 @@ const store = configureStore({
     userToCreate: createUserReducer,
     checkoutData: checkoutReducer,
     recordToEdit: editRecordSlice,
-    adminUserList: adminUserListReducer
+    adminUserList: adminUserListReducer,
   },
 });
 

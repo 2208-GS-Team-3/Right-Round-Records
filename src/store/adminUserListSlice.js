@@ -14,7 +14,5 @@ export const adminUserListSlice = createSlice({
   },
 });
 
-export const {
-  setUserList,
-} = adminUserListSlice.actions;
+export const { setUserList } = adminUserListSlice.actions;
 export default adminUserListSlice.reducer;

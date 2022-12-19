@@ -22,7 +22,6 @@ export const editRecordSlice = createSlice({
   },
 });
 
-export const {
-    setRecordToEdit, setUpdatedRecordInfo, setEditInProgress
-} = editRecordSlice.actions;
+export const { setRecordToEdit, setUpdatedRecordInfo, setEditInProgress } =
+  editRecordSlice.actions;
 export default editRecordSlice.reducer;

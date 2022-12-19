@@ -3,15 +3,13 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Form } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setCreditCard, setCardValidity } from "../../store/checkoutSlice";
-import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { FormControl, FormHelperText } from "@mui/material";
 
 const PaymentForm = () => {
   const creditCard = useSelector((state) => state.checkoutData.creditCard);
-  const cardValidity = useSelector((state) => state.checkoutData.cardValidity);
 
   const [validity, setValidity] = useState({
     creditCardNum: false,
@@ -35,7 +33,6 @@ const PaymentForm = () => {
     }
   };
 
- 
   const validateCvv = () => {
     if (creditCard?.ccSecurity?.length === 2) {
       setValidity({ ...validity, cvv: true });
@@ -50,13 +47,12 @@ const PaymentForm = () => {
     const name = target.name;
     dispatch(setCreditCard({ ...creditCard, [name]: value }));
 
-    //if the below worked, i should be able to access from the MUI checkout page whether or not my card info is valid
-    //if its not valid, i want to blur the 'next' button on mui checkout page
+    // if the below worked, i should be able to access from the MUI checkout page whether or not my card info is valid
+    // if its not valid, i want to blur the 'next' button on mui checkout page
     if (!Object.values(validity).includes(false)) {
       dispatch(setCardValidity(true));
     }
   };
-
 
   return (
     <>

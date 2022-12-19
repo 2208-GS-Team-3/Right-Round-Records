@@ -22,7 +22,7 @@ export const cartSlice = createSlice({
       );
       if (recordInCart) {
         recordInCart.cartRecord.quantity = Number(action.payload.quantity);
-      } 
+      }
     },
     removeFromCart: (state, action) => {
       const removeRecord = state.cartRecords.filter(

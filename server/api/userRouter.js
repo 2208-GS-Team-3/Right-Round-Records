@@ -1,7 +1,6 @@
 const express = require("express");
-const { User, Cart, Order, Record, Genre, Style } = require("../db");
+const { User, Cart, Order, Record } = require("../db");
 const router = express.Router();
-const { authenticateUser } = require("./helpers/authUserMiddleware");
 
 router.get("/", async (req, res, next) => {
   try {

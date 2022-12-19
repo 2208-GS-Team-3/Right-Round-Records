@@ -18,8 +18,8 @@ const Review = db.define("review", {
     allowNull: true,
     validate: {
       max: 5,
-      min: 1
-    }
+      min: 1,
+    },
   },
 });
 

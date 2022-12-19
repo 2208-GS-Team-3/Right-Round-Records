@@ -86,9 +86,7 @@ function RRRAppBar() {
         <Toolbar disableGutters>
           <Link href="/">
             <Avatar
-
               src="/static/RRR Record.png"
-
               sx={{
                 mr: 2,
                 height: "auto",

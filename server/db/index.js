@@ -20,12 +20,12 @@ Cart.belongsTo(User);
 Cart.belongsToMany(Record, { through: CartRecords });
 Record.belongsToMany(Cart, { through: CartRecords });
 
-Order.belongsToMany(Record, { through: OrderRecords, unique: false});
+Order.belongsToMany(Record, { through: OrderRecords, unique: false });
 Record.belongsToMany(Order, { through: OrderRecords, unique: false });
 
-//needed to make this association to transfer cart to order
-Order.hasOne(Cart)
-Cart.hasOne(Order)
+// needed to make this association to transfer cart to order
+Order.hasOne(Cart);
+Cart.hasOne(Order);
 
 Review.belongsTo(User);
 Review.belongsTo(Record);
@@ -49,5 +49,5 @@ module.exports = {
   Style,
   Cart,
   CartRecords,
-  OrderRecords
+  OrderRecords,
 };

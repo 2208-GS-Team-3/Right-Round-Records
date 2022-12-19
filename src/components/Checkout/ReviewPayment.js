@@ -5,7 +5,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { Container } from "@mui/material";
 
 const ReviewPayment = () => {
@@ -14,15 +13,15 @@ const ReviewPayment = () => {
   const billing = useSelector((state) => state.checkoutData.billing);
   const shipping = useSelector((state) => state.checkoutData.shipping);
   const subtotal = useSelector((state) => state.checkoutData.subtotal);
-  const params = useParams("");
 
   const orderSubTotal = recordsInCart.reduce(
-    (total, currentItem) => total + (currentItem.rawPrice * currentItem.cartRecord.quantity),
+    (total, currentItem) =>
+      total + currentItem.rawPrice * currentItem.cartRecord.quantity,
     0
   );
   const tax = orderSubTotal * 0.08;
-  const finalOrderAmount = tax + subtotal
-  const last4Digits = creditCard.creditCardNum.substring(12)
+  const finalOrderAmount = tax + subtotal;
+  const last4Digits = creditCard.creditCardNum.substring(12);
 
   return (
     <React.Fragment>
@@ -36,28 +35,33 @@ const ReviewPayment = () => {
               primary={`${record.albumName}(${record.cartRecord.quantity})`}
               secondary={record.artist}
             />
-            <Typography variant="body2">${(record.rawPrice * record.cartRecord.quantity).toFixed(2)}</Typography>
+            <Typography variant="body2">
+              ${(record.rawPrice * record.cartRecord.quantity).toFixed(2)}
+            </Typography>
           </ListItem>
         ))}
-<Container style={{border: '1px solid gray', borderRadius: '5px'}}>
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Subtotal" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
-           ${orderSubTotal.toFixed(2)}
-          </Typography>
-        </ListItem>
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Taxes" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
-           ${tax.toFixed(2)}
-          </Typography>
-        </ListItem>
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'blue' }}>
-           ${finalOrderAmount.toFixed(2)}
-          </Typography>
-        </ListItem>
+        <Container style={{ border: "1px solid gray", borderRadius: "5px" }}>
+          <ListItem sx={{ py: 1, px: 0 }}>
+            <ListItemText primary="Subtotal" />
+            <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
+              ${orderSubTotal.toFixed(2)}
+            </Typography>
+          </ListItem>
+          <ListItem sx={{ py: 1, px: 0 }}>
+            <ListItemText primary="Taxes" />
+            <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
+              ${tax.toFixed(2)}
+            </Typography>
+          </ListItem>
+          <ListItem sx={{ py: 1, px: 0 }}>
+            <ListItemText primary="Total" />
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 700, color: "blue" }}
+            >
+              ${finalOrderAmount.toFixed(2)}
+            </Typography>
+          </ListItem>
         </Container>
       </List>
 
@@ -70,7 +74,8 @@ const ReviewPayment = () => {
             <b>Ship to:</b> {shipping.firstName} {shipping.lastName}
           </Typography>
           <Typography gutterBottom>
-            <b>Address: </b>{shipping.address1}, {shipping.address2}, {shipping.city},{" "}
+            <b>Address: </b>
+            {shipping.address1}, {shipping.address2}, {shipping.city},{" "}
             {shipping.state}, {shipping.zip}, {shipping.country}
           </Typography>
         </Grid>
@@ -80,14 +85,17 @@ const ReviewPayment = () => {
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Billing Information
           </Typography>
-            <Typography gutterBottom>
+          <Typography gutterBottom>
             <b>Name:</b> {billing.firstName} {billing.lastName}
-            </Typography>
-            <Typography gutterBottom>
-              <b>Billing Address: </b>{billing.address1}, {billing.address2},{" "}
-              {billing.city}, {billing.state}, {billing.zip}, {billing.country}
           </Typography>
-            <Typography gutterBottom><b>VISA⠀••••</b> {last4Digits}</Typography>
+          <Typography gutterBottom>
+            <b>Billing Address: </b>
+            {billing.address1}, {billing.address2}, {billing.city},{" "}
+            {billing.state}, {billing.zip}, {billing.country}
+          </Typography>
+          <Typography gutterBottom>
+            <b>VISA⠀••••</b> {last4Digits}
+          </Typography>
           {/* </Grid> */}
         </Grid>
       </Grid>
