@@ -6,7 +6,7 @@ import RRRAppBar from "./AppBar/AppBar";
 import { CssBaseline } from "@mui/material";
 import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
-import { setOrders , setAdminAllOrders } from "../store/ordersSlice";
+import { setOrders, setAdminAllOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
 import { setReviews } from "../store/reviewsSlice";
 import { setCartInfo, setCartRecords } from "../store/cartSlice";
@@ -23,19 +23,17 @@ const App = () => {
   };
 
   const getAllOrders = async () => {
-     // get token of logged in user
-     const token = window.localStorage.getItem("token");
-     // data to send to backend
-     const tokenData = {
-       headers: {
-         authorization: token,
-       },
-     };
+    // get token of logged in user
+    const token = window.localStorage.getItem("token");
+    // data to send to backend
+    const tokenData = {
+      headers: {
+        authorization: token,
+      },
+    };
     const orders = await axios.get("/api/orders", tokenData);
     dispatch(setAdminAllOrders(orders.data));
   };
-
-  
 
   // all orders currently available.
   const getUsersOrders = async () => {
@@ -50,7 +48,7 @@ const App = () => {
       };
       // check order api, send tokenData to only get current users orders
       const usersOrders = await axios.get(`/api/user`, tokenData);
-    
+
       dispatch(setOrders(usersOrders.data));
     } catch (err) {
       console.log(err);
@@ -100,7 +98,7 @@ const App = () => {
     getUsersOrders();
     getGenres();
     getCart();
-    getAllOrders()
+    getAllOrders();
   }, []);
 
   return (

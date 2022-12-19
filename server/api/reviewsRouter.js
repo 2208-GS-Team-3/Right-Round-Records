@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { Record, Review, User, Order, Genre, Style } = require("../db");
+const { Record, Review, User, Order } = require("../db");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -29,7 +29,7 @@ router.put("/", async (req, res, next) => {
       include: [Record],
     });
 
-    //if the user has ordered the album, allow them to review
+    // if the user has ordered the album, allow them to review
     if (order) {
       const newReview = await Review.create({
         date: Date.now(),

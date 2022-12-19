@@ -7,7 +7,6 @@ import {
   removeFromCart,
   setCartInfo,
   setCartRecords,
-  addToCart,
 } from "../../store/cartSlice";
 import Button from "@mui/material/Button";
 
@@ -67,7 +66,7 @@ const CartQuantitySelector = ({ record }) => {
     };
     // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
-    const updatedCart = await axios.get(`/api/cart`, tokenData);
+    await axios.get(`/api/cart`, tokenData);
     dispatch(removeFromCart(recordToUpdate));
   };
 

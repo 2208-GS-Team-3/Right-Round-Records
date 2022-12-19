@@ -18,10 +18,10 @@ export default function UsersAdminView() {
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const navUserAdd = () => navigate("./add")
-  const navUserEdit = (user) => navigate(`./${user}`)
+  const navUserAdd = () => navigate("./add");
+  const navUserEdit = (user) => navigate(`./${user}`);
 
   const handleSearch = (event) => {
     console.log("not searching yet...");
@@ -44,9 +44,8 @@ export default function UsersAdminView() {
   };
 
   React.useEffect(() => {
-getUsers()
-  }, [])
-  
+    getUsers();
+  }, []);
 
   return (
     <Paper>
@@ -98,7 +97,7 @@ getUsers()
                 <TableCell>{user.lastName}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.phoneNum}</TableCell>
-                <TableCell>{user.birthday.split('T')[0]}</TableCell>
+                <TableCell>{user.birthday.split("T")[0]}</TableCell>
                 <TableCell>
                   <Button size="small" value={user.id} onClick={navUserEdit}>
                     Edit

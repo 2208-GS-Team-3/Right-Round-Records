@@ -15,17 +15,8 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import Chart from "./Chart";
-import Deposits from "./Deposits";
-import Orders from "./Orders";
-import Products from "./Products";
-import NewProductForm from "./NewProductForm";
-import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -59,7 +50,6 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
-  const showForm = useSelector((state) => state.records.showForm);
 
   const toggleDrawer = () => {
     setOpen(!open);

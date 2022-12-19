@@ -13,9 +13,7 @@ import Paper from "@mui/material/Paper";
 export default function Orders() {
   const orders = useSelector((state) => state.orders.adminAllOrders);
 
-
   return (
-
     <Paper>
       <Title>Recent Orders</Title>
       <Table size="small">

@@ -28,10 +28,10 @@ export default function Deposits() {
   ];
 
   const date = new Date();
-  let name = month[date.getMonth()];
+  const name = month[date.getMonth()];
 
-  //i dont think issue is in this file, can you see terminal error? I can looks like an old import survived?
-  //oh wait, im loading now
+  // i dont think issue is in this file, can you see terminal error? I can looks like an old import survived?
+  // oh wait, im loading now
   // i think that was it
   // Anything else being weird?
 
