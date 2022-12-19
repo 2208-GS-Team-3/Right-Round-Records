@@ -1,13 +1,13 @@
 import React from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateCart,
   removeFromCart,
   setCartInfo,
   setCartRecords,
-  addToCart
+  addToCart,
 } from "../../store/cartSlice";
 import Button from "@mui/material/Button";
 
@@ -38,8 +38,7 @@ const CartQuantitySelector = ({ record }) => {
     };
     // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
-    console.log(recordToUpdate)
-    
+
     const updatedCart = await axios.get(`/api/cart`, tokenData);
     dispatch(setCartRecords(updatedCart.data.records));
     dispatch(setCartInfo(updatedCart.data));
@@ -75,11 +74,11 @@ const CartQuantitySelector = ({ record }) => {
   return (
     <>
       {currentRecordInCart ? (
-              <div style={{display: 'flex', flexDirection: 'column'}}>
-          <FormControl size="small" >
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <FormControl size="small">
             <InputLabel htmlFor="quantitySelector">Quantity</InputLabel>
             <Select
-              defaultValue={currentRecordInCart?.cartRecord?.quantity}
+              value={currentRecordInCart?.cartRecord?.quantity || ""}
               label="Quantity"
               id="quantitySelector"
               onChange={updateQuantity}
@@ -99,21 +98,22 @@ const CartQuantitySelector = ({ record }) => {
             variant="contained"
             onClick={removeRecordFromCart}
             value={null}
-            style={{backgroundColor: 'red'}}
+            style={{ backgroundColor: "red" }}
           >
             Remove
-          </Button> </div>
+          </Button>{" "}
+        </div>
       ) : (
         <Button
-        fullWidth={true}
-        variant="contained"
-        onClick={updateQuantity}
-        value={1}
+          fullWidth={true}
+          variant="contained"
+          onClick={updateQuantity}
+          value={1}
         >
           Add to Cart
         </Button>
       )}
-      </>
+    </>
   );
 };
 export default CartQuantitySelector;

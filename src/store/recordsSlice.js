@@ -3,8 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   records: [],
   newRecordData: {},
-  showForm: false
-  
+  showForm: false,
+  filteredRecords: [],
+  genreFilter: "All Records",
 };
 
 export const recordsSlice = createSlice({
@@ -23,13 +24,33 @@ export const recordsSlice = createSlice({
       state.newRecordData = action.payload;
     },
     setShowAddForm: (state, action) => {
-      state.showForm = action.payload
+      state.showForm = action.payload;
     },
     addRecord: (state, action) => {
       state.records.push(action.payload);
-    }
+    },
+    setFilteredRecords: (state, action) => {
+      if (state.genreFilter !== "All Records") {
+        state.filteredRecords = action.payload.filter(
+          (record) => record?.genres[0]?.name === state.genreFilter
+        );
+      } else {
+        state.filteredRecords = [];
+      }
+    },
+    setGenreFilter: (state, action) => {
+      state.genreFilter = action.payload;
+    },
   },
 });
 
-export const { setRecords, deleteRecord, setNewRecordData, setShowAddForm, addRecord } = recordsSlice.actions;
+export const {
+  setRecords,
+  deleteRecord,
+  setNewRecordData,
+  setShowAddForm,
+  addRecord,
+  setGenreFilter,
+  setFilteredRecords,
+} = recordsSlice.actions;
 export default recordsSlice.reducer;

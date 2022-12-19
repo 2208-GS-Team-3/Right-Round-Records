@@ -7,12 +7,15 @@ import {
   setRecords,
   setShowAddForm,
 } from "../../store/recordsSlice";
+
 import { useNavigate } from "react-router-dom";
+
 
 const NewProductForm = () => {
   const newRecordData = useSelector((state) => state.records.newRecordData);
   const genres = useSelector((state) => state.genres.genres);
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const handleNewRecord = (e) => {
@@ -20,6 +23,10 @@ const NewProductForm = () => {
     const value = target.value;
     const name = target.name;
     dispatch(setNewRecordData({ ...newRecordData, [name]: value }));
+
+
+  const seeAllProducts = () => {
+    dispatch(setShowAddForm(false));
   };
 
   const handleSubmitNewRecord = async (event) => {
@@ -41,7 +48,6 @@ const NewProductForm = () => {
         genre: newRecordData.genre,
       };
 
-      // sending new record to db
       await axios.post(`/api/records/`, newRecord, tokenData);
       const allRecords = await axios.get(`/api/records/`, tokenData);
       dispatch(setRecords(allRecords.data));
@@ -52,6 +58,7 @@ const NewProductForm = () => {
   };
 
   return (
+
     <Paper>
       <Container
         sx={{
@@ -66,15 +73,16 @@ const NewProductForm = () => {
           Add New Product
         </Typography>
 
-        <Container
-          sx={{
-            display: "flex",
-            gap: "20px",
-            justifyContent: "center",
-            alignItems: "center",
-            placeSelf: "center",
-          }}
-        >
+      <Container
+        sx={{
+          display: "flex",
+          gap: "20px",
+          justifyContent: "center",
+          alignItems: "center",
+          placeSelf: "center",
+        }}
+      >
+
           <form
             style={{
               display: "flex",
@@ -137,29 +145,9 @@ const NewProductForm = () => {
               variant="outlined"
               onChange={handleNewRecord}
             />
-            {/* ISSUE WITH SEQUELIZE MODEL STORAGE OF IMAGES */}
-            {/* <TextField
-              required
-              id="imageUrls"
-              name="imageUrls"
-              label="Image Url"
-              variant="outlined"
-              onChange={handleNewRecord}
-            /> */}
 
-            {/* ISSUE WITH SEQUELIZE MODEL STORAGE OF TRACKS */}
-            {/* <TextField
-            required
-            name="tracks"
-            label="Track List"
-            fullWidth
-            id="outlined-multiline-static"
-            variant="outlined"
-            multiline
-            rows={4}
-            onChange={handleNewRecord}
-          /> */}
           </form>
+          
         </Container>
         <Container
           sx={{

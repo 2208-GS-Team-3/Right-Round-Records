@@ -12,6 +12,7 @@ router.get("/", async (req, res, next) => {
     const orders = await Order.findAll({
       where: { userId: user.id },
       include: [Record],
+      order: [["id", "DESC"]],
       attributes: {
         exclude: [
           "creditCardNum",

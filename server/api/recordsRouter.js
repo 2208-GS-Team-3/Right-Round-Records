@@ -1,13 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {
-  Record,
-  Review,
-  Order,
-  Genre,
-  Style,
-  Cart,
-} = require("../db");
+const { Record, Review, Order, Genre, Style, Cart, User } = require("../db");
 
 // all records
 router.get("/", async (req, res, next) => {
@@ -26,9 +19,14 @@ router.get("/", async (req, res, next) => {
 // single record
 router.get("/:id", async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const record = await Record.findByPk(id, {
-      include: [Review, Style, Genre],
+      include: [
+        // updated so that review has access to username on single record page
+        { model: Review, include: { model: User, attributes: ["username"] } },
+        Style,
+        Genre,
+      ],
     });
     res.send(record);
   } catch (err) {
@@ -43,57 +41,56 @@ router.put("/:id", async (req, res, next) => {
     const { id, albumName, artist, year, price, trackList } = req.body;
     const recordToUpdate = await Record.findByPk(req.body.id);
     await recordToUpdate.update({
-      artist, year, price, albumName
+      artist,
+      year,
+      price,
+      albumName,
     });
     res.send(recordToUpdate);
-  }
-  catch (err) {
+  } catch (err) {
     next(err);
   }
-})
+});
 
 //delete record on admin side
 router.delete("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const recordToDestroy = await Record.findByPk(id);
-    await recordToDestroy.destroy()
+    await recordToDestroy.destroy();
     res.sendStatus(204);
-  }
-  catch (err) {
+  } catch (err) {
     next(err);
   }
-})
+});
 
 //create new record admin side
 router.post("/", async (req, res, next) => {
   try {
+    const { albumName, artist, price, year, genre } = req.body;
 
-    const { albumName,
+    console.log("body", req.body);
+    const foundGenre = await Genre.findOne({
+      where: { name: req.body.genre },
+    });
+    console.log(foundGenre);
+
+    const newRecordData = await Record.create({
+      albumName: req.body.albumName,
       artist,
-      tracks,
-      imageUrls,
       price,
       year,
-      genre } = req.body;
+    });
+    console.log(newRecordData);
 
-      const foundGenre = await Genre.findOne({
-        where: { name: genre },
-      });
-      
-      const newRecord = await Record.create({
-        albumName,
-        artist,
-        // tracks,
-        // imageUrls,
-        price,
-        year
-      });
-      
-      // set genre depending on info coming in
-      newRecord.addGenres(genre ?? "Undefined");
+    const newRecord = await Record.findOne({
+      where: { id: newRecordData.id },
+    });
 
-    res.sendStatus(201)
+    // set genre depending on info coming in
+    newRecord.addGenres(foundGenre);
+
+    res.sendStatus(201);
   } catch (err) {
     console.error(err);
     next(err);
