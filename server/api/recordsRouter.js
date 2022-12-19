@@ -41,15 +41,12 @@ router.put("/:id", async (req, res, next) => {
     const { id, albumName, artist, year, rawPrice } = req.body;
 
     const recordToUpdate = await Record.findByPk(id);
-
-    console.log({ recordToUpdate });
     const updatedRecord = await recordToUpdate.update({
       artist,
       year,
-      rawPrice,
       albumName,
+      price,
     });
-    console.log({ updatedRecord });
     res.status(200).send(updatedRecord);
   } catch (err) {
     next(err);

@@ -19,6 +19,7 @@ export default function Products() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log(records);
   const navRecordEdit = (recordId) => navigate(`${recordId}`);
   const navRecordAdd = () => navigate(`add`);
 

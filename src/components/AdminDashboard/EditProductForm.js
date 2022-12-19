@@ -13,6 +13,7 @@ import axios from "axios";
 import Box from "@mui/material/Box";
 import {
   setEditInProgress,
+  setRecordToEdit,
   setUpdatedRecordInfo,
 } from "../../store/editRecordSlice";
 import AlertDialog from "./AlertDialog";
@@ -20,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 const EditProductForm = () => {
   const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
+  const records = useSelector((state) => state.records.records);
   const updatedRecordInfo = useSelector(
     (state) => state.recordToEdit.updatedRecordInfo
   );
@@ -33,6 +35,37 @@ const EditProductForm = () => {
     const value = target.value;
     const name = target.name;
     dispatch(setUpdatedRecordInfo({ ...updatedRecordInfo, [name]: value }));
+  };
+
+  const handleDeleteRecord = async (event) => {
+    const response = confirm("are you sure you want to delete this record?");
+    if (response === true) {
+      try {
+        event.preventDefault();
+        // get token of logged in user
+        const token = window.localStorage.getItem("token");
+        // data to send to backend
+        const tokenData = {
+          headers: {
+            authorization: token,
+          },
+        };
+        await axios.delete(`/api/records/${recordToEdit[0].id}`, tokenData);
+        // update front end and redux store
+        dispatch(
+          deleteRecord({
+            id: recordToEdit[0].id,
+          })
+        );
+        const allNewRecords = await axios.get("/api/records");
+        dispatch(setRecords(allNewRecords.data));
+        dispatch(setEditInProgress(false));
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      return;
+    }
   };
 
   const handleUpdate = async (event) => {
@@ -51,12 +84,13 @@ const EditProductForm = () => {
         id: Number(updatedRecordInfo.id) || recordToEdit[0].id,
         albumName: updatedRecordInfo.albumName || recordToEdit[0].albumName,
         artist: updatedRecordInfo.artist || recordToEdit[0].artist,
-        rawPrice:
-          Number(updatedRecordInfo.rawPrice) || recordToEdit[0].rawPrice,
-        year: Number(updatedRecordInfo.year) || recordToEdit[0].year,
+        price: Number(updatedRecordInfo.price) || Number(recordToEdit[0].price),
+        year: Number(updatedRecordInfo.year) || Number(recordToEdit[0].year),
       };
 
       await axios.put(`/api/records/${recordToEdit[0].id}`, newData, tokenData);
+      const allUpdatedRecords = await axios.get(`/api/records/`);
+      dispatch(setRecords(allUpdatedRecords.data));
 
       navAllProducts();
     } catch (err) {
@@ -113,7 +147,7 @@ const EditProductForm = () => {
               name="id"
               defaultValue={recordToEdit[0]?.id}
               sx={{ margin: "20px" }}
-              onChange={handleRecordStateChange}
+              readOnly
             />
           </FormControl>
           <br></br>
