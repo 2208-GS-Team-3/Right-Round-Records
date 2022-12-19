@@ -52,7 +52,7 @@ const SingleRecord = () => {
 
   useEffect(() => {
     fetchRecordById(recordId);
-  }, []);
+  }, [recordId]);
 
   if (!Object.keys(selectedRecord).length) return <h1>Loading...</h1>;
   const sumOfRatings = selectedRecord?.reviews?.reduce(

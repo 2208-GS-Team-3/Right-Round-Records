@@ -16,6 +16,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import BarCart from "./BarCart";
 import { Badge } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import BarSearch from "./BarSearch";
 
 function RRRAppBar() {
   const navigate = useNavigate();
@@ -120,6 +121,7 @@ function RRRAppBar() {
               </Link>
             ))}
           </Box>
+            <BarSearch/>
           <Box
             sx={{ mr: 5, display: "flex", placeItems: "center", flexGrow: 0 }}
           >
