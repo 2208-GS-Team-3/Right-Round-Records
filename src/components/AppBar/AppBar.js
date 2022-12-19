@@ -26,7 +26,9 @@ function RRRAppBar() {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const [recordTotal, setRecordTotal] = React.useState(0);
   const pages = ["Records", "Reviews", "Community"];
-  const userSettings = user.isAdmin ? ["Profile", "Account", "Dashboard", "Orders", "Logout"] : ["Profile", "Account", "Orders", "Logout"];
+  const userSettings = user.isAdmin
+    ? ["Profile", "Account", "Dashboard", "Orders", "Logout"]
+    : ["Profile", "Account", "Orders", "Logout"];
   const guestSettings = ["Login"];
 
   useEffect(() => {
@@ -69,9 +71,12 @@ function RRRAppBar() {
     e.preventDefault();
     if (e.target.innerHTML === "Logout" || e.target.id === "Logout") logout();
     if (e.target.innerHTML === "Login" || e.target.id === "Login") login();
-    if (e.target.innerHTML === "Orders" || e.target.id === "Orders") navUserOrders();
-    if (e.target.innerHTML === "Dashboard" || e.target.id === "Dashboard") navDashboard();
-    if (e.target.innerHTML === "Account" || e.target.id === "Account") navUserAccount()
+    if (e.target.innerHTML === "Orders" || e.target.id === "Orders")
+      navUserOrders();
+    if (e.target.innerHTML === "Dashboard" || e.target.id === "Dashboard")
+      navDashboard();
+    if (e.target.innerHTML === "Account" || e.target.id === "Account")
+      navUserAccount();
     setAnchorElUser(null);
   };
 
@@ -81,7 +86,7 @@ function RRRAppBar() {
         <Toolbar disableGutters>
           <Link href="/">
             <Avatar
-              src="static/RRR Record.png"
+              src={"static/RRR Record.png"}
               sx={{
                 mr: 2,
                 height: "auto",
@@ -90,7 +95,7 @@ function RRRAppBar() {
             />
           </Link>
           <Avatar
-            src="static/RRR Name.png"
+            src={"static/RRR Name.png"}
             variant="square"
             sx={{
               mr: 2,
