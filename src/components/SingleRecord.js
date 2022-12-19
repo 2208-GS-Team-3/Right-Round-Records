@@ -37,16 +37,11 @@ const SingleRecord = () => {
   const params = useParams("");
   const recordId = params.id;
   const dispatch = useDispatch();
-  console.log(typeof recordId);
 
   const fetchRecordById = async () => {
     dispatch(setLoadingRecord(true));
-    console.log("hello");
     try {
       const record = await axios.get(`/api/records/${recordId}`);
-      if (!record.data.id) {
-        console.log("no record with that id");
-      }
       dispatch(setSelectedRecord(record.data));
       dispatch(setLoadingRecord(false));
     } catch (err) {
@@ -59,10 +54,6 @@ const SingleRecord = () => {
     fetchRecordById(recordId);
   }, []);
 
-  console.log(selectedRecord);
-
-  // check if selected record exist
-  // fix this -- should only be returning this on backend
   if (!Object.keys(selectedRecord).length) return <h1>Loading...</h1>;
   const sumOfRatings = selectedRecord?.reviews?.reduce(
     (rating, nextRating) => rating + nextRating.reviewRating,
