@@ -18,7 +18,7 @@ const Record = db.define("record", {
   },
   tracks: {
     type: Sequelize.ARRAY(Sequelize.JSON),
-    defaultValue: "Tracks for this record are not available.",
+    defaultValue: ["Tracks for this record are not available."],
   },
   imageUrls: {
     type: Sequelize.ARRAY(Sequelize.JSON),

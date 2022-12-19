@@ -67,24 +67,28 @@ router.delete("/:id", async (req, res, next) => {
 //create new record admin side
 router.post("/", async (req, res, next) => {
   try {
-    const { albumName, artist, tracks, imageUrls, price, year, genre } =
-      req.body;
+    const { albumName, artist, price, year, genre } = req.body;
 
+    console.log("body", req.body);
     const foundGenre = await Genre.findOne({
-      where: { name: genre },
+      where: { name: req.body.genre },
     });
+    console.log(foundGenre);
 
-    const newRecord = await Record.create({
-      albumName,
+    const newRecordData = await Record.create({
+      albumName: req.body.albumName,
       artist,
-      // tracks,
-      // imageUrls,
       price,
       year,
     });
+    console.log(newRecordData);
+
+    const newRecord = await Record.findOne({
+      where: { id: newRecordData.id },
+    });
 
     // set genre depending on info coming in
-    newRecord.addGenres(genre ?? "Undefined");
+    newRecord.addGenres(foundGenre);
 
     res.sendStatus(201);
   } catch (err) {
