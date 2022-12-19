@@ -8,24 +8,17 @@ import Title from "./Title";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Paper } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import {
-  setRecordToEdit,
-} from "../../store/editRecordSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { setRecordToEdit } from "../../store/editRecordSlice";
+import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
-import { setShowAddForm } from "../../store/recordsSlice";
 
 export default function Products() {
   const records = useSelector((state) => state.records.records);
-
   const dispatch = useDispatch();
-  const params = useParams();
-  const recordId = params.id;
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-  const NavRecordEdit = (recordId) => navigate(`${recordId}`)
-  const NavRecordAdd = (recordId) => navigate(`add`)
+  const navRecordEdit = (recordId) => navigate(`${recordId}`);
+  const navRecordAdd = () => navigate(`add`);
 
   const handleSearch = (event) => {
     console.log("not searching yet...");
@@ -36,11 +29,7 @@ export default function Products() {
       (record) => record.id === Number(event.target.value)
     );
     dispatch(setRecordToEdit(filteredRecord));
-    NavRecordEdit(Number(event.target.value))
-  };
-
-  const showForm = () => {
-    dispatch(setShowAddForm(true));
+    navRecordEdit(Number(event.target.value));
   };
 
   return (
@@ -66,7 +55,7 @@ export default function Products() {
         <Button
           variant="contained"
           style={{ width: "400px" }}
-          onClick={NavRecordAdd}
+          onClick={navRecordAdd}
         >
           Add product
         </Button>

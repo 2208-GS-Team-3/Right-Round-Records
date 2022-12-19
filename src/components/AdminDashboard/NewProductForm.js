@@ -2,20 +2,13 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Container, Typography, TextField, Paper } from "@mui/material";
 import axios from "axios";
-import {
-  setNewRecordData,
-  setRecords,
-  setShowAddForm,
-} from "../../store/recordsSlice";
-
+import { setNewRecordData, setRecords } from "../../store/recordsSlice";
 import { useNavigate } from "react-router-dom";
-
 
 const NewProductForm = () => {
   const newRecordData = useSelector((state) => state.records.newRecordData);
   const genres = useSelector((state) => state.genres.genres);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const handleNewRecord = (e) => {
@@ -23,11 +16,9 @@ const NewProductForm = () => {
     const value = target.value;
     const name = target.name;
     dispatch(setNewRecordData({ ...newRecordData, [name]: value }));
-
-
-  const seeAllProducts = () => {
-    dispatch(setShowAddForm(false));
   };
+
+  const navAllProducts = () => navigate("/dashboard/products");
 
   const handleSubmitNewRecord = async (event) => {
     try {
@@ -51,14 +42,13 @@ const NewProductForm = () => {
       await axios.post(`/api/records/`, newRecord, tokenData);
       const allRecords = await axios.get(`/api/records/`, tokenData);
       dispatch(setRecords(allRecords.data));
-      dispatch(setShowAddForm(false));
+      navAllProducts();
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-
     <Paper>
       <Container
         sx={{
@@ -73,16 +63,15 @@ const NewProductForm = () => {
           Add New Product
         </Typography>
 
-      <Container
-        sx={{
-          display: "flex",
-          gap: "20px",
-          justifyContent: "center",
-          alignItems: "center",
-          placeSelf: "center",
-        }}
-      >
-
+        <Container
+          sx={{
+            display: "flex",
+            gap: "20px",
+            justifyContent: "center",
+            alignItems: "center",
+            placeSelf: "center",
+          }}
+        >
           <form
             style={{
               display: "flex",
@@ -145,9 +134,7 @@ const NewProductForm = () => {
               variant="outlined"
               onChange={handleNewRecord}
             />
-
           </form>
-          
         </Container>
         <Container
           sx={{
