@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
   Container,
@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Box from '@mui/material/Box';
-import { useDispatch } from "react-redux";
 import {setEditInProgress, setUpdatedRecordInfo} from '../../store/editRecordSlice'
 import { deleteRecord, setRecords } from "../../store/recordsSlice";
 const EditProductForm = () => {
@@ -41,7 +40,7 @@ const handleDeleteRecord = async (event) => {
          },
        };
       await axios.delete(`/api/records/${recordToEdit[0].id}`, tokenData);
-      //update front end and redux store
+      // update front end and redux store
       dispatch(
         deleteRecord({
           id: recordToEdit[0].id,

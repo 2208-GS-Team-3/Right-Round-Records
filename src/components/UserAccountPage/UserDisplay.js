@@ -41,7 +41,13 @@ const UserAccountPage = () => {
     if (!Object.values(validity).includes(true)) {
       try {
         event.preventDefault();
-        const { data: created } = await axios.put("/api/user", userToCreate);
+      const token = window.localStorage.getItem("token");
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+        const { data: created } = await axios.put("/api/user", userToCreate , tokenData);
         dispatch(setUser(created));
         navigate("/");
       } catch (error) {

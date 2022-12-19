@@ -6,11 +6,10 @@ import RRRAppBar from "./AppBar/AppBar";
 import { CssBaseline } from "@mui/material";
 import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
-import { setOrders } from "../store/ordersSlice";
+import { setOrders , setAdminAllOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
 import { setReviews } from "../store/reviewsSlice";
 import { setCartInfo, setCartRecords } from "../store/cartSlice";
-import { setAdminAllOrders } from "../store/ordersSlice";
 const App = () => {
   const dispatch = useDispatch();
 

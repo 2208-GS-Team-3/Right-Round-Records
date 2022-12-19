@@ -15,6 +15,12 @@ import authTest from "./helpers/authTest";
 import Cart from "./components/Cart/Cart";
 import CreateUserPage from "./components/CreateUserPage/CreateUserPage";
 import UserAccountPage from "./components/UserAccountPage/UserDisplay";
+import Orders from "./components/AdminDashboard/Orders";
+import DashboardHome from "./components/AdminDashboard/DashboardHome";
+import Products from "./components/AdminDashboard/Products";
+import EditProductForm from "./components/AdminDashboard/EditProductForm";
+import NewProductForm from "./components/AdminDashboard/NewProductForm";
+import UsersAdminView from "./components/AdminDashboard/UsersAdminView";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +47,6 @@ const router = createBrowserRouter([
         path: "records",
         element: <AllRecords />,
         errorElement: <ErrorBoundary />,
-        children: [],
       },
       {
         path: "records/:id",
@@ -68,6 +73,39 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         errorElement: <ErrorBoundary />,
         loader: authTest,
+        children: [
+          {
+          path: "",
+          element: <DashboardHome/>,
+          errorElement: <ErrorBoundary />,
+        },
+          {
+          path: "orders",
+          element: <Orders/>,
+          errorElement: <ErrorBoundary />,
+        },
+          {
+          path: "products",
+          element: <Products/>,
+          errorElement: <ErrorBoundary />,
+        },
+          {
+          path: "users",
+          element: <UsersAdminView/>,
+          errorElement: <ErrorBoundary />,
+        },
+        {
+          path: "products/add",
+          element: <NewProductForm/>,
+          errorElement: <ErrorBoundary />,
+        },
+          {
+          path: "products/:id",
+          element: <EditProductForm/>,
+          errorElement: <ErrorBoundary />,
+        },
+      
+      ],
       },
       {
         path: "account",
