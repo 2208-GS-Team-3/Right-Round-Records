@@ -9,6 +9,7 @@ import reviewsReducer from "./reviewsSlice";
 import createUserReducer from "./createUserSlice";
 import checkoutReducer from "./checkoutSlice";
 import editRecordSlice from "./editRecordSlice";
+import singleOrderReducer from './singleOrderSlice'
 
 const store = configureStore({
   reducer: {
@@ -17,11 +18,12 @@ const store = configureStore({
     orders: ordersReducer,
     genres: genresReducer,
     selectedRecord: singleRecordReducer,
+    seletedOrder:singleOrderReducer,
     cart: cartReducer,
     reviews: reviewsReducer,
     userToCreate: createUserReducer,
     checkoutData: checkoutReducer,
-    recordToEdit: editRecordSlice
+    recordToEdit: editRecordSlice,
   },
 });
 

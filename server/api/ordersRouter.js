@@ -49,6 +49,7 @@ router.put("/", async (req, res, next) => {
     const user = await User.findByToken(token);
     const {
       cartId,
+      status,
       shippingAddress,
       billingAddress,
       totalCost,

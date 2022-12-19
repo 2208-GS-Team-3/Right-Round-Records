@@ -17,6 +17,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+import { setRecord } from '../store/singleOrderSlice';
+import { useDispatch } from "react-redux";
+
 
 const OrderCard = ({ order }) => {
 
@@ -26,27 +29,44 @@ const OrderCard = ({ order }) => {
   const [deletedOrder, setDeletedOrder] = useState({})
   const [deleteError, setDeleteError] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleOrderChange = async () => {
     try {
-      
+        // get token of logged in user
+      const token = window.localStorage.getItem("token");
+      // data to send to backend
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+
       const orderToDelete = await axios.get(`/api/orders/${order.id}`)
       setDeletedOrder(orderToDelete.data);
       const updatedStatus = 'cancelled'
 
 
       const updatedOrder = {
-        status: updatedStatus,
-        shippingAddress: orderToDelete.shippingAddress
+        
+          status: updatedStatus,
+          shippingAddress:order.shippingAddress,
+          billingAddress:order.billingAddress,
+          totalCost:order.totalCost,
+          creditCardName:order.creditCardName,
+          creditCardNum:order.creditCardNum,
+          ccSecurity:order.ccSecurity,
+          expiryDate:order.expiryDate,
       }
 
       //update status for the order
-      await axios.put(`/api/orders/${order.id}`, updatedOrder)
+      await axios.put(`/api/orders/${order.id}`, updatedOrder, tokenData)
 
       //fetch udpated order
-      await axios.get('/api/orders/`')
+      const updatedNewOrder = axios.get(`/api/orders/${order.id}`, tokenData);
+      dispatch(setRecord(updatedNewOrder.data))
       
-      navigate('/orders')
+      navigate(`/orders/${order.id}`)
 
     }
     catch (err) {
