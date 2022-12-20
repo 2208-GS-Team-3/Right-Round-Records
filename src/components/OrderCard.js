@@ -50,13 +50,13 @@ const OrderCard = ({ order }) => {
       const updatedOrder = {
         
           status: updatedStatus,
-          shippingAddress:order.shippingAddress,
+          /*shippingAddress:order.shippingAddress,
           billingAddress:order.billingAddress,
           totalCost:order.totalCost,
           creditCardName:order.creditCardName,
           creditCardNum:order.creditCardNum,
           ccSecurity:order.ccSecurity,
-          expiryDate:order.expiryDate,
+          expiryDate:order.expiryDate,*/
       }
 
       //update status for the order
@@ -98,7 +98,13 @@ const OrderCard = ({ order }) => {
         <Typography variant="h6" gutterBottom>
           <b>Records purchased:</b>
         </Typography>
-        <Button onClick={handleOrderChange}>Cancel Order</Button>
+        {/*Button*/}
+        {/*if the order status is not cart/placed, the order cannot be cancelled*/}
+        {(order.status !== 'cart' || order.status !== 'placed') ?
+          (<Button onClick={handleOrderChange}>Cancel Order</Button>) :
+          (<p style={{ color: "red" }}>This order cannot be cancelled</p>)
+        }
+        
         <Container style={{ display: "flex", gap: "50px", justifyContent: 'center' }} maxWidth="75%">
           {order.records.map((record) => {
             return (
