@@ -1,12 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Record = require("../db/Record");
-const Review = require("../db/Review");
-const Order = require("../db/Order");
-const Genre = require("../db/Genre");
-const Style = require("../db/Style");
-const Cart = require("../db/Cart");
-const User = require("../db/User");
+const { Record, Review, Order, Genre, Style, Cart, User } = require("../db");
 
 // all records
 router.get("/", async (req, res, next) => {

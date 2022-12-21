@@ -1,10 +1,5 @@
 const express = require("express");
-const Record = require("../db/Record");
-const User = require("../db/User");
-const Cart = require("../db/Cart");
-const CartRecords = require("../db/CartRecords");
-const Style = require("../db/Style");
-const Genre = require("../db/Genre");
+const { Record, User, Cart, CartRecords, Style, Genre } = require("../db");
 const router = express.Router();
 
 // //localhost:3000/api/cart/

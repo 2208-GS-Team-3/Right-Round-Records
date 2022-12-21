@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Review = require("../db/Review");
-const Order = require("../db/Order");
-const Record = require("../db/Record");
-const User = require("../db/User");
+const { Record, Review, User, Order } = require("../db");
 
 router.get("/", async (req, res, next) => {
   try {
