@@ -21,7 +21,7 @@ import Products from "./components/AdminDashboard/Products";
 import EditProductForm from "./components/AdminDashboard/EditProductForm";
 import NewProductForm from "./components/AdminDashboard/NewProductForm";
 import UsersAdminView from "./components/AdminDashboard/UsersAdminView";
-import Review from "./components/Review";
+import UserAdminEdit from "./components/AdminDashboard/UserAdminEdit";
 
 const router = createBrowserRouter([
   {
@@ -93,6 +93,16 @@ const router = createBrowserRouter([
           {
             path: "users",
             element: <UsersAdminView />,
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: "users/add",
+            element: <CreateUserPage />,
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: "users/:id",
+            element: <UserAdminEdit />,
             errorElement: <ErrorBoundary />,
           },
           {

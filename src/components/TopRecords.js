@@ -23,16 +23,14 @@ const TopRecords = () => {
 
   return (
     <Container
-    maxWidth
       sx={{
         bgcolor: "white",
         placeContent: "center",
         gap: "10px",
       }}
     >
-      <Typography variant="h2" component="h1" style={{ color: "black", textAlign: "center" }}>Featured Albums</Typography>
+      <Typography variant="h2" component="h1" style={{ color: "black", textAlign: "center", fontSize: "5vh" }}>Featured Albums</Typography>
       <Container
-      maxWidth
         sx={{
           display: "flex",
           maxHeight: "30vh",

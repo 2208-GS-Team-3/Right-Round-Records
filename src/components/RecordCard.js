@@ -17,9 +17,11 @@ const RecordCard = ({ record }) => {
     <Card
       sx={{
         maxWidth: 290,
+        height: "70vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        overflow: "scroll"
       }}
     >
       <CardMedia

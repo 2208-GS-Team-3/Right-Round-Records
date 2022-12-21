@@ -29,6 +29,8 @@ const DashboardHome = () => {
               display: "flex",
               flexDirection: "column",
               height: 240,
+              justifyContent: "center",
+              margin: "auto",
             }}
           >
             <Deposits />

@@ -26,8 +26,8 @@ function RRRAppBar() {
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
   const [recordTotal, setRecordTotal] = React.useState(0);
   const userSettings = user.isAdmin
-    ? ["Profile", "Account", "Dashboard", "Orders", "Logout"]
-    : ["Profile", "Account", "Orders", "Logout"];
+    ? ["Account", "Dashboard", "Orders", "Logout"]
+    : ["Account", "Orders", "Logout"];
   const guestSettings = ["Login"];
 
   useEffect(() => {
@@ -110,25 +110,23 @@ function RRRAppBar() {
             }}
           />
           <Box>
-              <Link
-                key={`recordLink`}
-                href={`/records`}
-                sx={{ my: 2, color: "white", display: "block", margin: "10px" }}
-              >
-                {"Records"}
-              </Link>
+            <Link
+              key={`recordLink`}
+              href={`/records`}
+              sx={{ my: 2, color: "white", display: "block", margin: "10px" }}
+            >
+              {"Records"}
+            </Link>
           </Box>
           <BarSearch />
-          <Box
-            sx={{ mr: 5, display: "flex", placeItems: "center"}}
-          >
+          <Box sx={{ mr: 5, display: "flex", placeItems: "center", width: '25%'}}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt={user?.fullName ?? "Guest"} src={user.avatarUrl} />
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{ mt: "45px"}}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{

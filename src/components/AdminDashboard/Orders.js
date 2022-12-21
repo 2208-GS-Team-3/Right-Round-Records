@@ -16,11 +16,12 @@ export default function Orders() {
   return (
     <Container
       style={{
-        padding: "20px",
+        padding: "3%",
         backgroundColor: "white",
         borderRadius: "5px",
         justifyContent: "center",
         textAlign: "center",
+        gap: "20vw",
       }}
     >
       <Typography variant="h5" component="h5">
@@ -50,9 +51,6 @@ export default function Orders() {
           ))}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" sx={{ mt: 3 }}>
-        See more orders
-      </Link>
     </Container>
   );
 }

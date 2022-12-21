@@ -62,7 +62,7 @@ function DashboardContent() {
         <Drawer
           variant="permanent"
           open={open}
-          containerStyle={{ transform: "none" }}
+          
           style={{ zIndex: 0, position: "sticky" }}
         >
           <Toolbar

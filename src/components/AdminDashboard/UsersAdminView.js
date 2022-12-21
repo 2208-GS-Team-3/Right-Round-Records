@@ -22,7 +22,7 @@ export default function UsersAdminView() {
   const navigate = useNavigate();
 
   const navUserAdd = () => navigate("./add");
-  const navUserEdit = (user) => navigate(`./${user}`);
+  const navUserEdit = (event) => navigate(`./${event.target.value}`);
 
   const handleSearchUser = (event) => {
     setSearchUser(
@@ -68,7 +68,7 @@ export default function UsersAdminView() {
   return (
     <Container
       style={{
-        padding: "20px",
+        padding: "3%",
         backgroundColor: "white",
         borderRadius: "5px",
         justifyContent: "center",
@@ -83,7 +83,8 @@ export default function UsersAdminView() {
         style={{
           display: "flex",
           justifyContent: "space-evenly",
-          margin: "30px",
+          gap: "20vw",
+          padding: '3%'
         }}
       >
         <Autocomplete

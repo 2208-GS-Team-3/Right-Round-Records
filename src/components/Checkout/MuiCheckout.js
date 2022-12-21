@@ -103,17 +103,17 @@ export default function Checkout() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar
+      {/* <AppBar
         position="absolute"
         color="default"
         elevation={0}
         sx={{
-          position: "relative",
+          position: "static",
           borderBottom: (t) => `1px solid ${t.palette.divider}`,
         }}
       >
         <Toolbar></Toolbar>
-      </AppBar>
+      </AppBar> */}
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper
           variant="outlined"
