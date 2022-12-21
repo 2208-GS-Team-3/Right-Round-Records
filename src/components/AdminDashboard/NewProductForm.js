@@ -1,6 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Container, Typography, TextField, Paper } from "@mui/material";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
 import axios from "axios";
 import { setNewRecordData, setRecords } from "../../store/recordsSlice";
 import { useNavigate } from "react-router-dom";

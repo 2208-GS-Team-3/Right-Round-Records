@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSelectedRecord } from "../store/singleRecordSlice";
 import { setReviews } from "../store/reviewsSlice";
-import { Rating, Button, TextField } from "@mui/material";
+import Rating from "@mui/material/Rating";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 
 const CreateReviewForm = ({ selectedRecord }) => {

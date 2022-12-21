@@ -1,10 +1,4 @@
 const db = require("./db");
-// const Record = require("./Record");
-// const User = require("./User");
-// const Review = require("./Review");
-// // const { Genre } = require("./index.js");
-// const Order = require("./Order");
-// const Genre = require("./Genre");
 const { Record, User, Review, Genre, Order, Style, Cart } = require("./index");
 const recordArray = require("./DataStorage");
 

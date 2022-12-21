@@ -16,7 +16,7 @@ const Home = () => {
           placeContent: "center",
         }}
       >
-        <img id="front-page-logo" src="static/RRR Logo.png" />
+        <img id="front-page-logo" src="/static/RRR Logo.png" />
       </Container>
       <TopRecords />
     </Box>

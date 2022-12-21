@@ -10,12 +10,12 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import Badge from "@mui/material/Badge";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUser } from "../../store/userSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import BarCart from "./BarCart";
-import { Badge } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import BarSearch from "./BarSearch";
 
 function RRRAppBar() {

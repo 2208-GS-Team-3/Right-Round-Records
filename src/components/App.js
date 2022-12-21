@@ -3,14 +3,15 @@ import { useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
 import RRRAppBar from "./AppBar/AppBar";
-import { CssBaseline } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
 import { setRecords } from "../store/recordsSlice";
 import { setUser } from "../store/userSlice";
 import { setOrders, setAdminAllOrders } from "../store/ordersSlice";
 import { setGenres } from "../store/genresSlice";
 import { setReviews } from "../store/reviewsSlice";
 import { setCartInfo, setCartRecords } from "../store/cartSlice";
-import { createTheme, colors, ThemeProvider } from "@mui/material/styles";
+import createTheme from "@mui/material/styles/createTheme";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
 const theme = createTheme({
   components: {

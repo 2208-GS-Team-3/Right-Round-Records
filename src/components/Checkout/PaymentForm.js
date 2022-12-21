@@ -6,7 +6,8 @@ import { Form } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setCreditCard, setCardValidity } from "../../store/checkoutSlice";
 import { useState } from "react";
-import { FormControl, FormHelperText } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
 
 const PaymentForm = () => {
   const creditCard = useSelector((state) => state.checkoutData.creditCard);

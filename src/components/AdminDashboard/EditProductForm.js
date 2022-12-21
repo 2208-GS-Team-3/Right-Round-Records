@@ -1,15 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Button,
-  Container,
-  FormControl,
-  Input,
-  InputLabel,
-  Typography,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import FormControl from "@mui/material/FormControl";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import Typography from "@mui/material/Typography";
 import axios from "axios";
-
 import Box from "@mui/material/Box";
 import {
   setEditInProgress,
@@ -17,9 +14,7 @@ import {
 } from "../../store/editRecordSlice";
 import AlertDialog from "./AlertDialog";
 import { setRecords } from "../../store/recordsSlice";
-
 import { useNavigate } from "react-router-dom";
-
 
 const EditProductForm = () => {
   const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
@@ -37,7 +32,6 @@ const EditProductForm = () => {
     const name = target.name;
     dispatch(setUpdatedRecordInfo({ ...updatedRecordInfo, [name]: value }));
   };
-
 
   const handleUpdate = async (event) => {
     try {
@@ -58,7 +52,7 @@ const EditProductForm = () => {
         price: Number(updatedRecordInfo.price) || Number(recordToEdit[0].price),
         year: Number(updatedRecordInfo.year) || Number(recordToEdit[0].year),
       };
-      
+
       await axios.put(`/api/records/${recordToEdit[0].id}`, newData, tokenData);
       const allUpdatedRecords = await axios.get(`/api/records/`);
 

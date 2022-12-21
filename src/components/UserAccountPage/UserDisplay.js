@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, useNavigate } from "react-router-dom";
 import axios from "axios";
-import {
-  Button,
-  Container,
-  FormControl,
-  FormHelperText,
-  Input,
-  InputLabel,
-  Typography,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import Typography from "@mui/material/Typography";
 import GoogleLocation from "../CreateUserPage/UserGoogleLocation";
 import { setUserToCreate } from "../../store/createUserSlice";
 import { setUser } from "../../store/userSlice";

@@ -1,4 +1,6 @@
-import { Autocomplete, Container, TextField } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

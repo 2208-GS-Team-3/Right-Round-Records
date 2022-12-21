@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "@mui/system";
-import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  Divider,
-  FormControl,
-  List,
-  ListItem,
-  Typography,
-} from "@mui/material";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import Divider from "@mui/material/Divider";
+import FormControl from "@mui/material/FormControl";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Typography from "@mui/material/Typography";
 import { useSelector, useDispatch } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
 import MuiCheckout from "../Checkout/MuiCheckout";

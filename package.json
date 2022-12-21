@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "npm i && npm run seed && webpack",
-    "build:dev": "npm run build -- --watch --mode=development",
+    "devbuild": "webpack",
+    "build:dev": "npm run devbuild -- --watch --mode=development",
     "lint:src": "eslint src/**",
     "test": "JWT=shhhhh mocha",
     "test:dev": "DATABASE_URL=postgres://localhost/acme_shopping_test_db npm run test -- --watch",

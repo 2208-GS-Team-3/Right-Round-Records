@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -36,7 +36,7 @@ export default function GoogleLocation() {
   const userToCreate = useSelector((state) => state.userToCreate.userToCreate);
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
+  useEffect(() => {
     // disabled.current = (!!currentUser.address);
     setValue(currentUser?.address);
   }, [currentUser]);
@@ -62,7 +62,7 @@ export default function GoogleLocation() {
     loaded.current = true;
   }
 
-  const fetch = React.useMemo(
+  const fetch = useMemo(
     () =>
       throttle((request, callback) => {
         autocompleteService.current.getPlacePredictions(request, callback);
@@ -70,7 +70,7 @@ export default function GoogleLocation() {
     []
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     let active = true;
 
     if (!autocompleteService.current && window.google) {

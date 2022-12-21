@@ -1,5 +1,7 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import styled from "@mui/material/styles/styled";
+import createTheme from "@mui/material/styles/createTheme";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -62,7 +64,6 @@ function DashboardContent() {
         <Drawer
           variant="permanent"
           open={open}
-          
           style={{ zIndex: 0, position: "sticky" }}
         >
           <Toolbar

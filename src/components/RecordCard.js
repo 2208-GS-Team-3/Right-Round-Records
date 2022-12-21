@@ -1,13 +1,11 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import {
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-  Container,
-  ListItem,
-} from "@mui/material";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import ListItem from "@mui/material/ListItem";
 import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
 const RecordCard = ({ record }) => {
@@ -21,7 +19,7 @@ const RecordCard = ({ record }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        overflow: "scroll"
+        overflow: "scroll",
       }}
     >
       <CardMedia

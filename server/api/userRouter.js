@@ -1,7 +1,9 @@
 const express = require("express");
-const { User, Cart, Order, Record } = require("../db");
+const Cart = require("../db/Cart");
+const Order = require("../db/Order");
+const  Record = require("../db/Record");
+const User = require("../db/User")
 const router = express.Router();
-
 router.get("/", async (req, res, next) => {
   try {
     const token = req.headers.authorization;

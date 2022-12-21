@@ -4,12 +4,14 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useDispatch, useSelector } from "react-redux";
-import { Autocomplete, Button, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import Container from "@mui/material/Container";
+import { useDispatch, useSelector } from "react-redux";
+import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { setRecordToEdit } from "../../store/editRecordSlice";
 import { useNavigate } from "react-router-dom";
-import Container from "@mui/material/Container";
 
 export default function Products() {
   const records = useSelector((state) => state.records.records);

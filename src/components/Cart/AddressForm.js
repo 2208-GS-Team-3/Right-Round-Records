@@ -1,12 +1,11 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { Button } from "@mui/material";
 import axios from "axios";
 
 const AddressForm = () => {

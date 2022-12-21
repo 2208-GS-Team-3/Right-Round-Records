@@ -1,7 +1,8 @@
 import React from "react";
 import RecordCard from "./RecordCard";
-import { useSelector } from "react-redux";
-import { Typography, Container } from "@mui/material";
+import { useSelector } from "react-redux/";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
 const TopRecords = () => {
   const records = useSelector((state) => state.records.records);
@@ -29,7 +30,13 @@ const TopRecords = () => {
         gap: "10px",
       }}
     >
-      <Typography variant="h2" component="h1" style={{ color: "black", textAlign: "center", fontSize: "5vh" }}>Featured Albums</Typography>
+      <Typography
+        variant="h2"
+        component="h1"
+        style={{ color: "black", textAlign: "center", fontSize: "5vh" }}
+      >
+        Featured Albums
+      </Typography>
       <Container
         sx={{
           display: "flex",

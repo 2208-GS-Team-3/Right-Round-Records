@@ -1,5 +1,6 @@
 const express = require("express");
-const { Genre, Record } = require("../db");
+const Genre = require("../db/Genre");
+const Record = require("../db/Record");
 const router = express.Router();
 
 // //localhost:3000/api/genres/

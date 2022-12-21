@@ -1,5 +1,9 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Button from "@mui/material/Button";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,8 +12,6 @@ import {
   setCartInfo,
   setCartRecords,
 } from "../../store/cartSlice";
-import Button from "@mui/material/Button";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const CartQuantitySelector = ({ record }) => {
   const dispatch = useDispatch();

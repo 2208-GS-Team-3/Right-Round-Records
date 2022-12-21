@@ -1,4 +1,6 @@
-import { Container, Grid, Paper } from "@mui/material";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 import React from "react";
 import Chart from "./Chart";
 import Deposits from "./Deposits";

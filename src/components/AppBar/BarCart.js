@@ -1,15 +1,14 @@
-import {
-  Avatar,
-  Badge,
-  Button,
-  Container,
-  Fade,
-  IconButton,
-  List,
-  ListItem,
-  Paper,
-  Popper,
-} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Fade from "@mui/material/Fade";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import Box from "@mui/material/Box";
 import React, { useEffect, useState } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
@@ -19,7 +18,6 @@ import {
 } from "material-ui-popup-state/hooks";
 import { useSelector } from "react-redux";
 import CartQuantitySelector from "../Cart/CartQuantitySelector";
-import { Box } from "@mui/system";
 
 const BarCart = () => {
   const popupState = usePopupState({

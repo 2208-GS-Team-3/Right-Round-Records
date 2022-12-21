@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useTheme } from "@mui/material/styles";
+import React from "react";
+import useTheme from "@mui/material/styles/useTheme";
 import {
   LineChart,
   Line,
@@ -8,7 +8,7 @@ import {
   Label,
   ResponsiveContainer,
 } from "recharts";
-import Typography from '@mui/material/Typography'
+import Typography from "@mui/material/Typography";
 
 // Generate Sales Data
 function createData(time, amount) {
