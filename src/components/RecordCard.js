@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -10,6 +10,11 @@ import CartQuantitySelector from "./Cart/CartQuantitySelector";
 
 const RecordCard = ({ record }) => {
   const singleRecordPageUrl = `/records/${record.id}`;
+  const [getImage, setGetImage] = useState(`/static/RRR Record.png`);
+
+  useEffect(() => {
+    setGetImage(record?.imageUrls[0]?.uri);
+  }, [getImage]);
 
   return (
     <Card
@@ -25,7 +30,7 @@ const RecordCard = ({ record }) => {
       <CardMedia
         component="img"
         height="300"
-        image={record?.imageUrls[0]?.uri ?? `static/RRR Record.png`}
+        image={getImage}
         alt="record album"
       />
       <Typography gutterBottom variant="h5" component="div">
