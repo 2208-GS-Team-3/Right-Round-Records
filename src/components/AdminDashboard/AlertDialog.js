@@ -9,12 +9,16 @@ import { deleteRecord, setRecords } from "../../store/recordsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setEditInProgress } from "../../store/editRecordSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function AlertDialog() {
   const [open, setOpen] = React.useState(false);
   const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const navAllProducts = () => navigate("/dashboard/products");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,9 +45,10 @@ export default function AlertDialog() {
           id: recordToEdit[0].id,
         })
       );
+
       const allNewRecords = await axios.get("/api/records");
       dispatch(setRecords(allNewRecords.data));
-      dispatch(setEditInProgress(false));
+      navAllProducts();
     } catch (err) {
       console.error(err);
     }

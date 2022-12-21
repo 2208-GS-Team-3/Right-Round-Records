@@ -8,7 +8,7 @@ import {
   Label,
   ResponsiveContainer,
 } from "recharts";
-import Title from "./Title";
+import Typography from '@mui/material/Typography'
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -32,7 +32,9 @@ export default function Chart() {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Typography variant="h5" component="h5">
+        Today
+      </Typography>
       <ResponsiveContainer>
         <LineChart
           data={data}

@@ -1,8 +1,8 @@
 import * as React from "react";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import Title from "./Title";
 import { useSelector } from "react-redux";
+import Container from "@mui/material/Container";
 
 export default function Deposits() {
   const orders = useSelector((state) => state.orders.adminAllOrders);
@@ -30,25 +30,26 @@ export default function Deposits() {
   const date = new Date();
   const name = month[date.getMonth()];
 
-  // i dont think issue is in this file, can you see terminal error? I can looks like an old import survived?
-  // oh wait, im loading now
-  // i think that was it
-  // Anything else being weird?
-
   return (
     <React.Fragment>
-      <Title>Annual Revenue</Title>
-      <Typography component="p" variant="h4">
-        ${totalRevenue.toFixed(2)}
-      </Typography>
-      <Typography color="text.secondary" sx={{ flex: 1 }}>
-        on {date.getDate()} {name}, {date.getFullYear()}
-      </Typography>
-      <div>
-        <Link color="primary" href="#">
-          View balance
-        </Link>
-      </div>
+      <Container
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="p" variant="h6">
+          Annual Revenue
+        </Typography>
+        <Typography component="p" variant="h4">
+          ${totalRevenue.toFixed(2)}
+        </Typography>
+        <Typography color="text.secondary" sx={{ flex: 1 }}>
+          on {date.getDate()} {name}, {date.getFullYear()}
+        </Typography>
+      </Container>
     </React.Fragment>
   );
 }

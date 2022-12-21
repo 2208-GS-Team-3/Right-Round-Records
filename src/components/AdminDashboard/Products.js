@@ -54,7 +54,7 @@ export default function Products() {
   return (
     <Container
       style={{
-        padding: "20px",
+        padding: "3%",
         backgroundColor: "white",
         borderRadius: "5px",
         justifyContent: "center",
@@ -68,8 +68,8 @@ export default function Products() {
         style={{
           display: "flex",
           justifyContent: "space-evenly",
-          margin: "30px",
           gap: "20vw",
+          padding: '3%'
         }}
       >
         <Autocomplete
@@ -96,7 +96,7 @@ export default function Products() {
         <Button
           style={{ width: "400px", backgroundColor: "black", color: "white" }}
           fullWidth
-          sx={{ width: "30vw" }}
+          sx={{ width: "30vw"}}
           variant="contained"
           onClick={navRecordAdd}
         >

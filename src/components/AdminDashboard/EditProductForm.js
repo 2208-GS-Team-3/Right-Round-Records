@@ -16,7 +16,10 @@ import {
   setUpdatedRecordInfo,
 } from "../../store/editRecordSlice";
 import AlertDialog from "./AlertDialog";
+import { deleteRecord, setRecords } from "../../store/recordsSlice";
+
 import { useNavigate } from "react-router-dom";
+
 
 const EditProductForm = () => {
   const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
@@ -86,11 +89,11 @@ const EditProductForm = () => {
         price: Number(updatedRecordInfo.price) || Number(recordToEdit[0].price),
         year: Number(updatedRecordInfo.year) || Number(recordToEdit[0].year),
       };
-
+      
       await axios.put(`/api/records/${recordToEdit[0].id}`, newData, tokenData);
       const allUpdatedRecords = await axios.get(`/api/records/`);
-      dispatch(setRecords(allUpdatedRecords.data));
 
+      dispatch(setRecords(allUpdatedRecords.data));
       navAllProducts();
     } catch (err) {
       console.log("error is here");

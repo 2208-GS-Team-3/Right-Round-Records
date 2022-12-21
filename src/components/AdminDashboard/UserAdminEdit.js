@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, useNavigate } from "react-router-dom";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
   Button,
@@ -14,15 +14,42 @@ import {
 import GoogleLocation from "../CreateUserPage/UserGoogleLocation";
 import { setUserToCreate } from "../../store/createUserSlice";
 import { setUser } from "../../store/userSlice";
+import { setUserList } from "../../store/adminUserListSlice";
 
-const UserAccountPage = () => {
+const UserAdminEdit = () => {
   const userToCreate = useSelector((state) => state.userToCreate.userToCreate);
-  const currentUser = useSelector((state) => state.user.user);
+  const users = useSelector((state) => state.adminUserList.users);
+  const [currentUser, setCurrentUser] = useState([]);
   const [validity, setValidity] = useState({});
   const [editing, setEditing] = useState({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const params = useParams().id;
+
+  const getUsers = async () => {
+    try {
+      const token = window.localStorage.getItem("token");
+      const tokenData = {
+        headers: {
+          authorization: token,
+        },
+      };
+
+      const users = await axios.get(`/api/user/userlist`, tokenData);
+      dispatch(setUserList(users.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  useEffect(() => {
+    setCurrentUser(users.filter((user) => user.id === params)[0]);
+  }, [users]);
 
   const handleEdittable = (e) => {
     const target = e.target;
@@ -30,6 +57,7 @@ const UserAccountPage = () => {
     const name = target.name;
     setEditing({ ...editing, [name]: value });
   };
+
   const handleUserStateChange = (e) => {
     const target = e.target;
     const value = target.value;
@@ -47,11 +75,7 @@ const UserAccountPage = () => {
             authorization: token,
           },
         };
-        const { data: created } = await axios.put(
-          "/api/user",
-          userToCreate,
-          tokenData
-        );
+        const { data: created } = await axios.put("/api/user", userToCreate);
         dispatch(setUser(created));
         navigate("/");
       } catch (error) {
@@ -96,9 +120,9 @@ const UserAccountPage = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(setUserToCreate({ ...currentUser }));
-  }, [currentUser]);
+    useEffect(() => {
+      dispatch(setUserToCreate({ ...currentUser }));
+    }, [currentUser]);
 
   return (
     <Container
@@ -302,4 +326,4 @@ const UserAccountPage = () => {
   );
 };
 
-export default UserAccountPage;
+export default UserAdminEdit;

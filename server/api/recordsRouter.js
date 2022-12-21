@@ -38,7 +38,7 @@ router.get("/:id", async (req, res, next) => {
 // update record on admin side
 router.put("/:id", async (req, res, next) => {
   try {
-    const { id, albumName, artist, year, rawPrice } = req.body;
+    const { id, albumName, artist, year, price } = req.body;
 
     const recordToUpdate = await Record.findByPk(id);
     const updatedRecord = await recordToUpdate.update({
