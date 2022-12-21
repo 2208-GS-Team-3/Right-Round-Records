@@ -8,7 +8,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { deleteRecord, setRecords } from "../../store/recordsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setEditInProgress } from "../../store/editRecordSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function AlertDialog() {

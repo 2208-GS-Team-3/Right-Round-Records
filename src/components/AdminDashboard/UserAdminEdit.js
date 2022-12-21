@@ -75,7 +75,7 @@ const UserAdminEdit = () => {
             authorization: token,
           },
         };
-        const { data: created } = await axios.put("/api/user", userToCreate);
+        const { data: created } = await axios.put("/api/user", userToCreate, tokenData);
         dispatch(setUser(created));
         navigate("/");
       } catch (error) {

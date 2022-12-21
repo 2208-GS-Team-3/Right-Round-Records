@@ -16,14 +16,13 @@ import {
   setUpdatedRecordInfo,
 } from "../../store/editRecordSlice";
 import AlertDialog from "./AlertDialog";
-import { deleteRecord, setRecords } from "../../store/recordsSlice";
+import { setRecords } from "../../store/recordsSlice";
 
 import { useNavigate } from "react-router-dom";
 
 
 const EditProductForm = () => {
   const recordToEdit = useSelector((state) => state.recordToEdit.recordToEdit);
-  const records = useSelector((state) => state.records.records);
   const updatedRecordInfo = useSelector(
     (state) => state.recordToEdit.updatedRecordInfo
   );
@@ -39,36 +38,6 @@ const EditProductForm = () => {
     dispatch(setUpdatedRecordInfo({ ...updatedRecordInfo, [name]: value }));
   };
 
-  const handleDeleteRecord = async (event) => {
-    const response = confirm("are you sure you want to delete this record?");
-    if (response === true) {
-      try {
-        event.preventDefault();
-        // get token of logged in user
-        const token = window.localStorage.getItem("token");
-        // data to send to backend
-        const tokenData = {
-          headers: {
-            authorization: token,
-          },
-        };
-        await axios.delete(`/api/records/${recordToEdit[0].id}`, tokenData);
-        // update front end and redux store
-        dispatch(
-          deleteRecord({
-            id: recordToEdit[0].id,
-          })
-        );
-        const allNewRecords = await axios.get("/api/records");
-        dispatch(setRecords(allNewRecords.data));
-        dispatch(setEditInProgress(false));
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      return;
-    }
-  };
 
   const handleUpdate = async (event) => {
     try {

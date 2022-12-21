@@ -1,5 +1,4 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import Container from "@mui/material/Container";
