@@ -4,16 +4,14 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import BillingAddress from "./BillingAddress";
 import { setShipping, setBilling } from "../../store/checkoutSlice";
-import { useDispatch } from "react-redux";
 
 const AddressForm = () => {
   const shipping = useSelector((state) => state.checkoutData.shipping);
   const billing = useSelector((state) => state.checkoutData.billing);
-  const cartInfo = useSelector((state) => state.cart.cartInfo);
   const [billingIsSame, setBillingIsSame] = useState("yes");
   const dispatch = useDispatch();
 
@@ -31,8 +29,6 @@ const AddressForm = () => {
     }
   };
 
- 
-
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -46,7 +42,6 @@ const AddressForm = () => {
               id="firstName"
               name="firstName"
               label="First name"
-              defaultValue={cartInfo.user.firstName}
               fullWidth
               autoComplete="given-name"
               variant="standard"
@@ -59,7 +54,6 @@ const AddressForm = () => {
               id="lastName"
               name="lastName"
               label="Last name"
-              defaultValue={cartInfo.user.lastName}
               fullWidth
               autoComplete="family-name"
               variant="standard"

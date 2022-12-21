@@ -1,7 +1,7 @@
 import React from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateCart,
   removeFromCart,
@@ -9,6 +9,7 @@ import {
   setCartRecords,
 } from "../../store/cartSlice";
 import Button from "@mui/material/Button";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const CartQuantitySelector = ({ record }) => {
   const dispatch = useDispatch();
@@ -38,17 +39,17 @@ const CartQuantitySelector = ({ record }) => {
     // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
 
-    // need an 'update cart' button to update UI if user wants to remove item
-    // this removes data from cart in redux store
-    if (recordToUpdate?.quantity === 0) {
-      dispatch(removeFromCart(recordToUpdate));
-    } else if (recordToUpdate?.quantity >= 1) {
-      dispatch(updateCart(recordToUpdate));
-    }
-
     const updatedCart = await axios.get(`/api/cart`, tokenData);
     dispatch(setCartRecords(updatedCart.data.records));
     dispatch(setCartInfo(updatedCart.data));
+
+    // need an 'update cart' button to update UI if user wants to remove item
+    // this removes data from cart in redux store
+    if (recordToUpdate.quantity === 0) {
+      dispatch(removeFromCart(recordToUpdate));
+    } else if (recordToUpdate.quantity >= 1) {
+      dispatch(updateCart(recordToUpdate));
+    }
   };
 
   // deletes on front end
@@ -64,22 +65,21 @@ const CartQuantitySelector = ({ record }) => {
       quantity: null,
       // send quantity to be updated as well
     };
-    console.log(recordToUpdate);
     // update backend
     await axios.put(`/api/cart`, recordToUpdate, tokenData);
+    await axios.get(`/api/cart`, tokenData);
     dispatch(removeFromCart(recordToUpdate));
   };
 
   return (
-    <div>
+    <>
       {currentRecordInCart ? (
-        <>
-          <FormControl size="small" fullWidth>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <FormControl size="small">
             <InputLabel htmlFor="quantitySelector">Quantity</InputLabel>
             <Select
-              defaultValue={currentRecordInCart?.cartRecord?.quantity}
+              value={currentRecordInCart?.cartRecord?.quantity || ""}
               label="Quantity"
-              autoWidth
               id="quantitySelector"
               onChange={updateQuantity}
             >
@@ -95,14 +95,14 @@ const CartQuantitySelector = ({ record }) => {
             </Select>
           </FormControl>
           <Button
-            fullWidth={true}
             variant="contained"
             onClick={removeRecordFromCart}
             value={null}
+            style={{ backgroundColor: "red", color: "white" }}
           >
-            Remove from Cart
-          </Button>
-        </>
+            Remove
+          </Button>{" "}
+        </div>
       ) : (
         <Button
           fullWidth={true}
@@ -110,10 +110,10 @@ const CartQuantitySelector = ({ record }) => {
           onClick={updateQuantity}
           value={1}
         >
-          Add to Cart
+          BUY RECORD
         </Button>
       )}
-    </div>
+    </>
   );
 };
 export default CartQuantitySelector;

@@ -57,6 +57,13 @@ const Order = db.define("order", {
     set(value) {
       this.setDataValue("totalCost", Math.floor(value * 100));
     },
+    get() {
+      const rawPrice = this.getDataValue("totalCost");
+      const subtotal = rawPrice / 100;
+      const tax = subtotal * 0.08;
+      const total = (subtotal + tax).toFixed(2);
+      return `$${total}`;
+    },
   },
 });
 

@@ -5,14 +5,14 @@
   - [x] see the items in their cart
   - [x] add a new product to their cart
   - [x] remove an item from their cart
-  - [ ] create an order
+  - [x] create an order
 - [x] A user should be able to see their orders
-- [ ] A user should be able to create an account
+- [x] A user should be able to create an account
 - [x] A user should be able to see their past orders
-- [ ] A non-logged in user should be able to add to their cart and have those items added to their cart after authenticating
+- [x] A non-logged in user should be able to add to their cart and have those items added to their cart after authenticating
 - [x] A user should be able to review a product
-- [ ] A user should be able to update their profile
-- [ ] An administrator should be able to add a new product
+- [x] A user should be able to update their profile
+- [x] An administrator should be able to add a new product
 
 # Bonus Features
 
@@ -20,7 +20,7 @@
 - [ ] A user should be able to create a wish list
 - [ ] A user should be able to checkout using stripe
 - [ ] A user should be able to add a shipping address
-- [ ] A user should be able to upload an avatar to their profile
+- [x] A user should be able to upload an avatar to their profile
 - [ ] An administrator should be able to add a coupon code
 - [ ] A user should be able to use a coupon code
 
@@ -28,7 +28,7 @@
 
 TIER 1: MVP SHOPPING EXPERIENCE
 AS A CUSTOMER/VISITOR, I WANT TO BE ABLE TO:
-[ ] - access a deployed version of the website so I can browse and purchase products.
+[x] - access a deployed version of the website so I can browse and purchase products.
 [x] - view all available products so I can pick from a variety.
 [x] - view the details for an individual product (including product descriptions, photos and optionally, reviews), so that I can determine whether that particular item fits my needs
 [x] - add a product to my cart so I can collect my desired products in one place.
@@ -50,8 +50,8 @@ AS A LOGGED-IN CUSTOMER, I WANT TO BE ABLE TO:
 AS AN ADMINISTRATOR, I WANT TO BE ABLE TO:
 [x] - have validated data to ensure reliability.
 [x] - i.e. each customer that creates an account should only be able to do so once with a single email address.
-[] - have full rights to make backend requests to add, edit, and remove products.
-[] - No one else should have access to view user information.
+[x] - have full rights to make backend requests to add, edit, and remove products.
+[x] - No one else should have access to view user information.
 
 AS AN ENGINEER, I WANT TO:
 [x] - have a well-seeded database so that I am able to simulate a number of different scenarios for the user stories below.
@@ -60,7 +60,7 @@ AS AN ENGINEER, I WANT TO:
 
 TIER 2: E-COMMERCE ESSENTIALS
 AS A CUSTOMER, I WANT TO BE ABLE TO:
-[ ] - see all products that belong to a certain category.
+[x] - see all products that belong to a certain category.
 [x] - explore an aesthetically pleasing website so I can easily navigate around and enjoy the experience (UI/UX).
 [x] - This includes front-end data validations. For example, if certain fields of a form are required and must be in a specific format, this is obvious to the user.
 [x] - have a persistent cart so I can revisit and pick up where I left off.
@@ -70,8 +70,8 @@ There are two more experiences to consider here. Explore your favorite websites 
 [ ] - Guest-to-logged-in-user: Initially, I'm not logged in, and I add items to my cart. When I eventually log in, I want to see those same items I added when I was logged in still in my cart, in addition to the items I may have had in my cart from a previous logged in session.
 
 AS A LOGGED-IN CUSTOMER, I WANT TO BE ABLE TO:
-[ ] - see my order history so I can remember my previously purchased items and their prices at the time of purchase.
-[ ] - view and edit my user profile so I can update my information when necessary.
+[x] - see my order history so I can remember my previously purchased items and their prices at the time of purchase.
+[x] - view and edit my user profile so I can update my information when necessary.
 
 AS AN ADMINISTRATOR, I WANT TO BE ABLE TO:
 [ ] - allow customers to have a variety of payment method options in order to increase checkout conversion.
@@ -83,11 +83,11 @@ AS AN ADMINISTRATOR, I WANT TO BE ABLE TO:
 [ ] - create categories for items, so that users can continue to have useful filters as our inventory grows in variety
 [ ] - manage the availability of a product, so that users will know whether or not they can purchase that product
 [ ] - view a list of all orders and be able to filter orders by status (Created, Processing, Cancelled, Completed), so that I can more easily find the orders I'm interested in
-[ ] - change the status of the order (Created -> Processing, Processing -> Cancelled || Completed), so that others will know what stage of the process the order is in
+[x] - change the status of the order (Created -> Processing, Processing -> Cancelled || Completed), so that others will know what stage of the process the order is in
 [ ] - promote other user accounts to have admin status, so that new administrators can have the same privileges I have
 [ ] - delete a user, so users who should not be able to log in anymore cannot
 [ ] - AS AN ENGINEER, I WANT:
-[ ] - continuous integration and delivery (deployment) Links to an external site. of the codebase so that there are lower rates of release failure.
+[x] - continuous integration and delivery (deployment) Links to an external site. of the codebase so that there are lower rates of release failure.
 
 TIER 3: EXTRA FEATURES & FLAIR
 AS AN ADMINISTRATOR, I WANT TO BE ABLE TO:
@@ -103,7 +103,7 @@ AS AN ADMINISTRATOR, I WANT TO BE ABLE TO:
 [ ] - be notified when certain events occur so that I am informed of my actions.
 [ ] - For example, when I add a product to my cart, there is a toast notification that pops up in the corner of the page with an appropriate message for that action.
 [ ] - HAVE A USER-FRIENDLY EXPERIENCE
-[ ] - filter through all products.
+[x] - filter through all products.
 [ ] - This is an opportunity to dive into a "search" input field. You can filter all products using vanilla JavaScript, or look into Algolia (search-as-a-service).
 [ ] - browse through all products in a digestible way so that I am not overwhelmed with an endless list of products.
 [ ] - Dive into pagination here!

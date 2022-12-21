@@ -102,6 +102,7 @@ const User = db.define("user", {
   avatarUrl: {
     type: STRING,
     allowNull: true,
+    defaultValue: "/static/RRR Record.png",
   },
   isAdmin: {
     type: BOOLEAN,
@@ -116,7 +117,6 @@ User.addHook("beforeSave", async (user) => {
 });
 
 User.findByToken = async function (token) {
-  // console.log(token);
   try {
     const { id } = jwt.verify(token, JWT);
     const user = await this.findByPk(id);

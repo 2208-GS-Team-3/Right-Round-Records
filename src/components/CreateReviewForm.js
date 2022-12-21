@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setRecord } from "../store/singleRecordSlice";
+import { setSelectedRecord } from "../store/singleRecordSlice";
 import { setReviews } from "../store/reviewsSlice";
 import { Rating, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +45,7 @@ const CreateReviewForm = ({ selectedRecord }) => {
       tokenData
     );
     // set that records new review data
-    dispatch(setRecord(updatedSingleRecord.data));
+    dispatch(setSelectedRecord(updatedSingleRecord.data));
 
     // zero out fields after submission
     setReviewComment("");
@@ -56,7 +56,6 @@ const CreateReviewForm = ({ selectedRecord }) => {
   };
 
   const collectComment = (event) => {
-    console.log(event.target.value);
     setReviewComment(event.target.value);
   };
 

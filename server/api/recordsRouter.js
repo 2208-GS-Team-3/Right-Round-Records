@@ -1,16 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const {
-  Record,
-  Review,
-  Order,
-  Genre,
-  Style,
-  Cart,
-} = require("../db");
+const { Record, Review, Order, Genre, Style, Cart, User } = require("../db");
 
-// //localhost:3000/api/records/
-// //list of all records
+// all records
 router.get("/", async (req, res, next) => {
   try {
     const records = await Record.findAll({
@@ -24,13 +16,17 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// localhost:3000/api/records/:id
-// ist of all records
+// single record
 router.get("/:id", async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const record = await Record.findByPk(id, {
-      include: [Review, Order, Style, Genre, Cart],
+      include: [
+        // updated so that review has access to username on single record page
+        { model: Review, include: { model: User, attributes: ["username"] } },
+        Style,
+        Genre,
+      ],
     });
     res.send(record);
   } catch (err) {
@@ -39,104 +35,63 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// update review and/or new contect on single record page
+// update record on admin side
 router.put("/:id", async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { artist, year, price, genres, styles, reviews } = req.boby;
+    const { id, albumName, artist, year, price } = req.body;
 
     const recordToUpdate = await Record.findByPk(id);
-    await recordToUpdate.update({
-      artist, year, price, genres, styles, reviews
+    const updatedRecord = await recordToUpdate.update({
+      artist,
+      year,
+      albumName,
+      price,
     });
-    res.send(recordToUpdate);
-  }
-  catch (err) {
+    res.status(200).send(updatedRecord);
+  } catch (err) {
     next(err);
   }
-})
+});
 
-// router.post("/", async (req, res, next) => {
-//   try {
-// const { albumName,
-//   artists,
-//   tracks,
-//   imageUrls,
-//   condition,
-//   price,
-//   description,
-//   year } = req.body;
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const recordToDestroy = await Record.findByPk(id);
+    await recordToDestroy.destroy();
+    res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+});
 
-// await Record.create({
-// albumName,
-// artists,
-// tracks,
-// imageUrls,
-// condition,
-// price,
-// description,
-// year,
-// quantity
-// });
+// create new record admin side
+router.post("/", async (req, res, next) => {
+  try {
+    const { albumName, artist, price, year, genre } = req.body;
 
-//     res.sendStatus(201)
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+    const foundGenre = await Genre.findOne({
+      where: { name: genre },
+    });
 
-// // PUT /api/record/:id
-// router.put("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
+    const newRecordData = await Record.create({
+      albumName,
+      artist,
+      price,
+      year,
+    });
 
-//     const { // albumName,
-// artists,
-// tracks,
-// imageUrls,
-// condition,
-// price,
-// description,
-// year,
-// quantity } = req.body;
-//     const record = await Record.findByPk(id);
+    const newRecord = await Record.findOne({
+      where: { id: newRecordData.id },
+    });
 
-//     const updatedRecord = await record.update({
-//       // albumName,
-// artists,
-// tracks,
-// imageUrls,
-// condition,
-// price,
-// description,
-// year,
-// quantity
-//     });
+    // set genre depending on info coming in
+    newRecord.addGenres(foundGenre);
 
-//     const recordWithGenres = await Record.findByPk(id, {
-//       include: [Genre],
-//     });
-//     //send updated record along with updated genre info
-//     res.send(recordWithGenres);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
-
-// // DELETE /api/records/:id
-// router.delete("/:id", async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const record = await Record.findByPk(id);
-//     // if (!record) return res.sendStatus(404)
-//     await record.destroy();
-//     res.sendStatus(204);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+    res.sendStatus(201);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 module.exports = router;

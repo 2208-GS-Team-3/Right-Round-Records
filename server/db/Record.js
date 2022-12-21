@@ -18,11 +18,12 @@ const Record = db.define("record", {
   },
   tracks: {
     type: Sequelize.ARRAY(Sequelize.JSON),
+    defaultValue: ["Tracks for this record are not available."],
   },
   imageUrls: {
     type: Sequelize.ARRAY(Sequelize.JSON),
     defaultValue: [
-      "https://cdn1.vectorstock.com/i/1000x1000/30/75/vinyl-record-vector-1773075.jpg",
+      "/static/RRR Record.png",
     ],
   },
   condition: {
@@ -36,6 +37,17 @@ const Record = db.define("record", {
     },
     set(value) {
       this.setDataValue("price", Math.floor(value * 100));
+    },
+    get() {
+      const rawPrice = this.getDataValue("price");
+      return `$${(rawPrice / 100).toFixed(2)}`;
+    },
+  },
+  rawPrice: {
+    type: Sequelize.VIRTUAL,
+    get() {
+      const rawPrice = this.getDataValue("price");
+      return Number((rawPrice / 100).toFixed(2));
     },
   },
   description: {

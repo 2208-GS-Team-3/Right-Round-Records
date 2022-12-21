@@ -5,7 +5,6 @@ import TopRecords from "../TopRecords";
 import Box from "@mui/material/Box";
 
 const Home = () => {
-
   return (
     <Box>
       <Container
@@ -16,11 +15,11 @@ const Home = () => {
           maxHeight: "35vh",
           placeContent: "center",
         }}
-        >
+      >
         <img id="front-page-logo" src="static/RRR Logo.png" />
       </Container>
       <TopRecords />
-        </Box>
+    </Box>
   );
 };
 

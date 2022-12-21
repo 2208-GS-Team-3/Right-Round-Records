@@ -1,95 +1,110 @@
 import React from "react";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography,
-  Container,
-} from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
 
 const OrderCard = ({ order }) => {
-  const totalPrice = (total) => {
-    return (total / 100).toFixed(2);
-  };
+  const dateFormatted = order.datePlaced.slice(0, 10);
 
   return (
-    <Container
-      maxWidth="200vw"
+    <TableContainer
+      key={order.id}
+      component={Paper}
       style={{
-        border: "1px solid black",
-        borderRadius: "5px",
-        margin: "30px",
-        padding: "30px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px",
+        flexDirection: "column",
+        margin: "20px",
       }}
     >
-      <h3></h3>
-      <Typography variant="h4" gutterBottom>
-        <b>Order #:</b>
-        {order.id}{" "}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        <b>Date Placed:</b> {order.datePlaced}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        <b>Shipping Address:</b> {order.shippingAddress}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        <b>Tracking Number:</b> {order.trackingNumber}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        <b>Order total: {`$${totalPrice(order.totalCost)}`}</b>
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        <b>Records purchased:</b>
-      </Typography>
-      {/* order.records.map here */}
-      <Container style={{ display: "flex", gap: "50px" }} maxWidth="75%">
-        {order.records.map((record) => {
-          return (
-            <Card sx={{ maxWidth: 500 }} key={record.id}>
-              <CardMedia
-                component="img"
-                height="50"
-                image={record?.imageUrls[0]?.uri ?? `static/RRR Record.png`}
-                alt="record album"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  <h3>{record.albumName}</h3>
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  <span>
-                    <b>Artist:</b> {record.artist}
-                  </span>
-                  <br></br>
-                  <span>
-                    <b>Year:</b> {record.year}
-                  </span>
-                  <br></br>
-                  <span>
-                    <b>Price:</b> {record.price}
-                  </span>
-                  <br></br>
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  fullWidth={true}
-                  sx={{ mr: 5 }}
-                  variant="text"
-                  size="small"
-                  href={`/records/${record.id}`}
-                >
-                  More Details
-                </Button>
-              </CardActions>
-            </Card>
-          );
-        })}
-      </Container>
-    </Container>
+      <Table sx={{ maxWidth: 500 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <b>Order #</b>
+            </TableCell>
+            <TableCell align="right">{order.id}</TableCell>
+          </TableRow>
+          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <TableCell>
+              <b>Records Purchased</b>
+            </TableCell>
+            <TableCell align="right">
+              <List
+                sx={{
+                  width: "100%",
+                  maxWidth: 360,
+                  bgcolor: "background.paper",
+                }}
+              >
+                {order.records.map((record) => {
+                  return (
+                    <ListItem key={order.record}>
+                      <ListItemAvatar>
+                        <Avatar
+                          src={
+                            record?.imageUrls[0]?.uri150 ??
+                            "static/RRR Record.png"
+                          }
+                        >
+                          {/* {record?.imageUrls[0]?.uri ?? `static/RRR Record.png`} */}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={`${record.albumName} by ${record.artist}`}
+                        secondary={`${record.orderRecord.quantity} item(s) at ${record.price}`}
+                      />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <b>Order Date</b>
+            </TableCell>
+            <TableCell align="right">{dateFormatted}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <b>Shipping Address</b>
+            </TableCell>
+            <TableCell align="right">{order.shippingAddress}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <b>Order Total</b>
+            </TableCell>
+            <TableCell align="right">{order.totalCost}</TableCell>
+          </TableRow>
+          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <TableCell>
+              <b>Tracking Number</b>
+            </TableCell>
+            <TableCell align="right">{order.trackingNumber}</TableCell>
+          </TableRow>
+          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <TableCell>
+              <b>Order Status</b>
+            </TableCell>
+            <TableCell align="right">{order.status}</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody></TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

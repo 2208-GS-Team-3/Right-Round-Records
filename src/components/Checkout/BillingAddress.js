@@ -2,10 +2,7 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { useSelector } from "react-redux";
-import { Button } from "@mui/material";
-import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setBilling } from "../../store/checkoutSlice";
 
 const BillingAddress = () => {
@@ -19,27 +16,6 @@ const BillingAddress = () => {
     const name = target.name;
     dispatch(setBilling({ ...billing, [name]: value }));
   };
-  // const handleBillingAddress = async (event) => {
-  //   event.preventDefault();
-  //   const token = window.localStorage.getItem("token");
-  //   //data to send to backend
-  //   const tokenData = {
-  //     headers: {
-  //       authorization: token,
-  //     },
-  //   };
-  //   const billingData = {
-  //     cartId: cartInfo.id,
-  //     billingAddress: `${billingFN} ${billingLN}, ${billingAdd1}, ${billingAdd2}, ${billingCity}, ${billingState}, ${billingZip}, ${billingCountry}`,
-  //     status: "cart",
-  //   };
-
-  //   //update shipping info, order created but still 'cart' status
-  //   await axios.put(`/api/orders`, billingData, tokenData);
-
-  //   //get the order back bc we'll need the info for the checkout page to display shipping data
-  //   const updatedOrder = await axios.get(`/api/orders`, tokenData);
-  // };
 
   return (
     <React.Fragment>

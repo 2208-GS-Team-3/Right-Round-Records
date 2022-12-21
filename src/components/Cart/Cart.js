@@ -11,35 +11,31 @@ import {
   ListItem,
   Typography,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CartQuantitySelector from "./CartQuantitySelector";
 import MuiCheckout from "../Checkout/MuiCheckout";
-import { setTotalCost } from "../../store/checkoutSlice";
-import { useDispatch } from "react-redux";
+import { setSubtotal } from "../../store/checkoutSlice";
 const Cart = () => {
   const [purchaseItems, setPurchaseItems] = useState([]);
   const [checkOut, setCheckOut] = useState(false);
   const recordsInCart = useSelector((state) => state.cart.cartRecords);
+  const subtotal = useSelector((state) => state.cart.checkoutData);
   const numberOfRecords = recordsInCart.reduce(
     (records, nextRecord) => records + nextRecord?.cartRecord?.quantity,
     0
   );
   const dispatch = useDispatch();
 
-  const orderSubTotal =
-    recordsInCart.reduce(
-      (currentTotal, itemValue) =>
-        currentTotal + itemValue.price * itemValue.cartRecord.quantity,
-      0
-    ) / 100;
-
-  const tax = orderSubTotal * 0.08;
-  const finalOrderAmount = tax + orderSubTotal;
+  const orderSubTotal = recordsInCart.reduce(
+    (totalCost, currentItem) =>
+      totalCost + currentItem.rawPrice * currentItem.cartRecord.quantity,
+    0
+  );
 
   const startCheckout = async () => {
     try {
       setCheckOut((currValue) => !currValue);
-      dispatch(setTotalCost(finalOrderAmount));
+      dispatch(setSubtotal(orderSubTotal));
     } catch (err) {
       console.log(err);
     }
@@ -78,7 +74,7 @@ const Cart = () => {
             <img id="front-page-logo" src="static/RRR Logo.png" />
           </Container>
 
-          <Typography sx={{ ml: 1 }} variant="h4">
+          <Typography sx={{ ml: 1 }} variant="h3">
             Cart
           </Typography>
           <Divider />
@@ -140,7 +136,7 @@ const Cart = () => {
                               {record.albumName}
                             </ListItem>
                             <ListItem key={`priceFor${record.price}`}>
-                              ${(record.price / 100).toFixed(2)}
+                              {record.price}
                             </ListItem>
                           </List>
                         </Container>
@@ -177,18 +173,18 @@ const Cart = () => {
                 >{`Subtotal (${numberOfRecords} Item${
                   numberOfRecords === 1 ? "" : "s"
                 }):`}</Typography>
-                <Typography variant="h6" key={`subtotalPrice`}>
-                  $
-                  {(
-                    purchaseItems?.reduce(
-                      (currentTotal, itemValue) =>
-                        currentTotal +
-                        itemValue.price * itemValue.cartRecord.quantity,
-                      0
-                    ) / 100
-                  ).toFixed(2)}
-                </Typography>
+
+                {!subtotal ? (
+                  <Typography variant="h6" key={`subtotalPrice`}>
+                    ${orderSubTotal.toFixed(2)}
+                  </Typography>
+                ) : (
+                  <Typography variant="h6" key={`subtotalPrice`}>
+                    ${subtotal.toFixed(2)}
+                  </Typography>
+                )}
               </div>
+              {/*  */}{" "}
               <Button
                 variant="contained"
                 sx={{ placeSelf: "stretch" }}

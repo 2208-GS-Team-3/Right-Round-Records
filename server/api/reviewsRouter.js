@@ -1,21 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  Record,
-  Review,
-  User,
-  Order,
-  Genre,
-  Style,
-} = require("../db");
+const { Record, Review, User, Order } = require("../db");
 
 router.get("/", async (req, res, next) => {
   try {
     const reviews = await Review.findAll({
       order: [["id", "DESC"]],
-      include: [User, { model: Record, include: [Genre, Style, Order] }],
+      include: [{ model: User, attributes: ["username"] }, Record],
     });
+
     res.send(reviews);
   } catch (err) {
     res.sendStatus(404);
@@ -30,36 +24,36 @@ router.put("/", async (req, res, next) => {
     const user = await User.findByToken(token);
 
     // find users orders. have they ordered this album? if so, they can review
-    // const order = await Order.findOne({
-    //     where: { userId: user.id },
-    //     include: [User, { model: Record, include: [Genre, Style] }],
-    //   });
-
-    // create review
-    const newReview = await Review.create({
-      date: Date.now(),
-      comment: req.body.comment,
-      reviewRating: req.body.reviewRating,
-      recordId: req.body.recordId,
-      userId: user.id,
+    const order = await Order.findOne({
+      where: { userId: user.id },
+      include: [Record],
     });
 
-    // find the reccord the review is for
-    const record = await Record.findOne({
-      where: { id: req.body.recordId },
-      include: [Review],
-    });
+    // if the user has ordered the album, allow them to review
+    if (order) {
+      const newReview = await Review.create({
+        date: Date.now(),
+        comment: req.body.comment,
+        reviewRating: req.body.reviewRating,
+        recordId: req.body.recordId,
+        userId: user.id,
+      });
+      // find the reccord the review is for
+      const record = await Record.findOne({
+        where: { id: req.body.recordId },
+        include: [Review],
+      });
 
-    // associate record & user with the review
-    await record.addReview(newReview);
-    await user.addReview(newReview);
-
-    const updatedRecord = await Record.findOne({
-      where: { id: req.body.recordId },
-      include: [Review, Genre, Style, { model: Order, include: [User] }],
-    });
-    // send back the updated record!
-    res.send(updatedRecord);
+      // associate record & user with the review
+      await record.addReview(newReview);
+      await user.addReview(newReview);
+      const updatedRecord = await Record.findOne({
+        where: { id: req.body.recordId },
+        include: [Review],
+      });
+      // send back the updated record!
+      res.send(updatedRecord);
+    }
   } catch (err) {
     console.error(err);
     next(err);
