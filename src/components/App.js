@@ -38,20 +38,11 @@ const theme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          // In Chinese and Japanese the characters are usually larger,
-          // so a smaller fontsize may be appropriate.
           fontSize: "1rem",
           fontFamily: "Raleway, Arial",
         },
       },
     },
-
-    // typography: {
-    //   button: {
-    //     fontSize: "1rem",
-    //     color: "red",
-    //   },
-    // },
   },
 });
 
