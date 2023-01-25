@@ -1,13 +1,19 @@
 const Sequelize = require("sequelize");
-const config = {
-  logging: false,
-  ssl: {
-    rejectUnauthorized: false,
+const db = new Sequelize(process.env.DATABASE_URL, {
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
   },
-};
-const DB_NAME = "grace_shopper_db";
-const URL = `postgres://localhost/${DB_NAME}`;
+});
 
-const db = new Sequelize(process.env.DATABASE_URL || URL, config);
+db.authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
 
 module.exports = db;
