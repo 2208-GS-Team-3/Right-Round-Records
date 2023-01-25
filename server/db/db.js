@@ -1,6 +1,9 @@
 const Sequelize = require("sequelize");
 const config = {
   logging: false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };
 const DB_NAME = "grace_shopper_db";
 const URL = `postgres://localhost/${DB_NAME}`;
