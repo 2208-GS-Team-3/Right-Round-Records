@@ -1,13 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-// interface CartRecordType {
-//   id: number,
-//   quantity: number,
-//   cartId: number,
-//   recordId: number,
-// }
-
+// need to circle back on whats contained in each {}
 interface InitialStateType {
   checkoutData: {},
   shipping: {},

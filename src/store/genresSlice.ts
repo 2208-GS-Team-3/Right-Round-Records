@@ -1,6 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+
+interface GenreType {
+  name: string
+}
+
+interface InitialStateType {
+  genres: GenreType[]
+}
+
+const initialState: InitialStateType = {
   genres: [],
 };
 

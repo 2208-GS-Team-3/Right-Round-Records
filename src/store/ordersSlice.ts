@@ -1,6 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+interface OrderType {
+  id: number,
+  datePlaced: any,
+  status: string,
+  shippingAddress: string,
+  billingAddress: string | null,
+  creditCardName: string | null,
+  creditCardNum: string | null,
+  expiryDate: string | null,
+  ccSecurity: string | null,
+  trackingNumber: number | null,
+  totalCost: number | null,
+  userId: string,
+  cartId: number,
+}
+
+interface InitialStateType {
+  orders: OrderType[],
+  adminAllOrders: OrderType[],
+}
+
+const initialState: InitialStateType = {
   orders: [],
   adminAllOrders: [],
 };

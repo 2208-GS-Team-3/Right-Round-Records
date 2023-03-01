@@ -1,6 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface RecordType {
+  id: number,
+  albumName: string,
+  artist: string,
+  tracks: string,
+  imageUrls: string,
+  condition: string | null,
+  price: number | any,
+  year: number | any,
+}
+
+interface InitialStateType {
+  recordToEdit: RecordType[],
+  updatedRecordInfo: RecordType | {},
+  editInProgress: boolean,
+}
+
+const initialState: InitialStateType = {
   recordToEdit: [],
   updatedRecordInfo: {},
   editInProgress: false,

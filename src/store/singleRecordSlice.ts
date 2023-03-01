@@ -1,6 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface RecordType {
+  id: number,
+  albumName: string,
+  artist: string,
+  tracks: string,
+  imageUrls: string,
+  condition: string | null,
+  price: number | any,
+  year: number | any,
+}
+
+interface InitialStateType {
+  selectedRecord: RecordType[],
+  loadingRecord: boolean,
+}
+
+const initialState: InitialStateType = {
   selectedRecord: [],
   loadingRecord: false,
 };
