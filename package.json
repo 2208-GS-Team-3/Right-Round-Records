@@ -2,7 +2,7 @@
   "name": "grace-shopper-group-3",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {
     "build": "webpack",
     "build:dev": "npm run build -- --watch --mode=development",
@@ -26,6 +26,7 @@
     "@mui/material": "^5.10.16",
     "@popperjs/core": "^2.11.6",
     "@reduxjs/toolkit": "^1.9.1",
+    "@types/react": "^18.0.28",
     "autosuggest-highlight": "^3.3.4",
     "bcrypt": "^5.1.0",
     "css-loader": "^6.7.2",
@@ -40,11 +41,15 @@
     "sequelize": "^6.25.3",
     "stripe": "^11.3.0",
     "style-loader": "^3.3.1",
+    "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5",
     "volleyball": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
     "@babel/preset-react": "^7.18.6",
+    "@types/react-dom": "^18.0.11",
     "axios": "^1.1.3",
     "babel-loader": "^9.0.0",
     "chai": "^4.3.6",
