@@ -1,6 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface CartRecordType {
+  id: number,
+  quantity: number,
+  cartId: number,
+  recordId: number,
+}
+
+interface InitialStateType {
+  cartRecords: CartRecordType[],
+  cartInfo: any, /**need to circle back on this */
+  subtotal: number,
+}
+
+const initialState: InitialStateType = {
   cartRecords: [],
   cartInfo: [],
   subtotal: 0,
@@ -21,7 +34,7 @@ export const cartSlice = createSlice({
         (record) => record.id === action.payload.recordId
       );
       if (recordInCart) {
-        recordInCart.cartRecord.quantity = Number(action.payload.quantity);
+        recordInCart.quantity = Number(action.payload.quantity);
       }
     },
     removeFromCart: (state, action) => {

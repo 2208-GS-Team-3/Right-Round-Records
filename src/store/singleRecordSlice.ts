@@ -15,13 +15,9 @@ export const singleRecordSlice = createSlice({
     setLoadingRecord: (state, action) => {
       state.loadingRecord = action.payload;
     },
-    // resetRecord: (state) => {
-    //   state.selectedRecord = initialState.selectedRecord;
-    //   state.loadingRecord = initialState.loadingRecord;
-    // },
   },
 });
 
-export const { setSelectedRecord, setLoadingRecord, resetRecord } =
+export const { setSelectedRecord, setLoadingRecord } =
   singleRecordSlice.actions;
 export default singleRecordSlice.reducer;

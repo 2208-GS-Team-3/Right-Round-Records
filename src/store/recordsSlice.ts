@@ -1,6 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface RecordType {
+  id: number,
+  albumName: string,
+  artist: string,
+  tracks: string,
+  imageUrls: string,
+  condition: string | null,
+  price: number | any,
+  year: number | any,
+}
+
+interface InitialStateType {
+  records: RecordType[],
+  newRecordData: {},
+  showForm: boolean,
+  filteredRecords: RecordType[],
+  genreFilter: "All Records",
+}
+
+const initialState: InitialStateType = {
   records: [],
   newRecordData: {},
   showForm: false,
@@ -32,7 +51,7 @@ export const recordsSlice = createSlice({
     setFilteredRecords: (state, action) => {
       if (state.genreFilter !== "All Records") {
         state.filteredRecords = action.payload.filter(
-          (record) => record?.genres[0]?.name === state.genreFilter
+          (record: any) => record?.genres[0]?.name === state.genreFilter
         );
       } else {
         state.filteredRecords = [];

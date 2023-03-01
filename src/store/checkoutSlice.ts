@@ -1,6 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+// interface CartRecordType {
+//   id: number,
+//   quantity: number,
+//   cartId: number,
+//   recordId: number,
+// }
+
+interface InitialStateType {
+  checkoutData: {},
+  shipping: {},
+  billing: {},
+  creditCard: {},
+  subtotal: number,
+  cardValidity: boolean,
+}
+
+const initialState: InitialStateType = {
   checkoutData: {},
   shipping: {},
   billing: {},
