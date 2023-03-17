@@ -10,6 +10,7 @@ import createUserReducer from "./createUserSlice";
 import checkoutReducer from "./checkoutSlice";
 import editRecordSlice from "./editRecordSlice";
 import adminUserListReducer from "./adminUserListSlice";
+import { useDispatch } from "react-redux";
 
 const store = configureStore({
   reducer: {
@@ -26,5 +27,9 @@ const store = configureStore({
     adminUserList: adminUserListReducer,
   },
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default store;

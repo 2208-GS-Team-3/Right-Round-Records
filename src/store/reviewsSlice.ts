@@ -1,6 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface ReviewType {
+  id: number,
+  dateReviewed: any,
+  comment: string,
+  reviewRating: number,
+  userId: string,
+  recordId: string,
+}
+
+interface InitialStateType {
+  reviewsList: ReviewType[],
+}
+
+const initialState: InitialStateType = {
   reviewsList: [],
 };
 
@@ -16,14 +29,6 @@ export const reviewsSlice = createSlice({
         return review.id !== action.payload.id;
       });
     },
-    // addReview: (state, action) => {
-    //   console.log(action.payload);
-    //   state.reviewsList.push(action.payload);
-    // },
-    // deleteReview: (state, action) => {
-    //   console.log(action.payload);
-    //   state.selectedRecordReviews.push(action.payload);
-    // },
   },
 });
 

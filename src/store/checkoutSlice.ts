@@ -1,6 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+// need to circle back on whats contained in each {}
+interface InitialStateType {
+  checkoutData: {},
+  shipping: {},
+  billing: {},
+  creditCard: {},
+  subtotal: number,
+  cardValidity: boolean,
+}
+
+const initialState: InitialStateType = {
   checkoutData: {},
   shipping: {},
   billing: {},

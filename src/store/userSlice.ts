@@ -1,6 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+interface UserType {
+  id: string,
+  username: string,
+  firstName: string,
+  lastName: string,
+  phoneNum: string,
+  email: string,
+  address: string,
+  birthday: any,
+  avatar: any,
+  isAdmin: boolean
+}
+
+interface InitialStateType {
+  user: UserType | {}
+}
+
+const initialState: InitialStateType = {
   user: {},
 };
 
@@ -11,7 +29,7 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    resetUser: (state, action) => {
+    resetUser: (state) => {
       state.user = {};
     },
   },
